@@ -21,6 +21,7 @@
                         id="startDate"
                         name="startDate"
                         value="{{ old('startDate', isset($eleicoes) ? $eleicoes->startDate_formatted : '') }}"
+                        data-mask="00/00/0000 00:00"
                     >
                 </div>
             </div>
@@ -33,6 +34,7 @@
                         id="endDate"
                         name="endDate"
                         value="{{ old('endDate', isset($eleicoes) ? $eleicoes->endDate_formatted : '') }}"
+                        data-mask="00/00/0000 00:00"
                     >
                 </div>
             </div>
