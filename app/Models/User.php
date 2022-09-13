@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    use HasFactory;
+
+    protected $table = 'users';
+    protected $fillable = ['name', 'email', 'password', 'role'];
+
+    //hidden - impede que o atributo apareça em uma consulta
+    protected $hidden = ['password'];
+
+    //mutators
+    public function setPasswordAttribute($value){
+        $this->attributes['password'] = bcrypt($value); //CRIPTOGRAFA A SENHA
+    }
+}
