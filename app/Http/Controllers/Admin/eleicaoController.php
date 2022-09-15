@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Eleicao;
+use App\Models\{Eleicao, User};
 use App\Http\Requests\Admin\eleicaoRequest;
 
 class eleicaoController extends Controller
@@ -38,7 +38,15 @@ class eleicaoController extends Controller
 
     public function show(Eleicao $eleicao)
     {
-        return view('admin.eleicao.show', ['eleicoes' => $eleicao]);
+        return view('admin.eleicao.show', [
+            'eleicoes' => $eleicao,
+            'allParticipantUsers' => User::query()
+                ->where('role', 'user')
+                ->whereDoesntHave('eleicoes', function($query) use($eleicao){
+                    $query->where('id', $eleicao->id);
+                })
+                ->get()
+        ]);
     }
 
     public function edit(Eleicao $eleicao)

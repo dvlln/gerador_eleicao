@@ -19,11 +19,14 @@ use App\Http\Controllers\Admin\{adminController, eleicaoController};
     // ADMIN & USERS
     Route::get('user/dashboard', [userController::class, 'index'])->name('user.dashboard.index')->middleware('role:user', 'auth');
     Route::get('admin/dashboard', [adminController::class, 'index'])->name('admin.dashboard.index')->middleware('role:admin', 'auth');
-// END AUTH
+// END
 
 // CRUD GERADOR DE ELEIÇÕES
+    // ADMIN - CRUD
     Route::group(['as' => 'admin.', 'middleware' => ['role:admin', 'auth']], function(){
         Route::resource('admin/eleicao', eleicaoController::class);
     });
-    //USER - VISUALIZAR ELEIÇÕES
+
+    // USER - VISUALIZAR ELEIÇÕES
     Route::get('user/eleicao', [userController::class, 'viewEleicao'])->name('user.eleicao.viewEleicao')->middleware('role:user', 'auth');
+// END

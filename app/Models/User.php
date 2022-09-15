@@ -20,4 +20,9 @@ class User extends Authenticatable
     public function setPasswordAttribute($value){
         $this->attributes['password'] = bcrypt($value); //CRIPTOGRAFA A SENHA
     }
+
+    //relationships
+    public function eleicoes(){
+        return $this->belongsToMany(Eleicao::class);
+    }
 }

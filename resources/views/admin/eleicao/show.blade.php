@@ -18,10 +18,6 @@
                 <div class="card-body">
                     <ul class="list-group text-center">
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Palestrante: </span>
-                            <span>{{ $eleicoes->name }}</span>
-                        </li>
-                        <li class="list-group-item">
                             <span class="font-weight-bold mb-1">Início: </span>
                             {{ $eleicoes->startDate_formatted }}
                         </li>
@@ -32,6 +28,26 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">Participantes</div>
+        <div class="card-body">
+            <table class="table bg-white mt-3">
+                <thead>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                </thead>
+                <tbody>
+                    @foreach($eleicoes->users as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            {{-- <td>{{ $user->categoria }}</td> --}}
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection

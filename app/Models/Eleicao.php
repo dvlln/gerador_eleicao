@@ -12,6 +12,11 @@ class Eleicao extends Model
 
     protected $fillable = ['name', 'startDate', 'endDate'];
 
+    //relationships
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
     //mutators
     public function setStartDateAttribute($value) {
         $this->attributes['startDate'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
