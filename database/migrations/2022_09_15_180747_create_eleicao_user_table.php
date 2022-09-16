@@ -11,6 +11,7 @@ class CreateEleicaoUserTable extends Migration
         Schema::create('eleicao_user', function (Blueprint $table) {
             $table->unsignedBigInteger('eleicao_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('categoria');
             $table->primary(['eleicao_id', 'user_id']);
             $table->foreign('eleicao_id')->references('id')->on('eleicaos');
             $table->foreign('user_id')->references('id')->on('users');

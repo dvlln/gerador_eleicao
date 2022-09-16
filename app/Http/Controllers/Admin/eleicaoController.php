@@ -40,12 +40,6 @@ class eleicaoController extends Controller
     {
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
-            'allParticipantUsers' => User::query()
-                ->where('role', 'user')
-                ->whereDoesntHave('eleicoes', function($query) use($eleicao){
-                    $query->where('id', $eleicao->id);
-                })
-                ->get()
         ]);
     }
 

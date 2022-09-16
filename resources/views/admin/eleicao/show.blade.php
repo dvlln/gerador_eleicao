@@ -11,6 +11,7 @@
     </a>
 @endsection
 @section('content')
+    {{-- INFORMAÇÕES GERAIS --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -25,26 +26,37 @@
                             <span class="font-weight-bold mb-1">Fim: </span>
                             {{ $eleicoes->endDate_formatted }}
                         </li>
+                        <li class="list-group-item bg-secondary">
+                            <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>
+                        </li>
+                        <li class="list-group-item">
+                            @foreach($eleicoes->users as $user)
+                                    @if ($user->pivot->categoria === 'candidato')
+                                        <span class="mb-1">{{ $user->name }}</span>
+                                    @endif
+                            @endforeach
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
+    {{-- ELEITORES --}}
     <div class="card mt-4">
-        <div class="card-header bg-primary text-white">Participantes</div>
+        <div class="card-header bg-primary text-white">Eleitores</div>
         <div class="card-body">
             <table class="table bg-white mt-3">
                 <thead>
                     <th>Nome</th>
-                    <th>Categoria</th>
                 </thead>
                 <tbody>
                     @foreach($eleicoes->users as $user)
+                        @if ($user->pivot->categoria === 'eleitor')
                         <tr>
                             <td>{{ $user->name }}</td>
-                            {{-- <td>{{ $user->categoria }}</td> --}}
                         </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
