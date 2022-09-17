@@ -28,4 +28,12 @@ class RegisterRequest extends FormRequest
             'password' => 'senha',
         ];
     }
+
+    public function messages(){
+        return [
+            'required' => 'O campo :attribute deve ser preenchido',
+            'email.unique' => 'Este email já foi cadastrado'
+        ];
+    }
+
 }
