@@ -15,7 +15,7 @@ class registerController extends Controller
     }
 
     public function store(RegisterRequest $request){
-        $data = $request->all(); //validated?
+        $data = $request->validated(); 
         $data['role'] = 'user';
 
         DB::beginTransaction();

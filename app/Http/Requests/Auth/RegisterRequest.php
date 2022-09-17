@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-//use App\Rules\Cpf;
+use App\Rules\Cpf;
 
 class RegisterRequest extends FormRequest
 {
@@ -15,7 +15,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
-            // 'cpf' => ['required', new Cpf, 'unique:users,cpf'],
+             'cpf' => ['required', new Cpf],
             'password' => ['required', 'min:3', 'confirmed'],
         ];
     }
@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
         return[
             'name' => 'nome',
             'email' => 'e-mail',
-            // 'cpf' => 'CPF',
+            'cpf' => 'CPF',
             'password' => 'senha',
         ];
     }
