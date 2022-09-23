@@ -19,7 +19,7 @@ class eleicaoController extends Controller
         }
 
         return view('admin.eleicao.index', [
-            'eleicoes' => $eleicoes->paginate(5),
+            'eleicoes' => $eleicoes->paginate(3),
             'search' => isset($request->search) ? $request->search : ''
         ]);
     }

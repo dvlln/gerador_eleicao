@@ -32,7 +32,7 @@
                         <li class="list-group-item">
                             @foreach($eleicoes->users as $user)
                                     @if ($user->pivot->categoria === 'candidato')
-                                        <span class="mb-1">{{ $user->name }}</span>
+                                        <span class="mb-1 d-flex d-12 text-align-center">{{ $user->name }}</span>
                                     @endif
                             @endforeach
                         </li>

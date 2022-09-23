@@ -59,4 +59,5 @@
             @endforeach
         </tbody>
     </table>
+    {{ $eleicoes->links() }}
 @endsection
