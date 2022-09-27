@@ -27,6 +27,7 @@ class loginController extends Controller
 
         return  redirect()->route('auth.login.home')->with('warning', 'Autenticação falhou');
     }
+    
     public function destroy(){
         Auth::logout();
         return redirect()->route('auth.login.home');

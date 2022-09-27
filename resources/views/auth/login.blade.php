@@ -15,11 +15,11 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
 
-                @if(session()->has('success')) 
+                @if(session()->has('success'))
                 <div class="alert alert-success"> {{ session('success')}}</div>
                 @endif
 
-                @if(session()->has('warning')) 
+                @if(session()->has('warning'))
                 <div class="alert alert-warning"> {{ session('warning')}}</div>
                 @endif
 

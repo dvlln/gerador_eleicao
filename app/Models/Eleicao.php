@@ -14,7 +14,7 @@ class Eleicao extends Model
 
     //relationships
     public function users(){
-        return $this->belongsToMany(User::class)->withPivot('categoria');
+        return $this->belongsToMany(User::class)->withPivot('categoria', 'votacao_status', 'voto');
     }
 
     //mutators

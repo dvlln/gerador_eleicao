@@ -2,7 +2,7 @@
 @section('title', $eleicoes->name)
 @section('sidebar')
     <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
-        <i class="fa fa-solid fa-house-user"></i>
+        <i class="fa-solid fa-house-user"></i>
         <span>Dashboard</span>
     </a>
     <a class="nav-link" href="{{ route('admin.eleicao.index') }}">
@@ -11,13 +11,14 @@
     </a>
 @endsection
 @section('content')
+
     {{-- INFORMAÇÕES GERAIS --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-primary text-white">Informações gerais</div>
-                <div class="card-body">
-                    <ul class="list-group text-center">
+                <div class="card-body text-center ">
+                    <ul class="list-group">
                         <li class="list-group-item">
                             <span class="font-weight-bold mb-1">Início: </span>
                             {{ $eleicoes->startDate_formatted }}
@@ -26,16 +27,51 @@
                             <span class="font-weight-bold mb-1">Fim: </span>
                             {{ $eleicoes->endDate_formatted }}
                         </li>
-                        <li class="list-group-item bg-secondary">
+                        <li class="list-group-item bg-primary">
                             <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>
                         </li>
-                        <li class="list-group-item">
-                            @foreach($eleicoes->users as $user)
-                                    @if ($user->pivot->categoria === 'candidato')
-                                        <span class="mb-1 d-flex d-12 text-align-center">{{ $user->name }}</span>
+
+                        {{-- CANDIDATOS --}}
+                        <table class="table m-0">
+                            <thead>
+                                <th>Nome</th>
+
+                                {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
+                                @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                    <th>Quantid. Votos</th>
+                                @endif
+                            </thead>
+                            <tbody>
+                                @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
+                                    @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
+
+                                        {{-- MARCAÇÃO DO CANDIDATO VITORIOSO NO FIM DA ELEIÇÃO --}}
+                                        @if ($vencedor === $user->id and $dateTimeAtual > $eleicoes->endDate_formatted)
+                                            <tr class="p-3 mb-2 bg-success text-white">
+                                        @else
+                                            <tr>
+                                        @endif
+
+                                        <td>{{ $user->name }}</td>
+
+                                        {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
+                                        @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                            <td>{{ $user->pivot->voto }}</td>
+                                        @endif
+                                    </tr>
+
                                     @endif
-                            @endforeach
-                        </li>
+                                @endforeach
+
+                                {{-- APARECERÁ O TOTAL DE VOTOS NO FIM DA ELEIÇÃO --}}
+                                @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                    <tr class="bg-warning text-dark">
+                                        <td class="font-weight-bold ">Total de votos</td>
+                                        <td>{{ $total }}</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
                     </ul>
                 </div>
             </div>
@@ -43,23 +79,40 @@
     </div>
 
     {{-- ELEITORES --}}
-    <div class="card mt-4">
-        <div class="card-header bg-primary text-white">Eleitores</div>
-        <div class="card-body">
-            <table class="table bg-white mt-3">
-                <thead>
-                    <th>Nome</th>
-                </thead>
-                <tbody>
-                    @foreach($eleicoes->users as $user)
-                        @if ($user->pivot->categoria === 'eleitor')
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                        </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Eleitores</div>
+                <div class="card-body text-center mt-0">
+                        <table class="table">
+                            <thead>
+                                <th>Nome</th>
+
+                                {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
+                                @if ( $dateTimeAtual > $eleicoes->startDate_formatted )
+                                    <th>Status Votação</th>
+                                @endif
+                            </thead>
+                            <tbody>
+                                @foreach($eleicoes->users as $user)
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+
+                                        {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
+                                        @if ( $dateTimeAtual > $eleicoes->startDate_formatted )
+                                            @if ($user->pivot->votacao_status === 1)
+                                                <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
+                                            @else
+                                                <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
+                                            @endif
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

@@ -12,7 +12,8 @@ class CreateEleicaoUserTable extends Migration
             $table->unsignedBigInteger('eleicao_id');
             $table->unsignedBigInteger('user_id');
             $table->string('categoria');
-            $table->integer('voto_user_id')->nullable();
+            $table->boolean('votacao_status')->default(false);
+            $table->integer('voto')->default(0);
             $table->primary(['eleicao_id', 'user_id']);
             $table->foreign('eleicao_id')->references('id')->on('eleicaos');
             $table->foreign('user_id')->references('id')->on('users');

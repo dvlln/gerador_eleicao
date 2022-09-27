@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
 use App\Http\Requests\Admin\eleicaoRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class eleicaoController extends Controller
 {
@@ -38,8 +40,24 @@ class eleicaoController extends Controller
 
     public function show(Eleicao $eleicao)
     {
+        $vencedor = DB::table('eleicao_user')
+                      ->where('eleicao_id', '=', $eleicao->id)
+                      ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
+                      ->value('user_id');
+
+
+        $total = DB::table('eleicao_user')
+                   ->where('eleicao_id', '=', $eleicao->id)
+                   ->where('categoria', '=', 'candidato')
+                   ->sum('voto');
+
+        // return response()->json($total);
+
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
+            'dateTimeAtual' => Carbon::now()->format('d/m/Y H:i'),
+            'total' => $total,
+            'vencedor' => $vencedor
         ]);
     }
 
