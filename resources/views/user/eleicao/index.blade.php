@@ -5,7 +5,7 @@
         <i class="fa fa-solid fa-house-user"></i>
         <span>Dashboard</span>
     </a> 
-    <a class="nav-link" href="{{ route('user.eleicao.viewEleicao') }}">
+    <a class="nav-link" href="{{ route('user.eleicao.index') }}">
         <i class="fas fa-person-booth"></i>
         <span>Eleições</span>
     </a>
@@ -28,7 +28,21 @@
             </tr>
         </thead>
         <tbody>
-
+            @foreach($eleicoes as $eleicao)
+                <tr> 
+                <td class="align-middle">{{ $eleicao->name }}</td>
+                    <td class="align-middle">{{ $eleicao->startDate_formatted }}</td>
+                    <td class="align-middle">{{ $eleicao->endDate_formatted }}</td>
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <a class="btn btn-sm btn-info mr-2" href="{{ route('user.eleicao.show', $eleicao->id) }}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+           @endforeach
         </tbody>
     </table>
+    {{ $eleicoes->links() }}
 @endsection

@@ -5,7 +5,7 @@
        <i class="fa fa-solid fa-house-user"></i>
         <span>Dashboard</span>
     </a>
-    <a class="nav-link" href="{{ route('user.eleicao.viewEleicao') }}">
+    <a class="nav-link" href="{{ route('user.eleicao.index') }}">
        <i class="fas fa-person-booth"></i>
         <span>Eleições</span>
     </a>
