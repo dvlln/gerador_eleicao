@@ -10,10 +10,4 @@ class userController extends Controller
     public function index(){
         return view('user.dashboard.index');
     }
-
-    public function viewEleicao(){
-        return view ('user.eleicao.viewEleicao');
-    }
-
-
 }
