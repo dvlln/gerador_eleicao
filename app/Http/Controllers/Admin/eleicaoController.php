@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
 use App\Http\Requests\Admin\eleicaoRequest;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Services\EleicaoService;
 
 class eleicaoController extends Controller
 {
@@ -55,7 +55,8 @@ class eleicaoController extends Controller
 
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
-            'dateTimeAtual' => Carbon::now()->format('d/m/Y H:i'),
+            'eleicaoStartDateHasPassed' => EleicaoService::eleicaoStartDateHasPassed($eleicao),
+            'eleicaoEndDateHasPassed' => EleicaoService::eleicaoEndDateHasPassed($eleicao),
             'total' => $total,
             'vencedor' => $vencedor
         ]);

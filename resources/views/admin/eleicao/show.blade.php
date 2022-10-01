@@ -37,7 +37,7 @@
                                 <th>Nome</th>
 
                                 {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                @if ( $eleicaoEndDateHasPassed )
                                     <th>Quantid. Votos</th>
                                 @endif
                             </thead>
@@ -46,7 +46,7 @@
                                     @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
 
                                         {{-- MARCAÇÃO DO CANDIDATO VITORIOSO NO FIM DA ELEIÇÃO --}}
-                                        @if ($vencedor === $user->id and $dateTimeAtual > $eleicoes->endDate_formatted)
+                                        @if ($vencedor === $user->id and $eleicaoEndDateHasPassed)
                                             <tr class="p-3 mb-2 bg-success text-white">
                                         @else
                                             <tr>
@@ -55,7 +55,7 @@
                                         <td>{{ $user->name }}</td>
 
                                         {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                        @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                        @if ( $eleicaoEndDateHasPassed )
                                             <td>{{ $user->pivot->voto }}</td>
                                         @endif
                                     </tr>
@@ -64,7 +64,7 @@
                                 @endforeach
 
                                 {{-- APARECERÁ O TOTAL DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $dateTimeAtual > $eleicoes->endDate_formatted )
+                                @if ( $eleicaoEndDateHasPassed )
                                     <tr class="bg-warning text-dark">
                                         <td class="font-weight-bold ">Total de votos</td>
                                         <td>{{ $total }}</td>
@@ -89,7 +89,7 @@
                                 <th>Nome</th>
 
                                 {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                @if ( $dateTimeAtual > $eleicoes->startDate_formatted )
+                                @if ( $eleicaoStartDateHasPassed )
                                     <th>Status Votação</th>
                                 @endif
                             </thead>
@@ -99,7 +99,7 @@
                                         <td>{{ $user->name }}</td>
 
                                         {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                        @if ( $dateTimeAtual > $eleicoes->startDate_formatted )
+                                        @if ( $eleicaoStartDateHasPassed )
                                             @if ($user->pivot->votacao_status === 1)
                                                 <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
                                             @else
