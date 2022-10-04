@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('password');
             $table->string('role');
+            $table->string('foto', 256)->nullable();
             $table->timestamps();
         });
     }

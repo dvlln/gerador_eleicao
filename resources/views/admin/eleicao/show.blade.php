@@ -34,6 +34,7 @@
                         {{-- CANDIDATOS --}}
                         <table class="table m-0">
                             <thead>
+                                <th>Perfil</th>
                                 <th>Nome</th>
 
                                 {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
@@ -52,6 +53,7 @@
                                             <tr>
                                         @endif
 
+                                        <td><img src="{{ url("storage/user/{$user->foto}") }}" alt="foto_perfil" ></td>
                                         <td>{{ $user->name }}</td>
 
                                         {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
@@ -88,7 +90,7 @@
                             <thead>
                                 <th>Nome</th>
                                 <th>E-mail</th>
-                                
+
                                 {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
                                 @if ( $eleicaoStartDateHasPassed )
                                     <th>Status Votação</th>
@@ -96,19 +98,21 @@
                             </thead>
                             <tbody>
                                 @foreach($eleicoes->users as $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
+                                    @if ($user->pivot->categoria === 'eleitor')
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
 
-                                        {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                        @if ( $eleicaoStartDateHasPassed )
-                                            @if ($user->pivot->votacao_status === 1)
-                                                <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
-                                            @else
-                                                <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
+                                            {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
+                                            @if ( $eleicaoStartDateHasPassed )
+                                                @if ($user->pivot->votacao_status === 1)
+                                                    <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
+                                                @else
+                                                    <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
+                                                @endif
                                             @endif
-                                        @endif
-                                    </tr>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
