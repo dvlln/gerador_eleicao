@@ -87,7 +87,8 @@
                         <table class="table">
                             <thead>
                                 <th>Nome</th>
-
+                                <th>E-mail</th>
+                                
                                 {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
                                 @if ( $eleicaoStartDateHasPassed )
                                     <th>Status Votação</th>
@@ -97,6 +98,7 @@
                                 @foreach($eleicoes->users as $user)
                                     <tr>
                                         <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
 
                                         {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
                                         @if ( $eleicaoStartDateHasPassed )
