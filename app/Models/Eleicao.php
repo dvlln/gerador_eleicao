@@ -10,7 +10,7 @@ class Eleicao extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'start_date', 'endDate'];
+    protected $fillable = ['name', 'startDate', 'endDate'];
 
     //relationships
     public function users(){
