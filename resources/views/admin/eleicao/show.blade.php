@@ -60,6 +60,7 @@
                                     <tr class="bg-warning text-dark">
                                         <td class="font-weight-bold ">Total de votos</td>
                                         <td>{{ $total }}</td>
+                                        <td></td>
                                     </tr>
                                 @endif
                             </tbody>

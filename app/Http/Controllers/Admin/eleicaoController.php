@@ -33,7 +33,16 @@ class eleicaoController extends Controller
 
     public function store(eleicaoRequest $request)
     {
-        Eleicao::create($request->validated());
+        $data = $request->validated();
+
+
+        $data['startDate'] .= ' '.$data['startTime']; //JUNTANDO DATA E HORA INICIAL
+        $data['endDate'] .= ' '.$data['endTime']; //JUNTANDO DATA E HORA FINAL
+
+        unset($data['startTime']); // REMOVE HORA INICIAL
+        unset($data['endTime']); // REMOVE HORA FINAL
+
+        Eleicao::create($data);
 
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição cadastrada com sucesso');
     }

@@ -25,8 +25,10 @@ class eleicaoRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'startDate' => ['required', 'date_format:d/m/Y H:i'],
-            'endDate' => ['required', 'date_format:d/m/Y H:i'] //'after:'.$this->start_date??null
+            'startDate' => ['required', 'date_format:d/m/Y'],
+            'startTime' => ['required'],
+            'endDate' => ['required', 'date_format:d/m/Y'],
+            'endTime' => ['required']
         ];
     }
 
@@ -34,14 +36,15 @@ class eleicaoRequest extends FormRequest
         return [
             'name' => 'nome',
             'startDate' => 'data inicial',
-            'endDate' => 'data final'
+            'startTime' => 'hora inicial',
+            'endDate' => 'data final',
+            'endTime' => 'hora inicial'
         ];
     }
 
     public function messages(){
         return[
-            'date_format' => 'O campo :attribute não corresponde ao formato 00/00/0000'
-            // 'end_date.after' => 'A data final deve ser posterior a data inicial'
+            'date_format' => 'O campo :attribute não corresponde ao formato correto'
         ];
     }
 }
