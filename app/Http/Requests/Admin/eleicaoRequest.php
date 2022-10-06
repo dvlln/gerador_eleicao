@@ -25,25 +25,34 @@ class eleicaoRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'startDate' => ['required', 'date_format:d/m/Y'],
-            'startTime' => ['required'],
-            'endDate' => ['required', 'date_format:d/m/Y'],
-            'endTime' => ['required']
+            'start_date_eleicao' => ['required', 'date_format:d/m/Y'],
+            'start_time_eleicao' => ['required'],
+            'end_date_eleicao' => ['required', 'date_format:d/m/Y'],
+            'end_time_eleicao' => ['required'],
+            'start_date_inscricao' => ['required', 'date_format:d/m/Y'],
+            'start_time_inscricao' => ['required'],
+            'end_date_inscricao' => ['required', 'date_format:d/m/Y'],
+            'end_time_inscricao' => ['required']
         ];
     }
 
     public function attributes(){
         return [
-            'name' => 'nome',
-            'startDate' => 'data inicial',
-            'startTime' => 'hora inicial',
-            'endDate' => 'data final',
-            'endTime' => 'hora inicial'
+            'name' => 'Nome',
+            'start_date_eleicao' => 'Data Inicial da Eleição',
+            'start_time_eleicao' => 'Hora Inicial da Eleição',
+            'end_date_eleicao' => 'Data Final da Eleição',
+            'end_time_eleicao' => 'Hora Final da Eleição',
+            'start_date_inscricao' => 'Data Inicial da Inscrição',
+            'start_time_inscricao' => 'Hora Inicial da Inscrição',
+            'end_date_inscricao' => 'Data Final da Inscrição',
+            'end_time_inscricao' => 'Hora Final da Inscrição'
         ];
     }
 
     public function messages(){
         return[
+            'required' => 'O campo :attribute deve ser preenchido',
             'date_format' => 'O campo :attribute não corresponde ao formato correto'
         ];
     }

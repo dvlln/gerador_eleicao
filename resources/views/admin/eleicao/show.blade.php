@@ -10,12 +10,20 @@
                 <div class="card-body text-center ">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Início: </span>
-                            {{ $eleicoes->startDate_formatted }}
+                            <span class="font-weight-bold mb-1">Início inscrição: </span>
+                            {{ $eleicoes->start_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Fim: </span>
-                            {{ $eleicoes->endDate_formatted }}
+                            <span class="font-weight-bold mb-1">Fim inscrição: </span>
+                            {{ $eleicoes->end_date_inscricao_formatted }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold mb-1">Início eleição: </span>
+                            {{ $eleicoes->start_date_eleicao_formatted }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold mb-1">Fim eleição: </span>
+                            {{ $eleicoes->end_date_eleicao_formatted }}
                         </li>
                         <li class="list-group-item bg-primary">
                             <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>

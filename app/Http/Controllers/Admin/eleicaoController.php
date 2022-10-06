@@ -36,11 +36,17 @@ class eleicaoController extends Controller
         $data = $request->validated();
 
 
-        $data['startDate'] .= ' '.$data['startTime']; //JUNTANDO DATA E HORA INICIAL
-        $data['endDate'] .= ' '.$data['endTime']; //JUNTANDO DATA E HORA FINAL
+        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao']; //JUNTANDO DATA E HORA INICIAL DA ELEICAO
+        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao']; //JUNTANDO DATA E HORA FINAL DA ELEICAO
 
-        unset($data['startTime']); // REMOVE HORA INICIAL
-        unset($data['endTime']); // REMOVE HORA FINAL
+        $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao']; //JUNTANDO DATA E HORA INICIAL
+        $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao']; //JUNTANDO DATA E HORA FINAL
+
+        unset($data['start_time_eleicao']); // REMOVE HORA INICIAL
+        unset($data['end_time_eleicao']); // REMOVE HORA FINAL
+
+        unset($data['start_time_inscricao']); // REMOVE HORA INICIAL
+        unset($data['end_time_inscricao']); // REMOVE HORA FINAL
 
         Eleicao::create($data);
 
@@ -73,12 +79,37 @@ class eleicaoController extends Controller
 
     public function edit(Eleicao $eleicao)
     {
-        return view('admin.eleicao.edit', ['eleicoes' => $eleicao]);
+        $start_time_eleicao = date('H:i', strtotime($eleicao->start_date_eleicao));
+        $end_time_eleicao = date('H:i', strtotime($eleicao->end_date_eleicao));
+        $start_time_inscricao = date('H:i', strtotime($eleicao->start_date_inscricao));
+        $end_time_inscricao = date('H:i', strtotime($eleicao->end_date_inscricao));
+
+        return view('admin.eleicao.edit', [
+            'eleicoes' => $eleicao,
+            'start_time_eleicao' => $start_time_eleicao,
+            'end_time_eleicao' => $end_time_eleicao,
+            'start_time_inscricao' => $start_time_inscricao,
+            'end_time_inscricao' => $end_time_inscricao
+        ]);
     }
 
     public function update(Eleicao $eleicao, eleicaoRequest $request)
     {
-        $eleicao->update($request->validated());
+        $data = $request->validated();
+
+        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao']; //JUNTANDO DATA E HORA INICIAL DA ELEICAO
+        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao']; //JUNTANDO DATA E HORA FINAL DA ELEICAO
+
+        $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao']; //JUNTANDO DATA E HORA INICIAL
+        $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao']; //JUNTANDO DATA E HORA FINAL
+
+        unset($data['start_time_eleicao']); // REMOVE HORA INICIAL
+        unset($data['end_time_eleicao']); // REMOVE HORA FINAL
+
+        unset($data['start_time_inscricao']); // REMOVE HORA INICIAL
+        unset($data['end_time_inscricao']); // REMOVE HORA FINAL
+
+        $eleicao->update($data);
 
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição atualizada com sucesso');
     }

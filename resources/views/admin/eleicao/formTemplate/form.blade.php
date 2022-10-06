@@ -1,74 +1,182 @@
 @csrf
-        <div class="row">
+
+    <div class="row">
+
+        {{-- NOME --}}
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="name">Nome</label>
                     <input
                         type="text"
-                        class="form-control"
+                        class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
                         id="name"
                         name="name"
                         value="{{ old('name', isset($eleicoes) ? $eleicoes->name : '') }}"
                     >
+                    <div class="invalid-feedback">{{ $errors->first('name') }}</div>
                 </div>
             </div>
+        {{-- END NOME --}}
+
+        {{-- ELEICAO --}}
+
+            {{-- TITULO --}}
+            <div class="col-lg-12">
+                <h3 class="bg-info text-white text-center rounded p-1">ELEIÇÃO</h3>
+            </div>
+
+            {{-- DATA INICIAL --}}
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label for="startDate">Data de início</label>
+                    <label for="start_date_eleicao">Data de início</label>
                     <input
                         type="text"
-                        class="form-control"
-                        id="startDate"
-                        name="startDate"
-                        value="{{ old('startDate', isset($eleicoes) ? $eleicoes->startDate_formatted : '') }}"
+                        class="form-control {{ $errors->has('start_date_eleicao') ? 'is-invalid' : '' }}"
+                        id="start_date_eleicao"
+                        name="start_date_eleicao"
+                        value="{{ old('start_date_eleicao', isset($eleicoes) ? $eleicoes->start_date_eleicao_formatted : '') }}"
                         data-mask="00/00/0000"
                         placeholder="00/00/0000"
                     >
+                    <div class="invalid-feedback">{{ $errors->first('start_date_eleicao') }}</div>
                 </div>
             </div>
+
+            {{-- HORA INICIAL --}}
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label for="startTime">Hora de início</label>
+                    <label for="start_time_eleicao">Hora de início</label>
                     <input
                         type="text"
-                        class="form-control"
-                        id="startTime"
-                        name="startTime"
-                        value="{{ old('startTime', isset($eleicoes) ? $eleicoes->startTime : '') }}"
+                        class="form-control {{ $errors->has('start_time_eleicao') ? 'is-invalid' : '' }}"
+                        id="start_time_eleicao"
+                        name="start_time_eleicao"
+                        value="{{ old('start_time_eleicao', isset($eleicoes) ? $start_time_eleicao : '') }}"
                         data-mask="00:00"
                         placeholder="00:00"
                     >
+                    <div class="invalid-feedback">{{ $errors->first('start_time_eleicao') }}</div>
                 </div>
             </div>
+
+            {{-- DATA FINAL --}}
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label for="endDate">Data do fim</label>
+                    <label for="end_date_eleicao">Data do fim</label>
                     <input
                         type="text"
-                        class="form-control"
-                        id="endDate"
-                        name="endDate"
-                        value="{{ old('endDate', isset($eleicoes) ? $eleicoes->endDate_formatted : '') }}"
+                        class="form-control {{ $errors->has('end_date_eleicao') ? 'is-invalid' : '' }}"
+                        id="end_date_eleicao"
+                        name="end_date_eleicao"
+                        value="{{ old('end_date_eleicao', isset($eleicoes) ? $eleicoes->end_date_eleicao_formatted : '') }}"
                         data-mask="00/00/0000"
                         placeholder="00/00/0000"
                     >
+                    <div class="invalid-feedback">{{ $errors->first('end_date_eleicao') }}</div>
                 </div>
             </div>
+
+            {{-- HORA FINAL --}}
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label for="endTime">Hora do fim</label>
+                    <label for="end_time_eleicao">Hora do fim</label>
                     <input
                         type="text"
-                        class="form-control"
-                        id="endTime"
-                        name="endTime"
-                        value="{{ old('endTime', isset($eleicoes) ? $eleicoes->endTime : '') }}"
+                        class="form-control {{ $errors->has('end_time_eleicao') ? 'is-invalid' : '' }}"
+                        id="end_time_eleicao"
+                        name="end_time_eleicao"
+                        value="{{ old('end_time_eleicao', isset($eleicoes) ? $end_time_eleicao : '') }}"
                         data-mask="00:00"
                         placeholder="00:00"
                     >
+                    <div class="invalid-feedback">{{ $errors->first('end_time_eleicao') }}</div>
                 </div>
             </div>
+
+        {{-- END ELEICAO --}}
+
+        {{-- INSCRICAO --}}
+
+            {{-- TITULO --}}
+            <div class="col-lg-12">
+                <h3 class="bg-info text-white text-center rounded p-1">INSCRIÇÃO</h3>
+            </div>
+
+            {{-- DATA INICIAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="start_date_inscricao">Data de início</label>
+                    <input
+                        type="text"
+                        class="form-control {{ $errors->has('start_date_inscricao') ? 'is-invalid' : '' }}"
+                        id="start_date_inscricao"
+                        name="start_date_inscricao"
+                        value="{{ old('start_date_inscricao', isset($eleicoes) ? $eleicoes->start_date_inscricao_formatted : '') }}"
+                        data-mask="00/00/0000"
+                        placeholder="00/00/0000"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('start_date_inscricao') }}</div>
+                </div>
+            </div>
+
+            {{-- HORA INICIAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="start_time_inscricao">Hora de início</label>
+                    <input
+                        type="text"
+                        class="form-control {{ $errors->has('start_time_inscricao') ? 'is-invalid' : '' }}"
+                        id="start_time_inscricao"
+                        name="start_time_inscricao"
+                        value="{{ old('start_time_inscricao', isset($eleicoes) ? $start_time_inscricao : '') }}"
+                        data-mask="00:00"
+                        placeholder="00:00"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('start_time_inscricao') }}</div>
+                </div>
+            </div>
+
+            {{-- DATA FINAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="end_date_inscricao">Data do fim</label>
+                    <input
+                        type="text"
+                        class="form-control {{ $errors->has('end_date_inscricao') ? 'is-invalid' : '' }}"
+                        id="end_date_inscricao"
+                        name="end_date_inscricao"
+                        value="{{ old('end_date_inscricao', isset($eleicoes) ? $eleicoes->end_date_inscricao_formatted : '') }}"
+                        data-mask="00/00/0000"
+                        placeholder="00/00/0000"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('end_date_inscricao') }}</div>
+                </div>
+            </div>
+
+            {{-- HORA FINAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="end_time_inscricao">Hora do fim</label>
+                    <input
+                        type="text"
+                        class="form-control {{ $errors->has('end_time_inscricao') ? 'is-invalid' : '' }}"
+                        id="end_time_inscricao"
+                        name="end_time_inscricao"
+                        value="{{ old('end_time_inscricao', isset($eleicoes) ? $end_time_inscricao : '') }}"
+                        data-mask="00:00"
+                        placeholder="00:00"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('end_time_inscricao') }}</div>
+                </div>
+            </div>
+
+        {{-- END INSCRICAO --}}
+
+        {{-- SUBMIT --}}
             <div class="col-12">
                 <button type="submit" class="btn btn-success btn-block">Salvar</button>
             </div>
-        </div>
+        {{-- END SUBMIT --}}
+    </div>
+
+

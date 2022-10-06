@@ -10,7 +10,7 @@ class Eleicao extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'startDate', 'endDate'];
+    protected $fillable = ['name', 'start_date_eleicao', 'end_date_eleicao', 'start_date_inscricao', 'end_date_inscricao'];
 
     //relationships
     public function users(){
@@ -18,21 +18,36 @@ class Eleicao extends Model
     }
 
     //mutators
-    public function setStartDateAttribute($value) {
-        $this->attributes['startDate'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
+    public function setStartDateEleicaoAttribute($value) {
+        $this->attributes['start_date_eleicao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
     }
 
-    public function setEndDateAttribute($value) {
-        $this->attributes['endDate'] = Carbon::createFromFormat('d/m/Y H:i', $value)
-        ->format('Y-m-d H:i:s');
+    public function setEndDateEleicaoAttribute($value) {
+        $this->attributes['end_date_eleicao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
+    }
+
+    public function setStartDateInscricaoAttribute($value) {
+        $this->attributes['start_date_inscricao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
+    }
+
+    public function setEndDateInscricaoAttribute($value) {
+        $this->attributes['end_date_inscricao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
     }
 
     //accessors
-    public function getStartDateFormattedAttribute() {
-        return Carbon::parse($this->startDate)->format('d/m/Y H:i');
+    public function getStartDateEleicaoFormattedAttribute() {
+        return Carbon::parse($this->start_date_eleicao)->format('d/m/Y H:i');
     }
 
-    public function getEndDateFormattedAttribute() {
-        return Carbon::parse($this->endDate)->format('d/m/Y H:i');
+    public function getEndDateEleicaoFormattedAttribute() {
+        return Carbon::parse($this->end_date_eleicao)->format('d/m/Y H:i');
+    }
+
+    public function getStartDateInscricaoFormattedAttribute() {
+        return Carbon::parse($this->start_date_inscricao)->format('d/m/Y H:i');
+    }
+
+    public function getEndDateInscricaoFormattedAttribute() {
+        return Carbon::parse($this->end_date_inscricao)->format('d/m/Y H:i');
     }
 }
