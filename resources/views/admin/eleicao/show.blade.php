@@ -43,7 +43,7 @@
                                             <tr>
                                         @endif
 
-                                        <td><img src="{{ url("storage/user/{$user->foto}") }}" alt="foto_perfil" ></td>
+                                        <td><img src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" ></td>
                                         <td>{{ $user->name }}</td>
 
                                         {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
@@ -59,8 +59,8 @@
                                 @if ( $eleicaoEndDateHasPassed )
                                     <tr class="bg-warning text-dark">
                                         <td class="font-weight-bold ">Total de votos</td>
-                                        <td>{{ $total }}</td>
                                         <td></td>
+                                        <td>{{ $total }}</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -86,24 +86,41 @@
                                 @if ( $eleicaoStartDateHasPassed )
                                     <th>Status Votação</th>
                                 @endif
+
+                                @if ( !$eleicaoStartDateHasPassed )
+                                    <th>Ações</th>
+                                @endif
                             </thead>
                             <tbody>
                                 @foreach($eleicoes->users as $user)
-                                    @if ($user->pivot->categoria === 'eleitor')
-                                        <tr>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
 
-                                            {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                            @if ( $eleicaoStartDateHasPassed )
-                                                @if ($user->pivot->votacao_status === 1)
-                                                    <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
-                                                @else
-                                                    <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
-                                                @endif
+                                        {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
+                                        @if ( $eleicaoStartDateHasPassed )
+                                            @if ($user->pivot->votacao_status === 1)
+                                                <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
+                                            @else
+                                                <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
                                             @endif
-                                        </tr>
-                                    @endif
+                                        @endif
+
+                                        @if ( !$eleicaoStartDateHasPassed )
+                                            <td>
+                                                <a class="btn btn-sm btn-info mr-2" href="{{ url("storage/eleicao_user_info/{$eleicoes->id}/{$user->foto}") }}" target="_blank">
+                                                    <i class="fa fa-eye fa-l"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-success mr-2" href="">
+                                                    <i class="fa-solid fa-check fa-l"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-danger mr-2" href="">
+                                                    <i class="fa-solid fa-xmark fa-l"></i>
+                                                </a>
+
+                                            </td>
+                                        @endif
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
