@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('start_date_inscricao');
             $table->dateTime('end_date_inscricao');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
