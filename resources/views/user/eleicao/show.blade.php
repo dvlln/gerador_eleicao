@@ -1,15 +1,5 @@
-@extends('layouts.panel')
+@extends('layouts.panelUser')
 @section('title', $eleicoes->name)
-@section('sidebar')
-    <a class="nav-link" href="{{ route('user.dashboard.index') }}">
-        <i class="fa fa-solid fa-house-user"></i>
-        <span>Dashboard</span>
-    </a>
-    <a class="nav-link" href="{{ route('user.eleicao.index') }}">
-        <i class="fas fa-person-booth"></i>
-        <span>Eleições</span>
-    </a>
-@endsection
 @section('content')
     {{-- INFORMAÇÕES GERAIS --}}
     <div class="row">
@@ -36,7 +26,7 @@
                                 @endif
                             @endforeach
                         </li>
-                        <li class="list-group-item"> 
+                        <li class="list-group-item">
                             <div class='row'>
                                 <div class='col'>
                                     <form method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
@@ -51,9 +41,9 @@
                                     @if(!$eleicaoEndDateHasPassed)
                                         <form method="POST" action="{{ route('user.eleicao.destroy', [
                                             'eleicao'  => $eleicoes->id,
-                                            'user'  => $user->id  
+                                            'user'  => $user->id
                                         ]) }}">
-                                            
+
                                             @csrf
                                             @method('DELETE')
                                             <div class="col col-lg-2">

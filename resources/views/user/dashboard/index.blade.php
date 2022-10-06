@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.panelUser')
 @section('title', 'Dashboard')
 @section('sidebar')
     <a class="nav-link" href="{{ route('user.dashboard.index') }}">

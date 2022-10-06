@@ -26,9 +26,7 @@
 
             <!-- Sidebar - Brand -->
                 <div class="sidebar-brand d-flex align-items-center justify-content-center">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
+
                     <div class="sidebar-brand-text mx-3">LinkeTinder</div>
                 </div>
 
@@ -36,7 +34,14 @@
                 <hr class="sidebar-divider my-0">
 
                 <li class="nav-item">
-                    @yield('sidebar')
+                    <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
+                        <i class="fa fa-solid fa-house-user"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a class="nav-link" href="{{ route('admin.eleicao.index') }}">
+                        <i class="fas fa-person-booth"></i>
+                        <span>Eleições</span>
+                    </a>
                 </li>
 
             <!-- Divider -->

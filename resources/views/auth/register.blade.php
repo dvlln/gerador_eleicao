@@ -41,14 +41,15 @@
                         <div class="invalid-feedback">{{ $errors->first('email') }}</div>
                     </div>
                 </div>
-                <div class="col-md-6">  
-                        <div class="form-group">     
+                <div class="col-md-6">
+                        <div class="form-group">
                             <input
                                 type="text"
                                 name="cpf"
                                 class="form-control cpf {{ $errors->has('cpf') ? 'is-invalid' : ''}}"
                                 placeholder="CPF"
                                 value="{{ old('cpf') }}"
+                                data-mask="000.000.000-00"
                             >
                             <div class="invalid-feedback">{{ $errors->first('cpf')}}</div>
 

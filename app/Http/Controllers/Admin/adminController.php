@@ -10,4 +10,10 @@ class adminController extends Controller
     public function index(){
         return view('admin.dashboard.index');
     }
+
+    public function store(Request $request){
+        $data = $request->all();
+
+        return response()->json($data);
+    }
 }
