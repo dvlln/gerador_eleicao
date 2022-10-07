@@ -23,6 +23,6 @@ class User extends Authenticatable
 
     //relationships
     public function eleicoes(){
-        return $this->belongsToMany(Eleicao::class)->withPivot('categoria', 'votacao_status', 'voto');
+        return $this->belongsToMany(Eleicao::class)->withPivot('categoria', 'votacao_status', 'voto', 'doc_user');
     }
 }

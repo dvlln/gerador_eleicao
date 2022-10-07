@@ -14,6 +14,7 @@ class CreateEleicaoUserTable extends Migration
             $table->string('categoria');
             $table->boolean('votacao_status')->default(false);
             $table->integer('voto')->default(0);
+            $table->string('doc_user')->nullable();
             $table->primary(['eleicao_id', 'user_id']);
             $table->foreign('eleicao_id')->references('id')->on('eleicaos');
             $table->foreign('user_id')->references('id')->on('users');

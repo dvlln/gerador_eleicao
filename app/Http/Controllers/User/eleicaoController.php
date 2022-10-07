@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
 use App\Services\EleicaoService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class eleicaoController extends Controller
 {
@@ -37,20 +40,32 @@ class eleicaoController extends Controller
         ]);
     }
 
-    public function store(Eleicao $eleicoes, Request $request){
-        $user = User::findOrFail($request->user_id);
+    public function store(Eleicao $eleicao, Request $request){
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
 
-        if(EleicaoService::userSubscribedOnEleicao($user, $eleicoes)){
-            return back()->with('warning', 'Erro: Este participante já está inscrito nesta eleição!');
-        }
+        // return response()->json(User::find($data['user_id']));
 
-        if(EleicaoService::eleicaoEndDateHasPassed($eleicoes)){
-            return back()->with('warning', 'Erro: a eleição já ocorreu');
-        }
+        $nameFile = Str::of(User::find($data['user_id'])->cpf)->slug('-'). '.'. $request->doc_user->getClientOriginalExtension();
+        $documento = $request->doc_user->storeAs(`eleicao_user/$eleicao->id`, $nameFile);
+        $data['doc_user'] = $documento;
 
-        $eleicoes->users()->attach($user->id);
+        // $eleicao->users()->sync([
+        //     1 => $data['user_id'],
 
-        return back()->with('success', $user->name.' inscreveu-se para a eleição');
+        // ]);
+
+        // $eleicao->users()->sync(array(
+        //     1 => array('expires' => true
+        // )));
+
+        // $food->allergies()->sync([
+        //     1 => ['severity' => 3], 4 => ['severity' => 1]
+        // ]);
+        $eleicao->users()->attach($data['user_id']);
+        // $eleicao->users()->create($data);
+
+        return back()->with('success', 'Usuário inscreveu-se para a eleição');
     }
 
     public function destroy(Eleicao $eleicoes, User $user){
@@ -67,5 +82,5 @@ class eleicaoController extends Controller
         return back()->with('success', $user->name.' saiu da eleição');
     }
 
-    
+
 }
