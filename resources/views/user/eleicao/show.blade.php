@@ -53,7 +53,7 @@
                                 </div>
                             </form>
                         </li>
-                        <li class="list-group-item">
+                        <!-- <li class="list-group-item">
                             @if(!$eleicaoEndDateHasPassed)
                                 <form method="POST" action="{{ route('user.eleicao.destroy', [
                                     'eleicao'  => $eleicoes->id,
@@ -67,7 +67,7 @@
                                     </div>
                                 </form>
                             @endif
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>

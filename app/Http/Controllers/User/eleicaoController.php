@@ -43,6 +43,7 @@ class eleicaoController extends Controller
     public function store(Eleicao $eleicao, Request $request){
         $data = $request->all();
         $data['user_id'] = Auth::id();
+        
 
         // return response()->json(User::find($data['user_id']));
 
@@ -50,20 +51,12 @@ class eleicaoController extends Controller
         $documento = $request->doc_user->storeAs(`eleicao_user/$eleicao->id`, $nameFile);
         $data['doc_user'] = $documento;
 
-        // $eleicao->users()->sync([
-        //     1 => $data['user_id'],
-
-        // ]);
-
-        // $eleicao->users()->sync(array(
-        //     1 => array('expires' => true
-        // )));
-
-        // $food->allergies()->sync([
-        //     1 => ['severity' => 3], 4 => ['severity' => 1]
-        // ]);
-        $eleicao->users()->attach($data['user_id']);
-        // $eleicao->users()->create($data);
+        $eleicao->users()->attach([
+            $data['user_id'] => [
+                'categoria' => $data['categoria'],
+                'doc_user' => $data['doc_user']
+            ]
+        ]);
 
         return back()->with('success', 'Usuário inscreveu-se para a eleição');
     }

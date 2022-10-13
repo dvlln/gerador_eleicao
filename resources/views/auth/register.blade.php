@@ -46,6 +46,7 @@
                             <input
                                 type="text"
                                 name="cpf"
+                                id="cpf"
                                 class="form-control cpf {{ $errors->has('cpf') ? 'is-invalid' : ''}}"
                                 placeholder="CPF"
                                 value="{{ old('cpf') }}"
@@ -82,5 +83,13 @@
         </form>
     </div>
 </div>
+
+
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
+    <script>
+        $('.cpf').mask('000.000.000-00');
+    </script>
+
 </body>
 </html>
