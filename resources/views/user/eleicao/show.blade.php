@@ -60,8 +60,9 @@
                 <div class="card-body text-center mt-0">
                         <table class="table">
                             <thead>
-                                <th></th>
-                                <th></th>
+                                
+                                <!--<th></th>
+                                <th></th>-->
 
                                 {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
                                 @if ( $eleicaoStartDateHasPassed )
@@ -69,18 +70,19 @@
                                 @endif
 
                                 @if ( !$eleicaoStartDateHasPassed )
-                                    <th>Ações</th>
+                                    <!--<th></th>-->
                                 @endif
                             </thead>
                             <tbody>
                             <form enctype="multipart/form-data" method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
                                 @csrf
-                                    <tr>
+                                @if ( !$eleicaoStartDateHasPassed )
+                                                                        <tr>
                                     <td>   
                                        <select class="form-control" name="categoria" id="categoria">
                                              <option value="">Selecione</option>
-                                              <option value="candidato">candidato</option>
-                                            <option value="eleitor">eleitor</option>
+                                              <option value="candidato">Candidato</option>
+                                            <option value="eleitor">Eleitor</option>
                                         </select>
                                      </td>
 
@@ -92,24 +94,27 @@
                                                 <input class="btn btn-sm" type="file" id='doc_user' name='doc_user'/>
                                             </div>
                                         </td>
-
-
-                                        {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                        @if ( $eleicaoStartDateHasPassed )
-                                            @if ($user->pivot->votacao_status === 1)
-                                                <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
-                                            @else
-                                                <td><i class="fa-solid fa-xmark fa-2xl"></i></td>
-                                            @endif
-                                        @endif
-
-                                        @if ( !$eleicaoStartDateHasPassed )
                                             <td>
                                              <div class="col col-lg-2">
                                               <button type="submit" class="btn btn-success">Inscrever</button>
                                              </div>
-
                                             </td>
+                                                 <!-- <li class="list-group-item">
+                                                    @if(!$eleicaoEndDateHasPassed)
+                                                        <form method="POST" action="{{ route('user.eleicao.destroy', [
+                                                        'eleicao'  => $eleicoes->id,
+                                                        'user'  => $user->id
+                                                            ]) }}">
+
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <div class="col col-lg-2">
+                                                            <button class="btn btn-danger">Remover inscrição</button>
+                                                            </div>
+                                                        </form>
+                                                    @endif
+                                                </li> -->
+
                                         @endif
                                     </tr>
                                 </form>
@@ -120,21 +125,5 @@
             </div>
         </div>
     </div>
-
- <!-- <li class="list-group-item">
-     @if(!$eleicaoEndDateHasPassed)
-        <form method="POST" action="{{ route('user.eleicao.destroy', [
-           'eleicao'  => $eleicoes->id,
-           'user'  => $user->id
-            ]) }}">
-
-            @csrf
-            @method('DELETE')
-            <div class="col col-lg-2">
-            <button class="btn btn-danger">Remover inscrição</button>
-            </div>
-         </form>
-    @endif
-</li> -->
 
 @endsection
