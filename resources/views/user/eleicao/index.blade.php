@@ -21,8 +21,8 @@
             @foreach($eleicoes as $eleicao)
                 <tr>
                 <td class="align-middle">{{ $eleicao->name }}</td>
-                    <td class="align-middle">{{ $eleicao->startDate_formatted }}</td>
-                    <td class="align-middle">{{ $eleicao->endDate_formatted }}</td>
+                    <td class="align-middle">{{ $eleicao->start_date_eleicao_formatted }}</td>
+                    <td class="align-middle">{{ $eleicao->end_date_eleicao_formatted }}</td>
                     <td class="align-middle">
                         <div class="d-flex align-items-center">
                             <a class="btn btn-sm btn-info mr-2" href="{{ route('user.eleicao.show', $eleicao->id) }}">

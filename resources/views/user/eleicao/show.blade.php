@@ -77,7 +77,7 @@
                             <form enctype="multipart/form-data" method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
                                 @csrf
                                 @if ( !$eleicaoStartDateHasPassed )
-                                                                        <tr>
+                                  <tr>
                                     <td>   
                                        <select class="form-control" name="categoria" id="categoria">
                                              <option value="">Selecione</option>
@@ -99,7 +99,17 @@
                                               <button type="submit" class="btn btn-success">Inscrever</button>
                                              </div>
                                             </td>
-                                                 <!-- <li class="list-group-item">
+                                        @endif
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <li class="list-group-item">
                                                     @if(!$eleicaoEndDateHasPassed)
                                                         <form method="POST" action="{{ route('user.eleicao.destroy', [
                                                         'eleicao'  => $eleicoes->id,
@@ -114,16 +124,5 @@
                                                         </form>
                                                     @endif
                                                 </li> -->
-
-                                        @endif
-                                    </tr>
-                                </form>
-                            </tbody>
-                        </table>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
 @endsection
