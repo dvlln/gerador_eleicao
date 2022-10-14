@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\{loginController, registerController};
 use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController};
 use App\Http\Controllers\Admin\{adminController, eleicaoController};
 
+// DEFAULT ROUTE
+Route::redirect('/', '/login');
 
 // AUTH
     // REGISTRO
