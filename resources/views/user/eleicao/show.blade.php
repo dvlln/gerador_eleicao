@@ -60,7 +60,7 @@
                 <div class="card-body text-center mt-0">
                         <table class="table">
                             <thead>
-                                
+
                                 <!--<th></th>
                                 <th></th>-->
 
@@ -78,7 +78,7 @@
                                 @csrf
                                 @if ( !$eleicaoStartDateHasPassed )
                                   <tr>
-                                    <td>   
+                                    <td>
                                        <select class="form-control" name="categoria" id="categoria">
                                              <option value="">Selecione</option>
                                               <option value="candidato">Candidato</option>
@@ -109,20 +109,20 @@
         </div>
     </div>
 
-    <!-- <li class="list-group-item">
-                                                    @if(!$eleicaoEndDateHasPassed)
-                                                        <form method="POST" action="{{ route('user.eleicao.destroy', [
-                                                        'eleicao'  => $eleicoes->id,
-                                                        'user'  => $user->id
-                                                            ]) }}">
+     {{-- <li class="list-group-item">
+        @if(!$eleicaoEndDateHasPassed)
+            <form method="POST" action="{{ route('user.eleicao.destroy', [
+            'eleicao'  => $eleicoes->id,
+            'user'  => $eleicoes->users->find(Auth::id())
+                ]) }}">
 
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <div class="col col-lg-2">
-                                                            <button class="btn btn-danger">Remover inscrição</button>
-                                                            </div>
-                                                        </form>
-                                                    @endif
-                                                </li> -->
+                @csrf
+                @method('DELETE')
+                <div class="col col-lg-2">
+                <button class="btn btn-danger">Remover inscrição</button>
+                </div>
+            </form>
+        @endif
+    </li> --}}
 
 @endsection

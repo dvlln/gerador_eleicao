@@ -33,7 +33,7 @@ Route::redirect('/', '/login');
     Route::get('user/eleicoes', [userEleicaoController::class, 'index'])->name('user.eleicao.index')->middleware('role:user', 'auth');
 
     // USER - SHOW ELEICAO
-    Route::get('user/eleicao/{eleicao}', [userEleicaoController::class, 'show'])->name('user.eleicao.show')->middleware('role:user', 'auth');
+    Route::get('user/eleicoes/{eleicao}', [userEleicaoController::class, 'show'])->name('user.eleicao.show')->middleware('role:user', 'auth');
 
     // PROCESSO DE INSCRIÇÃO
     Route::post('user/eleicoes/{eleicao}/inscrever', [userEleicaoController::class, 'store'])->name('user.eleicao.store')->middleware('role:user', 'auth');
