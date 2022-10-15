@@ -44,12 +44,10 @@ class eleicaoController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
-
-        // return response()->json(User::find($data['user_id'])->cpf);
-
         $nameFile = Str::of(User::find($data['user_id'])->cpf). '.'. $request->doc_user->getClientOriginalExtension();
         $documento = $request->doc_user->storeAs('doc/eleicao_user/'.$eleicao->id, $nameFile, 'public');
-        $data['doc_user'] = $documento;
+        $data['doc_user'] = $nameFile;
+
 
         $eleicao->users()->attach([
             $data['user_id'] => [
@@ -61,20 +59,11 @@ class eleicaoController extends Controller
         return back()->with('success', 'Usuário inscreveu-se para a eleição');
     }
 
-    public function destroy(Eleicao $eleicoes, User $user){
-        return response()->json($request->all());
+    public function destroy(Eleicao $eleicoes, User $users){
 
-        if(EleicaoService::eleicaoEndDateHasPassed($eleicoes)){
-            return back()->with('warning', 'Erro: A eleição já ocorreu');
-        }
+        $eleicoes->users()->detach();
 
-        if(!EleicaoService::userSubscribedOnEleicao($user, $eleicoes)){
-            return back()->with('warning', 'Erro: O participante não está inscrito');
-        }
-
-        $eleicoes->users()->detach([$eleicoes->id]);
-
-        return back()->with('success', $user->name.' saiu da eleição');
+        return back()->with('success', $users->name.' saiu da eleição');
     }
 
 

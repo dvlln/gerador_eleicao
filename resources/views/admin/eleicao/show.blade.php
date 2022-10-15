@@ -116,7 +116,7 @@
 
                                         @if ( !$eleicaoStartDateHasPassed )
                                             <td>
-                                                <a class="btn btn-sm btn-info mr-2" href="{{ url("storage/eleicao_user_info/{$eleicoes->id}/{$user->foto}") }}" target="_blank">
+                                                <a class="btn btn-sm btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
                                                     <i class="fa fa-eye fa-l"></i>
                                                 </a>
                                                 <a class="btn btn-sm btn-success mr-2" href="">

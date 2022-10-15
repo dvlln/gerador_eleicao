@@ -109,20 +109,18 @@
         </div>
     </div>
 
-     {{-- <li class="list-group-item">
-        @if(!$eleicaoEndDateHasPassed)
-            <form method="POST" action="{{ route('user.eleicao.destroy', [
-            'eleicao'  => $eleicoes->id,
-            'user'  => $eleicoes->users->find(Auth::id())
-                ]) }}">
+    <li class="list-group-item">
+        <form method="POST" action='{{ route("user.eleicao.destroy", [
+        "eleicao"  => $eleicoes->id,
+        "user"  => $user->id
+            ]) }}'>
 
-                @csrf
-                @method('DELETE')
-                <div class="col col-lg-2">
-                <button class="btn btn-danger">Remover inscrição</button>
-                </div>
-            </form>
-        @endif
-    </li> --}}
+            @csrf
+            @method('DELETE')
+            <div class="col col-lg-2">
+            <button class="btn btn-danger">Remover inscrição</button>
+            </div>
+        </form>
+    </li>
 
 @endsection
