@@ -84,7 +84,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-primary text-white">Eleitores</div>
-                <div class="card-body text-center mt-0">
+                <div class="card-body text-center mt-0 justify-content-center">
                         <table class="table">
                             <thead>
                                 <th>Nome</th>
@@ -116,16 +116,21 @@
 
                                         @if ( !$eleicaoStartDateHasPassed )
                                             <td>
-                                                <a class="btn btn-sm btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
-                                                    <i class="fa fa-eye fa-l"></i>
-                                                </a>
-                                                <a class="btn btn-sm btn-success mr-2" href="">
-                                                    <i class="fa-solid fa-check fa-l"></i>
-                                                </a>
-                                                <a class="btn btn-sm btn-danger mr-2" href="">
-                                                    <i class="fa-solid fa-xmark fa-l"></i>
-                                                </a>
-
+                                                <div class="d-flex justify-content-center">
+                                                    <a class="btn btn-sm btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
+                                                        <i class="fa fa-eye fa-l"></i>
+                                                    </a>
+                                                    <form action="{{ route('admin.eleicao.update_aprove', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                        @method('PUT')
+                                                        @csrf
+                                                        <button class="btn btn-sm btn-success mr-2" id="aprove">
+                                                            <i class="fa-solid fa-check fa-l"></i>
+                                                        </button>
+                                                    </form>
+                                                    <button class="btn btn-sm btn-danger" id="deny">
+                                                        <i class="fa-solid fa-xmark fa-l"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         @endif
                                     </tr>

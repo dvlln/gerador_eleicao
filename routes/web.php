@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{loginController, registerController};
 use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController};
-use App\Http\Controllers\Admin\{adminController, eleicaoController};
+use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserController};
 
 // DEFAULT ROUTE
 Route::redirect('/', '/login');
@@ -35,7 +35,13 @@ Route::redirect('/', '/login');
     // USER - SHOW ELEICAO
     Route::get('user/eleicoes/{eleicao}', [userEleicaoController::class, 'show'])->name('user.eleicao.show')->middleware('role:user', 'auth');
 
+// END
+// DESENVOLVER DA ELEIÇÃO
     // PROCESSO DE INSCRIÇÃO
     Route::post('user/eleicoes/{eleicao}/inscrever', [userEleicaoController::class, 'store'])->name('user.eleicao.store')->middleware('role:user', 'auth');
     Route::delete('user/eleicoes/{eleicao}/inscrever/{user}', [userEleicaoController::class, 'destroy'])->name('user.eleicao.destroy')->middleware('role:user', 'auth');
+
+    // PROCESSO DE APROVAÇÃO
+    Route::put('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'update_aprove'])->name('admin.eleicao.update_aprove')->middleware('role:admin', 'auth');
+    // Route::delete('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'destroy'])->name('admin.eleicao.destroy')->middleware('role:admin', 'auth');
 // END
