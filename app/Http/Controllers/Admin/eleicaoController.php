@@ -55,6 +55,7 @@ class eleicaoController extends Controller
 
     public function show(Eleicao $eleicao)
     {
+
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
                       ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
@@ -65,8 +66,6 @@ class eleicaoController extends Controller
                    ->where('eleicao_id', '=', $eleicao->id)
                    ->where('categoria', '=', 'candidato')
                    ->sum('voto');
-
-        // return response()->json($total);
 
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,

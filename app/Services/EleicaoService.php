@@ -10,11 +10,11 @@ class EleicaoService{
     }
 
     public static function eleicaoStartDateHasPassed(Eleicao $eleicao){
-        return $eleicao->start_date_eleicao > now();
+        return $eleicao->start_date_eleicao < now();
     }
 
     public static function eleicaoEndDateHasPassed(Eleicao $eleicao){
-        return $eleicao->end_date_eleicao > now();
+        return $eleicao->end_date_eleicao < now();
     }
 
     public static function inscricaoStartDateHasPassed(Eleicao $eleicao){
