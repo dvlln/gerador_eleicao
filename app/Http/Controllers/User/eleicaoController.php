@@ -40,7 +40,8 @@ class eleicaoController extends Controller
         ]);
     }
 
-    public function store(Eleicao $eleicao, Request $request){
+    public function store(Eleicao $eleicao, Request $request)
+    {
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
@@ -59,11 +60,11 @@ class eleicaoController extends Controller
         return back()->with('success', 'Usuário inscreveu-se para a eleição');
     }
 
-    public function destroy(Eleicao $eleicoes, User $users){
+    public function destroy(Eleicao $eleicao, User $user){
 
-        $eleicoes->users()->detach();
+        $eleicao->users()->detach($user->id);
 
-        return back()->with('success', $users->name.' saiu da eleição');
+        return back()->with('success', $user->name.' Usuario saiu da eleição');
     }
 
 

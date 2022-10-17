@@ -110,11 +110,7 @@
     </div>
 
     <li class="list-group-item">
-        <form method="POST" action='{{ route("user.eleicao.destroy", [
-        "eleicao"  => $eleicoes->id,
-        "user"  => $user->id
-            ]) }}'>
-
+        <form method="POST" action='{{ route("user.eleicao.destroy", ["eleicao"  => $eleicoes->id, "user"  => Auth::id()]) }}'>
             @csrf
             @method('DELETE')
             <div class="col col-lg-2">
