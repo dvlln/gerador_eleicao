@@ -120,10 +120,10 @@
                                                     <a class="btn btn-sm btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
                                                         <i class="fa fa-eye fa-l"></i>
                                                     </a>
-                                                    <form action="{{ route('admin.eleicao.update_aprove', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
-                                                        @method('PUT')
+                                                    <form action="{{ route('admin.eleicao.update_approve', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
                                                         @csrf
-                                                        <button class="btn btn-sm btn-success mr-2" id="aprove">
+                                                        @method('PUT')
+                                                        <button class="btn btn-sm btn-success mr-2">
                                                             <i class="fa-solid fa-check fa-l"></i>
                                                         </button>
                                                     </form>

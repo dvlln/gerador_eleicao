@@ -10,7 +10,7 @@
             <a href="{{ route('admin.eleicao.create') }}" class="btn btn-primary">Nova eleição</a>
         </div>
     </form>
-    <table class="table mt-4">
+    <table class="table mt-4 text-center">
         <thead class="thead bg-white">
             <tr>
                 <!-- COLUNAS MERAMENTE ILUSTRATIVAS -->
@@ -28,7 +28,7 @@
                     <td class="align-middle">{{ $eleicao->start_date_eleicao_formatted }}</td>
                     <td class="align-middle">{{ $eleicao->end_date_eleicao_formatted }}</td>
                     <td class="align-middle">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex justify-content-center">
                             <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.eleicao.show', $eleicao->id) }}">
                                 <i class="fa fa-eye"></i>
                             </a>

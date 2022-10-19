@@ -8,12 +8,16 @@ use App\Models\{Eleicao, User};
 
 class docUserController extends Controller
 {
-    public function update_aprove(Eleicao $eleicoes, User $users){
-        $eleicoes->users()->
+    public function update_approve(Eleicao $eleicao, User $user){
+        try {
+            $data = $eleicao->users()->find($user->id)->pivot->toArray();
+            $data['doc_user_status'] = 'aprovado';
 
-        $users['doc_user_status'] = 'aprovado';
-        return response()->json($users);
+            $eleicao->users()->updateExistingPivot($user->id, $data);
 
-        // $eleicao->update($data);
+            return back()->with('success', 'Aprovado com sucesso');
+        } catch (\Throwable $th) {
+            return back()->with('warning', 'Aprovação falhou');
+        }
     }
 }
