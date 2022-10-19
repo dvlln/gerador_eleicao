@@ -117,19 +117,50 @@
                                         @if ( !$eleicaoStartDateHasPassed )
                                             <td>
                                                 <div class="d-flex justify-content-center">
+
+                                                    {{-- VISUALIZAR DOC DO USUARIO --}}
                                                     <a class="btn btn-sm btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
                                                         <i class="fa fa-eye fa-l"></i>
                                                     </a>
-                                                    <form action="{{ route('admin.eleicao.update_approve', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+
+                                                    {{-- APROVAR O USUARIO --}}
+                                                    <form action="{{ route('admin.eleicao.approve', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
                                                         @csrf
                                                         @method('PUT')
                                                         <button class="btn btn-sm btn-success mr-2">
                                                             <i class="fa-solid fa-check fa-l"></i>
                                                         </button>
                                                     </form>
-                                                    <button class="btn btn-sm btn-danger" id="deny">
+
+                                                    {{-- REPROVAR O USUARIO --}}
+                                                    <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" data-target="#reprovar_modal_{{ $user->id }}">
                                                         <i class="fa-solid fa-xmark fa-l"></i>
                                                     </button>
+
+
+                                                        <div class="modal fade" id="reprovar_modal_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="reprovar_modal_title" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modal_title">Informe o motivo da reprovação</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="modal-body">
+                                                                            <textarea class="form-control" rows="10" name="doc_user_message"></textarea>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                 </div>
                                             </td>
                                         @endif

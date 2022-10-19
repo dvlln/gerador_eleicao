@@ -42,6 +42,6 @@ Route::redirect('/', '/login');
     Route::delete('user/eleicoes/{eleicao}/inscrever/{user}', [userEleicaoController::class, 'destroy'])->name('user.eleicao.destroy')->middleware('role:user', 'auth');
 
     // PROCESSO DE APROVAÇÃO
-    Route::put('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'update_approve'])->name('admin.eleicao.update_approve')->middleware('role:admin', 'auth');
-    // Route::delete('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'destroy'])->name('admin.eleicao.destroy')->middleware('role:admin', 'auth');
+    Route::put('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'approve'])->name('admin.eleicao.approve')->middleware('role:admin', 'auth');
+    Route::put('admin/eleicao/{eleicao}/negar/{user}', [docUserController::class, 'deny'])->name('admin.eleicao.deny')->middleware('role:admin', 'auth');
 // END

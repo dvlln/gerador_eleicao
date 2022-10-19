@@ -8,7 +8,7 @@ use App\Models\{Eleicao, User};
 
 class docUserController extends Controller
 {
-    public function update_approve(Eleicao $eleicao, User $user){
+    public function approve(Eleicao $eleicao, User $user){
         try {
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'aprovado';
@@ -18,6 +18,20 @@ class docUserController extends Controller
             return back()->with('success', 'Aprovado com sucesso');
         } catch (\Throwable $th) {
             return back()->with('warning', 'Aprovação falhou');
+        }
+    }
+
+    public function deny(Eleicao $eleicao, User $user, Request $request){
+        try {
+            $data = $eleicao->users()->find($user->id)->pivot->toArray();
+            $data['doc_user_status'] = 'reprovado';
+            $data['doc_user_message'] = $request->doc_user_message;
+
+            $eleicao->users()->updateExistingPivot($user->id, $data);
+
+            return back()->with('success', 'Reprovado com sucesso');
+        } catch (\Throwable $th) {
+            return back()->with('warning', 'Reprovação falhou');
         }
     }
 }
