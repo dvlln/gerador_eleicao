@@ -71,6 +71,8 @@ class eleicaoController extends Controller
             'eleicoes' => $eleicao,
             'eleicaoStartDateHasPassed' => EleicaoService::eleicaoStartDateHasPassed($eleicao),
             'eleicaoEndDateHasPassed' => EleicaoService::eleicaoEndDateHasPassed($eleicao),
+            'inscricaoStartDateHasPassed' => EleicaoService::inscricaoStartDateHasPassed($eleicao),
+            'inscricaoEndDateHasPassed' => EleicaoService::inscricaoEndDateHasPassed($eleicao),
             'total' => $total,
             'vencedor' => $vencedor
         ]);

@@ -95,7 +95,7 @@
                                     <th>Status Votação</th>
                                 @endif
 
-                                @if ( !$eleicaoStartDateHasPassed )
+                                @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
                                     <th>Ações</th>
                                 @endif
                             </thead>
@@ -114,7 +114,7 @@
                                             @endif
                                         @endif
 
-                                        @if ( !$eleicaoStartDateHasPassed )
+                                        @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
                                             <td>
                                                 <div class="d-flex justify-content-center">
 
