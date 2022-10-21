@@ -76,7 +76,7 @@
                             <tbody>
                             <form enctype="multipart/form-data" method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
                                 @csrf
-                                @if ( !$eleicaoStartDateHasPassed )
+                                @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
                                   <tr>
                                     <td>
                                        <select class="form-control" name="categoria" id="categoria">
@@ -108,7 +108,6 @@
             </div>
         </div>
     </div>
-
     <li class="list-group-item">
         <form method="POST" action='{{ route("user.eleicao.destroy", ["eleicao"  => $eleicoes->id, "user"  => Auth::id()]) }}'>
             @csrf

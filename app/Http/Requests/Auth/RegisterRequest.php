@@ -15,7 +15,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
-             'cpf' => ['required', new Cpf],
+             'cpf' => ['required', new Cpf, 'unique:users,cpf'],
             'password' => ['required', 'min:3', 'confirmed'],
         ];
     }
@@ -32,7 +32,8 @@ class RegisterRequest extends FormRequest
     public function messages(){
         return [
             'required' => 'O campo :attribute deve ser preenchido',
-            'email.unique' => 'Este email já foi cadastrado'
+            'email.unique' => 'Este email já foi cadastrado',
+            'cpf.unique' => 'Este CPF já foi cadastrado'
         ];
     }
 
