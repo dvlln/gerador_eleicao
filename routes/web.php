@@ -44,4 +44,7 @@ Route::redirect('/', '/login');
     // PROCESSO DE APROVAÇÃO
     Route::put('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'approve'])->name('admin.eleicao.approve')->middleware('role:admin', 'auth');
     Route::put('admin/eleicao/{eleicao}/negar/{user}', [docUserController::class, 'deny'])->name('admin.eleicao.deny')->middleware('role:admin', 'auth');
+
+    // IMPORTAR USUARIOS
+    Route::post('admin/eleicao/{eleicao}/importar', [eleicaoController::class, 'import'])->name('admin.eleicao.import')->middleware('role: admin', 'auth');
 // END

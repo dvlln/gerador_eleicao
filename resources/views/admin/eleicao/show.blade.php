@@ -1,5 +1,32 @@
 @extends('layouts.panelAdmin')
 @section('title', $eleicoes->name)
+@section('import')
+    {{-- IMPORTAR USUARIOS POR CSV --}}
+    <button class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#import">Importar usuário</button>
+
+    <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="import" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Selecione o arquivo a ser importado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input class="form-control" type="file" id='doc_user' name='doc_user'/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
 @section('content')
 
     {{-- INFORMAÇÕES GERAIS --}}
@@ -138,29 +165,29 @@
                                                     </button>
 
 
-                                                        <div class="modal fade" id="reprovar_modal_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="reprovar_modal_title" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="modal_title">Informe o motivo da reprovação</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        <div class="modal-body">
-                                                                            <textarea class="form-control" rows="10" name="doc_user_message"></textarea>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Salvar</button>
-                                                                        </div>
-                                                                    </form>
+                                                    <div class="modal fade" id="reprovar_modal_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="reprovar_modal_title" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="modal_title">Informe o motivo da reprovação</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
                                                                 </div>
+                                                                <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="modal-body">
+                                                                        <textarea class="form-control" rows="10" name="doc_user_message"></textarea>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </td>
                                         @endif

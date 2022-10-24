@@ -121,4 +121,8 @@ class eleicaoController extends Controller
 
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição removida com sucesso');
     }
+
+    public function import(Eleicao $eleicao){
+        return back();
+    }
 }

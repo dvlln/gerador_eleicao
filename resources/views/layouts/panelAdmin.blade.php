@@ -95,8 +95,11 @@
                 <!-- Begin Page Content -->
                     <div class="container-fluid">
 
+                        <div class="d-flex justify-content-between">
+                            <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
+                            @yield('import')
+                        </div>
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
 
                         @if (session()->has('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
