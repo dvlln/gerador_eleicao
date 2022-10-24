@@ -16,11 +16,11 @@
                 <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <input class="form-control" type="file" id='doc_user' name='doc_user'/>
+                        <input class="form-control" type="file" id="import" name='import'/>
                     </div>
                     <div class="modal-footer">
+                        <button class="btn btn-primary">Salvar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
             </div>

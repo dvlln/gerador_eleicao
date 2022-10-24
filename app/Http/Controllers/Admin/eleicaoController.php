@@ -9,6 +9,10 @@ use App\Http\Requests\Admin\eleicaoRequest;
 use Illuminate\Support\Facades\DB;
 use App\Services\EleicaoService;
 
+
+// use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Response;
+
 class eleicaoController extends Controller
 {
 
@@ -122,7 +126,86 @@ class eleicaoController extends Controller
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição removida com sucesso');
     }
 
-    public function import(Eleicao $eleicao){
-        return back();
+    public function import(Eleicao $eleicao, Request $request)
+    {
+        $file = $request->all();
+        if ($file) {
+            $filename = $file['import']->getClientOriginalName();
+            $extension = $file['import']->getClientOriginalExtension(); //Get extension of uploaded file
+            $tempPath = $file['import']->getRealPath();
+            $fileSize = $file['import']->getSize(); //Get size of uploaded file in bytes
+
+            //Check for file extension and size
+            $this->checkUploadedFileProperties($extension, $fileSize);
+
+            //Where uploaded file will be stored on the server
+            $location = 'storage/imports'; //Created an "uploads" folder for that
+
+            // Upload file
+            $file['import']->move($location, $filename);
+
+            // In case the uploaded file path is to be stored in the database
+            $filepath = public_path($location . "/" . $filename);
+
+            // Reading file
+            $file['import'] = fopen($filepath, "r");
+            $importData_arr = array(); // Read through the file and store the contents as an array
+            $i = 0;
+
+            //Read the contents of the uploaded file
+            while (($filedata = fgetcsv($file['import'], 1000, ";")) !== FALSE) {
+                $num = count($filedata);
+
+                // Skip first row (Remove below comment if you want to skip the first row)
+                if ($i == 0) {
+                    $i++;
+                    continue;
+                }
+
+                for ($c = 0; $c < $num; $c++) {
+                    $importData_arr[$i][] = $filedata[$c];
+                }
+
+                $i++;
+            }
+
+            fclose($file['import']); //Close after reading
+
+            foreach ($importData_arr as $importData) {
+                try {
+                    DB::beginTransaction();
+                    User::create([
+                        'name' => $importData[0],
+                        'email' => $importData[1],
+                        'cpf' => $importData[2],
+                        'password' => $importData[3],
+                        'role' => $importData[4],
+                        'foto' => $importData[5]
+                    ]);
+
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                }
+            }
+            return back()->with('success', 'Importação concluida');
+        } else {
+            return back()->with('warning', 'Nenhum arquivo foi inserido');
+        }
+    }
+
+
+    public function checkUploadedFileProperties($extension, $fileSize)
+    {
+        $valid_extension = array("csv"); //Only want csv and excel files
+        $maxFileSize = 2097152; // Uploaded file size limit is 2mb
+        if (in_array(strtolower($extension), $valid_extension)) {
+            if ($fileSize <= $maxFileSize) {
+            } else {
+                return redirect()->route('admin.eleicao.show')->with('warning', 'Nenhum arquivo foi inserido');
+            }
+        } else {
+            return redirect()->route('admin.eleicao.show')->with('warning', 'Extensão invalida');
+        }
     }
 }

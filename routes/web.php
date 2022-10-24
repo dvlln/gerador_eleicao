@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{loginController, registerController};
 use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController};
 use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserController};
+use Illuminate\Http\Request;
 
 // DEFAULT ROUTE
 Route::redirect('/', '/login');
@@ -46,5 +47,6 @@ Route::redirect('/', '/login');
     Route::put('admin/eleicao/{eleicao}/negar/{user}', [docUserController::class, 'deny'])->name('admin.eleicao.deny')->middleware('role:admin', 'auth');
 
     // IMPORTAR USUARIOS
-    Route::post('admin/eleicao/{eleicao}/importar', [eleicaoController::class, 'import'])->name('admin.eleicao.import')->middleware('role: admin', 'auth');
+    Route::post('admin/eleicao/{eleicao}/importar', [eleicaoController::class, 'import'])->name('admin.eleicao.import')->middleware('role:admin', 'auth');
+
 // END
