@@ -129,6 +129,7 @@ class eleicaoController extends Controller
     public function import(Eleicao $eleicao, Request $request)
     {
         $file = $request->all();
+
         if ($file) {
             $filename = $file['import']->getClientOriginalName();
             $extension = $file['import']->getClientOriginalExtension(); //Get extension of uploaded file
@@ -152,8 +153,10 @@ class eleicaoController extends Controller
             $importData_arr = array(); // Read through the file and store the contents as an array
             $i = 0;
 
+            $delimiter = $this->getCSVDelimiter($filepath);
+
             //Read the contents of the uploaded file
-            while (($filedata = fgetcsv($file['import'], 1000, ";")) !== FALSE) {
+            while (($filedata = (fgetcsv($file['import'], 1000, $delimiter))) !== FALSE) {
                 $num = count($filedata);
 
                 // Skip first row (Remove below comment if you want to skip the first row)
@@ -172,6 +175,7 @@ class eleicaoController extends Controller
             fclose($file['import']); //Close after reading
 
             foreach ($importData_arr as $importData) {
+                // CRIAÇÃO dOS USUÁRIOS
                 try {
                     DB::beginTransaction();
                     User::create([
@@ -187,7 +191,18 @@ class eleicaoController extends Controller
                 } catch (\Exception $e) {
                     DB::rollBack();
                 }
+
+                // INCLUSÃO DOS USUÁRIOS NA ELEIÇÃO
+                $user_id = User::where('name', $importData[0])->value('id');
+
+                $eleicao->users()->attach([
+                    $user_id => [
+                        'categoria' => $importData[6],
+                    ]
+                ]);
             }
+
+
             return back()->with('success', 'Importação concluida');
         } else {
             return back()->with('warning', 'Nenhum arquivo foi inserido');
@@ -206,6 +221,24 @@ class eleicaoController extends Controller
             }
         } else {
             return redirect()->route('admin.eleicao.show')->with('warning', 'Extensão invalida');
+        }
+    }
+
+    public function getCSVDelimiter($csvfile){
+        $delimiters = array( ',' => 0, ';' => 0, "\t" => 0, '|' => 0, );
+        $firstLine = '';
+        $handle = fopen($csvfile, 'r');
+        if ($handle){
+            $firstLine = fgets($handle);
+            fclose($handle);
+        }
+        if ($firstLine){
+            foreach ($delimiters as $delimiter => &$count){
+                $count = count(str_getcsv($firstLine, $delimiter));
+            }
+            return array_search(max($delimiters), $delimiters);
+        } else{
+            return key($delimiters);
         }
     }
 }

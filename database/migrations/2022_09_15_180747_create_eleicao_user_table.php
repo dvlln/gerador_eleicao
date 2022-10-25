@@ -18,7 +18,7 @@ class CreateEleicaoUserTable extends Migration
             $table->integer('voto')->default(0); // QTD_VOTO
 
             // LIDANDO COM DOCUMENTO
-            $table->string('doc_user'); // DOCUMENTO DO USUARIO PARA ESPECIFICA ELEIÇÃO
+            $table->string('doc_user')->nullable(); // DOCUMENTO DO USUARIO PARA ESPECIFICA ELEIÇÃO
             $table->string('doc_user_status')->default('pendente'); // STATUS APROVAÇÃO DO DOCUMENTO ( PENDENTE, APROVADO, NEGADO)
             $table->string('doc_user_message')->nullable();
 
