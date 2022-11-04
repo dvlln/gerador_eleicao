@@ -49,4 +49,6 @@ Route::redirect('/', '/login');
     // IMPORTAR USUARIOS
     Route::post('admin/eleicao/{eleicao}/importar', [eleicaoController::class, 'import'])->name('admin.eleicao.import')->middleware('role:admin', 'auth');
 
+    // VOTAR
+    Route::PUT('user/eleicao/{eleicao}/votar', [userEleicaoController::class, 'vote'])->name('user.eleicao.vote')->middleware('role:user', 'auth');
 // END

@@ -31,20 +31,25 @@
                         </li>
                     </ul>
                     <div class="row">
-                            {{-- CANDIDATOS --}}
-                            @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
-                                @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
-                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
-                                    <div class="card mt-2" style="width: 15rem;">
-                                        <div class="card-body">
+                        {{-- CANDIDATOS --}}
+                        @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
+                            @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
+                                <div class="card mt-2" style="width: 15rem;">
+                                    <div class="card-body">
+                                        <form method="POST" action="{{ route('user.eleicao.vote', $eleicoes->id) }}">
+                                            @csrf
+                                            @method('PUT')
                                             <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" >
                                             <h5 class="card-title">{{ $user->name }}</h5>
-                                            <button type="button">Votar</button>
-                                        </div>
+                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                            <button type="submit" class="btn btn-success">Votar</button>
+                                        </form>
                                     </div>
                                 </div>
-                                @endif
-                            @endforeach
+                            </div>
+                            @endif
+                        @endforeach
                     </div>
 
                         {{-- CANDIDATOS --}}

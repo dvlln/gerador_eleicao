@@ -63,8 +63,7 @@ class eleicaoController extends Controller
         return back()->with('success', 'Usuário inscreveu-se para a eleição');
     }
 
-    public function destroy(Eleicao $eleicoes,  ){
-        //return response()->json($request->all());
+    public function destroy(Eleicao $eleicoes){
 
         if(EleicaoService::eleicaoEndDateHasPassed($eleicoes)){
             return back()->with('warning', 'Erro: A eleição já ocorreu');
@@ -79,5 +78,23 @@ class eleicaoController extends Controller
         return back()->with('success', $user->name.' saiu da eleição');
     }
 
+    public function vote(Eleicao $eleicao, Request $request){
+        $voto = $request->all();
+        $userId = Auth::id();
+
+        try{
+            $dataEleitor = $eleicao->users()->find($userId)->pivot->toArray();
+            $dataCandidato = $eleicao->users()->find($voto['user_id'])->pivot->toArray();
+            $dataEleitor['votacao_status'] = 1;
+            $dataCandidato['voto'] += 1;
+
+            $eleicao->users()->updateExistingPivot($userId, $dataEleitor);
+            $eleicao->users()->updateExistingPivot($voto['user_id'], $dataCandidato);
+
+            return back()->with('success', 'Voto efetuado');
+        } catch (\Throwable $th) {
+            return back()->with('warning', 'Burro!!!');
+        }
+    }
 
 }
