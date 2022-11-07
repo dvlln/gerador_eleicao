@@ -91,17 +91,26 @@ class eleicaoController extends Controller
 
     public function edit(Eleicao $eleicao)
     {
-        $start_time_eleicao = date('H:i', strtotime($eleicao->start_date_eleicao));
-        $end_time_eleicao = date('H:i', strtotime($eleicao->end_date_eleicao));
-        $start_time_inscricao = date('H:i', strtotime($eleicao->start_date_inscricao));
-        $end_time_inscricao = date('H:i', strtotime($eleicao->end_date_inscricao));
+        $start_date_inscricao = Carbon::parse($eleicao->start_date_inscricao)->format('Y-m-d');
+        $end_date_inscricao = Carbon::parse($eleicao->end_date_inscricao)->format('Y-m-d');
+        $start_time_inscricao = Carbon::parse($eleicao->start_time_inscricao)->format('H:i');
+        $end_time_inscricao = Carbon::parse($eleicao->end_time_inscricao)->format('H:i');
+
+        $start_date_eleicao = Carbon::parse($eleicao->start_date_eleicao)->format('Y-m-d');
+        $end_date_eleicao = Carbon::parse($eleicao->end_date_eleicao)->format('Y-m-d');
+        $start_time_eleicao = Carbon::parse($eleicao->start_time_eleicao)->format('H:i');
+        $end_time_eleicao = Carbon::parse($eleicao->end_time_ieleicao)->format('H:i');
 
         return view('admin.eleicao.edit', [
             'eleicoes' => $eleicao,
-            'start_time_eleicao' => $start_time_eleicao,
-            'end_time_eleicao' => $end_time_eleicao,
+            'start_date_inscricao' => $start_date_inscricao,
             'start_time_inscricao' => $start_time_inscricao,
-            'end_time_inscricao' => $end_time_inscricao
+            'end_date_inscricao' => $end_date_inscricao,
+            'end_time_inscricao' => $end_time_inscricao,
+            'start_date_eleicao' => $start_date_eleicao,
+            'start_time_eleicao' => $start_time_eleicao,
+            'end_date_eleicao' => $end_date_eleicao,
+            'end_time_eleicao' => $end_time_eleicao
         ]);
     }
 

@@ -34,7 +34,7 @@
                         class="form-control {{ $errors->has('start_date_inscricao') ? 'is-invalid' : '' }}"
                         id="start_date_inscricao"
                         name="start_date_inscricao"
-                        value="{{ old('start_date_inscricao', isset($eleicoes) ? $eleicoes->start_date_inscricao_formatted : '') }}"
+                        value="{{ old('start_date_inscricao', isset($eleicoes) ? $start_date_inscricao : '') }}"
                     >
                     <div class="invalid-feedback">{{ $errors->first('start_date_inscricao') }}</div>
                 </div>
@@ -64,7 +64,7 @@
                         class="form-control {{ $errors->has('end_date_inscricao') ? 'is-invalid' : '' }}"
                         id="end_date_inscricao"
                         name="end_date_inscricao"
-                        value="{{ old('end_date_inscricao', isset($eleicoes) ? $eleicoes->end_date_inscricao_formatted : '') }}"
+                        value="{{ old('end_date_inscricao', isset($eleicoes) ? $end_date_inscricao : '') }}"
                     >
                     <div class="invalid-feedback">{{ $errors->first('end_date_inscricao') }}</div>
                 </div>
@@ -103,7 +103,7 @@
                         class="form-control {{ $errors->has('start_date_eleicao') ? 'is-invalid' : '' }}"
                         id="start_date_eleicao"
                         name="start_date_eleicao"
-                        value="{{ old('start_date_eleicao', isset($eleicoes) ? $eleicoes->start_date_eleicao_formatted : '') }}"
+                        value="{{ old('start_date_eleicao', isset($eleicoes) ? $start_date_eleicao : '') }}"
                     >
                     <div class="invalid-feedback">{{ $errors->first('start_date_eleicao') }}</div>
                 </div>
@@ -133,7 +133,7 @@
                         class="form-control {{ $errors->has('end_date_eleicao') ? 'is-invalid' : '' }}"
                         id="end_date_eleicao"
                         name="end_date_eleicao"
-                        value="{{ old('end_date_eleicao', isset($eleicoes) ? $eleicoes->end_date_eleicao_formatted : '') }}"
+                        value="{{ old('end_date_eleicao', isset($eleicoes) ? $end_date_eleicao : '') }}"
                     >
                     <div class="invalid-feedback">{{ $errors->first('end_date_eleicao') }}</div>
                 </div>
