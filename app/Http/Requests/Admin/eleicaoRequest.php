@@ -25,28 +25,29 @@ class eleicaoRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'start_date_eleicao' => ['required', 'date_format:d/m/Y'],
-            'start_time_eleicao' => ['required'],
-            'end_date_eleicao' => ['required', 'date_format:d/m/Y'],
-            'end_time_eleicao' => ['required'],
-            'start_date_inscricao' => ['required', 'date_format:d/m/Y'],
+            'start_date_inscricao' => ['required'],
             'start_time_inscricao' => ['required'],
-            'end_date_inscricao' => ['required', 'date_format:d/m/Y'],
-            'end_time_inscricao' => ['required']
+            'end_date_inscricao' => ['required'],
+            'end_time_inscricao' => ['required'],
+            'start_date_eleicao' => ['required'],
+            'start_time_eleicao' => ['required'],
+            'end_date_eleicao' => ['required'],
+            'end_time_eleicao' => ['required']
         ];
     }
 
     public function attributes(){
         return [
             'name' => 'Nome',
-            'start_date_eleicao' => 'Data Inicial da Eleição',
-            'start_time_eleicao' => 'Hora Inicial da Eleição',
-            'end_date_eleicao' => 'Data Final da Eleição',
-            'end_time_eleicao' => 'Hora Final da Eleição',
             'start_date_inscricao' => 'Data Inicial da Inscrição',
             'start_time_inscricao' => 'Hora Inicial da Inscrição',
             'end_date_inscricao' => 'Data Final da Inscrição',
-            'end_time_inscricao' => 'Hora Final da Inscrição'
+            'end_time_inscricao' => 'Hora Final da Inscrição',
+            'start_date_eleicao' => 'Data Inicial da Eleição',
+            'start_time_eleicao' => 'Hora Inicial da Eleição',
+            'end_date_eleicao' => 'Data Final da Eleição',
+            'end_time_eleicao' => 'Hora Final da Eleição'
+
         ];
     }
 
