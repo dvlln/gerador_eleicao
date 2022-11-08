@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\Date;
 
 class eleicaoRequest extends FormRequest
 {
@@ -25,14 +26,17 @@ class eleicaoRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'start_date_inscricao' => ['required'],
-            'start_time_inscricao' => ['required'],
-            'end_date_inscricao' => ['required'],
-            'end_time_inscricao' => ['required'],
-            'start_date_eleicao' => ['required'],
-            'start_time_eleicao' => ['required'],
-            'end_date_eleicao' => ['required'],
-            'end_time_eleicao' => ['required']
+            'start_date_inscricao' => 'required',
+            'start_time_inscricao' => 'required',
+            'end_date_inscricao' => ['required', 'after_or_equal:start_date_inscricao'],
+            'end_time_inscricao' => 'required',
+
+            'start_date_eleicao' => ['required', 'after_or_equal:start_date_inscricao'],
+            'start_time_eleicao' => 'required',
+            'end_date_eleicao' => ['required', 'after_or_equal:start_date_eleicao'],
+            'end_time_eleicao' => 'required'
+
+
         ];
     }
 
@@ -54,7 +58,8 @@ class eleicaoRequest extends FormRequest
     public function messages(){
         return[
             'required' => 'O campo :attribute deve ser preenchido',
-            'date_format' => 'O campo :attribute não corresponde ao formato correto'
+            'start_date_eleicao.after_or_equal' => 'A data de eleição deve ser maior ou igual a de inscrição',
+            'after_or_equal' => 'A data final deve ser maior ou igual a inicial'
         ];
     }
 }

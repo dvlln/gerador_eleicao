@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use App\Services\EleicaoService;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Validator;
+
 
 // use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Response;
@@ -111,7 +113,7 @@ class eleicaoController extends Controller
     public function update(Eleicao $eleicao, eleicaoRequest $request)
     {
         $data = $request->validated();
-
+        
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
