@@ -40,13 +40,29 @@ class eleicaoController extends Controller
 
     public function store(eleicaoRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->validated();        
 
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
         $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
         $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
+
+        // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
+        $validator = Validator::make(request()->all(), []);
+        if($data['end_date_inscricao'] <= $data['start_date_inscricao']){
+            if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
+                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior ou igual ao inicial')->add('end_time_eleicao', 'Horario final deve ser maior ou igual ao inicial');
+                return back()->withErrors($validator)->withInput();
+            }else{
+                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior ou igual ao inicial');
+                return back()->withErrors($validator)->withInput();
+            }
+        } else if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
+            $validator->errors()->add('end_time_eleicao', 'Horario final deve ser maior ou igual ao inicial');
+            return back()->withErrors($validator)->withInput();
+        }
+        
 
         // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
         unset($data['start_time_eleicao']);

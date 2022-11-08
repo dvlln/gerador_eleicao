@@ -30,13 +30,10 @@ class eleicaoRequest extends FormRequest
             'start_time_inscricao' => 'required',
             'end_date_inscricao' => ['required', 'after_or_equal:start_date_inscricao'],
             'end_time_inscricao' => 'required',
-
             'start_date_eleicao' => ['required', 'after_or_equal:start_date_inscricao'],
             'start_time_eleicao' => 'required',
             'end_date_eleicao' => ['required', 'after_or_equal:start_date_eleicao'],
             'end_time_eleicao' => 'required'
-
-
         ];
     }
 
@@ -58,7 +55,7 @@ class eleicaoRequest extends FormRequest
     public function messages(){
         return[
             'required' => 'O campo :attribute deve ser preenchido',
-            'start_date_eleicao.after_or_equal' => 'A data de eleição deve ser maior ou igual a de inscrição',
+            'start_date_eleicao.after_or_equal' => 'A data inicial de eleição deve ser maior ou igual a data final de inscrição',
             'after_or_equal' => 'A data final deve ser maior ou igual a inicial'
         ];
     }
