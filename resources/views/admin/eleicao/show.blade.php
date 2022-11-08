@@ -19,7 +19,7 @@
                         <input class="form-control" type="file" id="import" name='import'/>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary">Salvar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     </div>
                 </form>
