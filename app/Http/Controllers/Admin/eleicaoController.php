@@ -40,13 +40,6 @@ class eleicaoController extends Controller
     {
         $data = $request->validated();
 
-
-        // ADICIONANDO SEGUNDOS AO TEMPO DE ELEICAO E INSCRIÇÃO
-        $data['start_time_inscricao'] = Carbon::parse($data['start_time_inscricao'])->addSeconds(0)->format('H:i:s');
-        $data['end_time_inscricao'] = Carbon::parse($data['end_time_inscricao'])->addSeconds(0)->format('H:i:s');
-        $data['start_time_eleicao'] = Carbon::parse($data['start_time_eleicao'])->addSeconds(0)->format('H:i:s');
-        $data['end_time_eleicao'] = Carbon::parse($data['end_time_eleicao'])->addSeconds(0)->format('H:i:s');
-
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
@@ -59,6 +52,7 @@ class eleicaoController extends Controller
         unset($data['start_time_inscricao']);
         unset($data['end_time_inscricao']);
 
+        // return response()->json($data);
         Eleicao::create($data);
 
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição cadastrada com sucesso');
@@ -118,17 +112,17 @@ class eleicaoController extends Controller
     {
         $data = $request->validated();
 
-        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao']; //JUNTANDO DATA E HORA INICIAL DA ELEICAO
-        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao']; //JUNTANDO DATA E HORA FINAL DA ELEICAO
+        // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
+        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
+        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
+        $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
+        $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
 
-        $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao']; //JUNTANDO DATA E HORA INICIAL
-        $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao']; //JUNTANDO DATA E HORA FINAL
-
-        unset($data['start_time_eleicao']); // REMOVE HORA INICIAL
-        unset($data['end_time_eleicao']); // REMOVE HORA FINAL
-
-        unset($data['start_time_inscricao']); // REMOVE HORA INICIAL
-        unset($data['end_time_inscricao']); // REMOVE HORA FINAL
+        // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
+        unset($data['start_time_eleicao']);
+        unset($data['end_time_eleicao']);
+        unset($data['start_time_inscricao']);
+        unset($data['end_time_inscricao']);
 
         $eleicao->update($data);
 

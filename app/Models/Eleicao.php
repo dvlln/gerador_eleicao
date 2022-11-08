@@ -18,23 +18,6 @@ class Eleicao extends Model
         return $this->belongsToMany(User::class)->withPivot('categoria', 'votacao_status', 'voto', 'doc_user', 'doc_user_status', 'doc_user_message');
     }
 
-    //mutators
-    public function setStartDateEleicaoAttribute($value) {
-        $this->attributes['start_date_eleicao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
-    }
-
-    public function setEndDateEleicaoAttribute($value) {
-        $this->attributes['end_date_eleicao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
-    }
-
-    public function setStartDateInscricaoAttribute($value) {
-        $this->attributes['start_date_inscricao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
-    }
-
-    public function setEndDateInscricaoAttribute($value) {
-        $this->attributes['end_date_inscricao'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i:s');
-    }
-
     //accessors
     public function getStartDateEleicaoFormattedAttribute() {
         return Carbon::parse($this->start_date_eleicao)->format('d/m/Y H:i');
