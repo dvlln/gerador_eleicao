@@ -1,31 +1,33 @@
 @extends('layouts.panelAdmin')
 @section('title', $eleicoes->name)
 @section('import')
-    {{-- IMPORTAR USUARIOS POR CSV --}}
-    <button class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#import">Importar usuário</button>
+    @if ($duringInscricao)
+        {{-- IMPORTAR USUARIOS POR CSV --}}
+        <button class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#import">Importar usuário</button>
 
-    <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="import" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_title">Selecione o arquivo a ser importado</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="import" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_title">Selecione o arquivo a ser importado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <input class="form-control" type="file" id="import" name='import'/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </form>
                 </div>
-                <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <input class="form-control" type="file" id="import" name='import'/>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 @section('content')
 
@@ -63,7 +65,7 @@
                                 <th>Nome</th>
 
                                 {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $eleicaoEndDateHasPassed )
+                                @if ( $afterEleicao )
                                     <th>Quantid. Votos</th>
                                 @endif
                             </thead>
@@ -72,7 +74,7 @@
                                     @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
 
                                         {{-- MARCAÇÃO DO CANDIDATO VITORIOSO NO FIM DA ELEIÇÃO --}}
-                                        @if ($vencedor === $user->id and $eleicaoEndDateHasPassed)
+                                        @if ($vencedor === $user->id and $afterEleicao)
                                             <tr class="p-3 mb-2 bg-success text-white">
                                         @else
                                             <tr>
@@ -82,7 +84,7 @@
                                         <td>{{ $user->name }}</td>
 
                                         {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                        @if ( $eleicaoEndDateHasPassed )
+                                        @if ( $afterEleicao )
                                             <td>{{ $user->pivot->voto }}</td>
                                         @endif
                                     </tr>
@@ -91,7 +93,7 @@
                                 @endforeach
 
                                 {{-- APARECERÁ O TOTAL DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $eleicaoEndDateHasPassed )
+                                @if ( $afterEleicao )
                                     <tr class="bg-warning text-dark">
                                         <td class="font-weight-bold ">Total de votos</td>
                                         <td></td>
@@ -115,14 +117,14 @@
                         <table class="table">
                             <thead>
                                 <th>Nome</th>
-                                <th>E-mail</th>
+                                <th>CPF</th>
 
                                 {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                @if ( $eleicaoStartDateHasPassed )
+                                @if ( $duringEleicao || $afterEleicao)
                                     <th>Status Votação</th>
                                 @endif
 
-                                @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
+                                @if ( $duringInscricao )
                                     <th>Ações</th>
                                 @endif
                             </thead>
@@ -130,10 +132,10 @@
                                 @foreach($eleicoes->users as $user)
                                     <tr>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->cpf }}</td>
 
                                         {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                        @if ( $eleicaoStartDateHasPassed )
+                                        @if ( $duringEleicao || $afterEleicao)
                                             @if ($user->pivot->votacao_status === 1)
                                                 <td class="bg-green"><i class="fa-solid fa-check fa-xl"></i></td>
                                             @else
@@ -141,7 +143,7 @@
                                             @endif
                                         @endif
 
-                                        @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
+                                        @if ( $duringInscricao )
                                             <td>
                                                 <div class="d-flex justify-content-center">
 

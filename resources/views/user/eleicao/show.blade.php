@@ -104,7 +104,7 @@
                                             </td>
                                                 <td>
                                                 <div class="col col-lg-2">
-                                                <button type="submit" class="btn btn-success">Inscrever</button>
+                                                    <button type="submit" class="btn btn-success">Inscrever</button>
                                                 </div>
                                                 </td>
                                             @endif
