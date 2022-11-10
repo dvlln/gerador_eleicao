@@ -89,6 +89,7 @@ class eleicaoController extends Controller
                 $user = $eleicao->users()->find($data['eleitorId'])->pivot->toArray();
                 $user['votacao_status'] = 1;
                 $user['voto'] += 1;
+                $user['voto_datetime'] = now();
 
                 $eleicao->users()->updateExistingPivot($data['eleitorId'], $user);
 
@@ -102,6 +103,7 @@ class eleicaoController extends Controller
                 $user['candidato'] = $eleicao->users()->find($data['candidatoId'])->pivot->toArray();
 
                 $user['eleitor']['votacao_status'] = 1;
+                $user['eleitor']['voto_datetime'] = now();
                 $user['candidato']['voto'] += 1;
 
                 $eleicao->users()->updateExistingPivot($data['eleitorId'], $user['eleitor']);

@@ -16,6 +16,7 @@ class CreateEleicaoUserTable extends Migration
             $table->string('categoria'); //CANDIDATO OU ELEITOR
             $table->boolean('votacao_status')->default(false); //STATUS DA VOTACAO
             $table->integer('voto')->default(0); // QTD_VOTO
+            $table->datetime('voto_datetime')->nullable();
 
             // LIDANDO COM DOCUMENTO
             $table->string('doc_user')->nullable(); // DOCUMENTO DO USUARIO PARA ESPECIFICA ELEIÇÃO

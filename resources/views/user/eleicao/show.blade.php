@@ -44,7 +44,7 @@
                                 <div class="card-body">
                                     <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" >
                                     <h5 class="card-title">{{ $user->name }}</h5>
-                                    @if ($user->id === $vencedor)
+                                    @if ($user->id === $vencedor && $afterEleicao)
                                         <p class="text-danger"><b>VENCEDOR!!!</b></p>
                                     @endif
                                     @if ($duringEleicao && $user->pivot->doc_user_status === 'aprovado')
