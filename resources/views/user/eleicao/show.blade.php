@@ -42,7 +42,8 @@
                                             @method('PUT')
                                             <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" >
                                             <h5 class="card-title">{{ $user->name }}</h5>
-                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                            <input type="hidden" name="candidatoId" value="{{ $user->id }}">
+                                            <input type="hidden" name="eleitorId" value="{{ Auth::id() }}">
                                             <button type="submit" class="btn btn-success">Votar</button>
                                         </form>
                                     </div>

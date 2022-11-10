@@ -79,21 +79,35 @@ class eleicaoController extends Controller
     }
 
     public function vote(Eleicao $eleicao, Request $request){
-        $voto = $request->all();
-        $userId = Auth::id();
+        $data = $request->all();
 
-        try{
-            $dataEleitor = $eleicao->users()->find($userId)->pivot->toArray();
-            $dataCandidato = $eleicao->users()->find($voto['user_id'])->pivot->toArray();
-            $dataEleitor['votacao_status'] = 1;
-            $dataCandidato['voto'] += 1;
+        if($data['candidatoId'] === $data['eleitorId']){
+            try{
+                $user = $eleicao->users()->find($data['eleitorId'])->pivot->toArray();
+                $user['votacao_status'] = 1;
+                $user['voto'] += 1;
 
-            $eleicao->users()->updateExistingPivot($userId, $dataEleitor);
-            $eleicao->users()->updateExistingPivot($voto['user_id'], $dataCandidato);
+                $eleicao->users()->updateExistingPivot($data['eleitorId'], $user);
 
-            return back()->with('success', 'Voto efetuado');
-        } catch (\Throwable $th) {
-            return back()->with('warning', 'Burro!!!');
+                return back()->with('success', 'Voto efetuado');
+            } catch (\Throwable $th) {
+                return back()->with('warning', 'Erro na votação');
+            }
+        }else{
+            try{
+                $user['eleitor'] = $eleicao->users()->find($data['eleitorId'])->pivot->toArray();
+                $user['candidato'] = $eleicao->users()->find($data['candidatoId'])->pivot->toArray();
+
+                $user['eleitor']['votacao_status'] = 1;
+                $user['candidato']['voto'] += 1;
+
+                $eleicao->users()->updateExistingPivot($data['eleitorId'], $user['eleitor']);
+                $eleicao->users()->updateExistingPivot($data['candidatoId'], $user['candidato']);
+
+                return back()->with('success', 'Voto efetuado');
+            } catch (\Throwable $th) {
+                return back()->with('warning', 'Erro na votação');
+            }
         }
     }
 
