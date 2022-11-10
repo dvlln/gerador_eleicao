@@ -40,7 +40,7 @@ Route::redirect('/', '/login');
 // DESENVOLVER DA ELEIÇÃO
     // PROCESSO DE INSCRIÇÃO
     Route::post('user/eleicoes/{eleicao}/inscrever', [userEleicaoController::class, 'store'])->name('user.eleicao.store')->middleware('role:user', 'auth');
-    Route::delete('user/eleicoes/{eleicao}/inscrever/{user}', [userEleicaoController::class, 'destroy'])->name('user.eleicao.destroy')->middleware('role:user', 'auth');
+    Route::delete('user/eleicoes/{eleicao}/desinscrever', [userEleicaoController::class, 'destroy'])->name('user.eleicoes.destroy')->middleware('role:user', 'auth');
 
     // PROCESSO DE APROVAÇÃO
     Route::put('admin/eleicao/{eleicao}/aprovar/{user}', [docUserController::class, 'approve'])->name('admin.eleicao.approve')->middleware('role:admin', 'auth');

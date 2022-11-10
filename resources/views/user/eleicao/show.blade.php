@@ -30,102 +30,100 @@
                             <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>
                         </li>
                     </ul>
-                    <div class="row">
+                    <div class="row justify-content-center">
                         {{-- CANDIDATOS --}}
                         @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
-                            @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
+                            @if ($user->pivot->categoria === 'candidato' && $user->pivot->doc_user_status === 'aprovado') {{--LISTAGEM DE APENAS CANDIDATOS APROVADOS --}}
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
-                                <div class="card mt-2" style="width: 15rem;">
-                                    <div class="card-body">
+                                {{-- MUDA O STYLE DO VENCEDOR --}}
+                                @if ($user->id === $vencedor)
+                                    <div class="card mt-2 bg-success text-white" style="width: 15rem;">
+                                @else
+                                    <div class="card mt-2 border-dark" style="width: 15rem;">
+                                @endif
+                                <div class="card-body">
+                                    <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" >
+                                    <h5 class="card-title">{{ $user->name }}</h5>
+                                    @if ($user->id === $vencedor)
+                                        <p class="text-danger"><b>VENCEDOR!!!</b></p>
+                                    @endif
+                                    @if ($duringEleicao && $user->pivot->doc_user_status === 'aprovado')
                                         <form method="POST" action="{{ route('user.eleicao.vote', $eleicoes->id) }}">
                                             @csrf
                                             @method('PUT')
-                                            <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" >
-                                            <h5 class="card-title">{{ $user->name }}</h5>
                                             <input type="hidden" name="candidatoId" value="{{ $user->id }}">
                                             <input type="hidden" name="eleitorId" value="{{ Auth::id() }}">
                                             <button type="submit" class="btn btn-success">Votar</button>
                                         </form>
-                                    </div>
+                                    @endif
+                                </div>
                                 </div>
                             </div>
                             @endif
                         @endforeach
                     </div>
 
-                        {{-- CANDIDATOS --}}
-
-
                 </div>
             </div>
         </div>
     </div>
 
-    @if( !$eleicaoStartDateHasPassed )
+    @if( $duringInscricao )
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary text-white">Inscrição</div>
                     <div class="card-body text-center mt-0">
-                            <table class="table">
-                                <thead>
+                        <table class="table">
+                            <thead>
+                            </thead>
+                            <tbody>
 
-                                    <!--<th></th>
-                                    <th></th>-->
-
-                                    {{-- APARECERÁ O STATUS DA VOTAÇÃO QUANDO A ELEIÇÃO COMEÇAR --}}
-                                    @if ( $eleicaoStartDateHasPassed )
-                                        <th>Eleição em andamento</th>
-                                    @endif
-
-                                    @if ( !$eleicaoStartDateHasPassed )
-                                        <!--<th></th>-->
-                                    @endif
-                                </thead>
-                                <tbody>
+                            {{-- INSCREVER-SE --}}
+                            @if ( !$userSubscribedOnEleicao )
                                 <form enctype="multipart/form-data" method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
                                     @csrf
-                                    @if ( $inscricaoStartDateHasPassed && !$inscricaoEndDateHasPassed )
                                     <tr>
                                         <td>
-                                        <select class="form-control" name="categoria" id="categoria">
+                                            <select class="form-control" name="categoria" id="categoria">
                                                 <option value="">Selecione</option>
                                                 <option value="candidato">Candidato</option>
                                                 <option value="eleitor">Eleitor</option>
                                             </select>
                                         </td>
+                                        <td>
+                                            <div>
+                                                <input type="hidden" id="user_id" name="user_id">
+                                            </div>
+                                            <div class="col col-lg-2">
+                                                <input class="btn btn-sm" type="file" id='doc_user' name='doc_user'/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col col-lg-2">
+                                                <button type="submit" class="btn btn-success">Inscrever</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </form>
+                            @endif
 
-                                            <td>
-                                                <div>
-                                                    <input type="hidden" id="user_id" name="user_id">
-                                                </div>
-                                                <div class="col col-lg-2">
-                                                    <input class="btn btn-sm" type="file" id='doc_user' name='doc_user'/>
-                                                </div>
-                                            </td>
-                                                <td>
-                                                <div class="col col-lg-2">
-                                                    <button type="submit" class="btn btn-success">Inscrever</button>
-                                                </div>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    </form>
-                                </tbody>
-                            </table>
+                            {{-- DESINSCREVER-SE --}}
+                            @if( $userSubscribedOnEleicao)
+                                <form method="POST" action='{{ route("user.eleicoes.destroy", $eleicoes->id) }}'>
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="col col-lg-2">
+                                    <button class="btn btn-danger">Remover inscrição</button>
+                                    </div>
+                                </form>
+                            @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     @endif
-    <li class="list-group-item">
-        <form method="POST" action='{{ route("user.eleicao.destroy", ["eleicao"  => $eleicoes->id, "user"  => Auth::id()]) }}'>
-            @csrf
-            @method('DELETE')
-            <div class="col col-lg-2">
-            <button class="btn btn-danger">Remover inscrição</button>
-            </div>
-        </form>
-    </li>
 
 @endsection

@@ -9,6 +9,7 @@ use App\Services\EleicaoService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class eleicaoController extends Controller
 {
@@ -20,19 +21,28 @@ class eleicaoController extends Controller
         }
 
         return view('user.eleicao.index', [
-            'eleicoes' => $eleicoes->paginate(3),
+            'eleicoes' => $eleicoes->paginate(5),
             'search' => isset($request->search) ? $request->search : ''
         ]);
     }
 
     public function show(Eleicao $eleicao)
     {
+        $vencedor = DB::table('eleicao_user')
+                      ->where('eleicao_id', '=', $eleicao->id)
+                      ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
+                      ->value('user_id');
+
         return view('user.eleicao.show', [
             'eleicoes' => $eleicao,
-            'eleicaoStartDateHasPassed' => EleicaoService::eleicaoStartDateHasPassed($eleicao),
-            'eleicaoEndDateHasPassed' => EleicaoService::eleicaoEndDateHasPassed($eleicao),
-            'inscricaoStartDateHasPassed' => EleicaoService::inscricaoStartDateHasPassed($eleicao),
-            'inscricaoEndDateHasPassed' => EleicaoService::inscricaoEndDateHasPassed($eleicao),
+            'vencedor' => $vencedor,
+            'userSubscribedOnEleicao' => EleicaoService::userSubscribedOnEleicao(Auth::id(), $eleicao),
+            'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
+            'duringInscricao' => EleicaoService::duringInscricao($eleicao),
+            'afterInscricao' => EleicaoService::afterInscricao($eleicao),
+            'beforeEleicao' => EleicaoService::beforeEleicao($eleicao),
+            'duringEleicao' => EleicaoService::duringEleicao($eleicao),
+            'afterEleicao' => EleicaoService::afterEleicao($eleicao),
             'allParticipantUsers' => User::query()
                 ->where('role', 'user')
                 ->whereDoesntHave('eleicoes', function($query) use($eleicao){
@@ -46,9 +56,6 @@ class eleicaoController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
-
-        // return response()->json(User::find($data['user_id'])->cpf);
-
         $nameFile = Str::of(User::find($data['user_id'])->cpf). '.'. $request->doc_user->getClientOriginalExtension();
         $documento = $request->doc_user->storeAs('doc/eleicao_user/'.$eleicao->id, $nameFile, 'public');
         $data['doc_user'] = $documento;
@@ -60,22 +67,18 @@ class eleicaoController extends Controller
             ]
         ]);
 
-        return back()->with('success', 'Usuário inscreveu-se para a eleição');
+        return back()->with('success', 'Você se inscreveu na eleição');
     }
 
-    public function destroy(Eleicao $eleicoes){
+    public function destroy(Eleicao $eleicao){
 
-        if(EleicaoService::eleicaoEndDateHasPassed($eleicoes)){
+        if(EleicaoService::duringEleicao($eleicao)){
             return back()->with('warning', 'Erro: A eleição já ocorreu');
         }
 
-        if(!EleicaoService::userSubscribedOnEleicao($user, $eleicoes)){
-            return back()->with('warning', 'Erro: O participante não está inscrito');
-        }
+        $eleicao->users()->detach(Auth::id());
 
-        $eleicoes->users()->detach([$eleicoes->id]);
-
-        return back()->with('success', $user->name.' saiu da eleição');
+        return back()->with('success', 'Você saiu da eleição');
     }
 
     public function vote(Eleicao $eleicao, Request $request){
