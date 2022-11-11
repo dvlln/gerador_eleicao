@@ -53,7 +53,7 @@
                                             @method('PUT')
                                             <input type="hidden" name="candidatoId" value="{{ $user->id }}">
                                             <input type="hidden" name="eleitorId" value="{{ Auth::id() }}">
-                                            <button type="submit" class="btn btn-success">Votar</button>
+                                            <button type="submit" onclick="return confirm('Deseja realizar o voto?')" class="btn btn-success">Votar</button>
                                         </form>
                                     @endif
                                 </div>
@@ -86,14 +86,14 @@
                                     <tr>
                                         <td>
                                             <select class="form-control" name="categoria" id="categoria">
-                                                <option value="">Selecione</option>
+                                                <option value="">Selecionar Categoria</option>
                                                 <option value="candidato">Candidato</option>
                                                 <option value="eleitor">Eleitor</option>
                                             </select>
                                         </td>
                                         <td>
                                             <select class="form-control" name="ocupacao" id="ocupacao">
-                                                <option value="">Selecione</option>
+                                                <option value="">Selecionar Ocupação</option>
                                                 <option value="docente">Docente</option>
                                                 <option value="discente">Discente</option>
                                                 <option value="pai/mãe">Pai/mãe</option>
@@ -122,7 +122,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <div class="col col-lg-2">
-                                    <button class="btn btn-danger">Remover inscrição</button>
+                                    <button onclick="return confirm('Remover inscrição?')" class="btn btn-danger">Remover inscrição</button>
                                     </div>
                                 </form>
                             @endif
