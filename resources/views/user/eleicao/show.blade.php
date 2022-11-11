@@ -36,7 +36,7 @@
                             @if ($user->pivot->categoria === 'candidato' && $user->pivot->doc_user_status === 'aprovado') {{--LISTAGEM DE APENAS CANDIDATOS APROVADOS --}}
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
                                 {{-- MUDA O STYLE DO VENCEDOR --}}
-                                @if ($user->id === $vencedor)
+                                @if ($user->id === $vencedor && $afterEleicao)
                                     <div class="card mt-2 bg-success text-white" style="width: 15rem;">
                                 @else
                                     <div class="card mt-2 border-dark" style="width: 15rem;">
