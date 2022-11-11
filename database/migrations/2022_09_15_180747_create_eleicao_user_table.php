@@ -14,6 +14,7 @@ class CreateEleicaoUserTable extends Migration
 
             // LIDANDO COM A ELEIÇÃO
             $table->string('categoria'); //CANDIDATO OU ELEITOR
+            $table->string('ocupacao');
             $table->boolean('votacao_status')->default(false); //STATUS DA VOTACAO
             $table->integer('voto')->default(0); // QTD_VOTO
             $table->datetime('voto_datetime')->nullable();

@@ -63,6 +63,7 @@ class eleicaoController extends Controller
         $eleicao->users()->attach([
             $data['user_id'] => [
                 'categoria' => $data['categoria'],
+                'ocupacao' => $data['ocupacao'],
                 'doc_user' => $data['doc_user']
             ]
         ]);

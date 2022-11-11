@@ -92,6 +92,14 @@
                                             </select>
                                         </td>
                                         <td>
+                                            <select class="form-control" name="ocupacao" id="ocupacao">
+                                                <option value="">Selecione</option>
+                                                <option value="docente">Docente</option>
+                                                <option value="discente">Discente</option>
+                                                <option value="pai/mãe">Pai/mãe</option>
+                                            </select>
+                                        </td>
+                                        <td>
                                             <div>
                                                 <input type="hidden" id="user_id" name="user_id">
                                             </div>
