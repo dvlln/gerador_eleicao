@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('eleicaos', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->dateTime('start_date_eleicao');
-            $table->dateTime('end_date_eleicao');
             $table->dateTime('start_date_inscricao');
             $table->dateTime('end_date_inscricao');
+            $table->dateTime('start_date_depuracao');
+            $table->dateTime('end_date_depuracao');
+            $table->dateTime('start_date_eleicao');
+            $table->dateTime('end_date_eleicao');
             $table->timestamps();
             $table->softDeletes();
         });

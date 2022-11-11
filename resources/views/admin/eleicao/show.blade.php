@@ -47,6 +47,14 @@
                             {{ $eleicoes->end_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
+                            <span class="font-weight-bold mb-1">Início depuração: </span>
+                            {{ $eleicoes->start_date_depuracao_formatted }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="font-weight-bold mb-1">Fim depuração: </span>
+                            {{ $eleicoes->end_date_depuracao_formatted }}
+                        </li>
+                        <li class="list-group-item">
                             <span class="font-weight-bold mb-1">Início eleição: </span>
                             {{ $eleicoes->start_date_eleicao_formatted }}
                         </li>

@@ -7,21 +7,11 @@ use App\Rules\Date;
 
 class eleicaoRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
@@ -30,6 +20,10 @@ class eleicaoRequest extends FormRequest
             'start_time_inscricao' => 'required',
             'end_date_inscricao' => ['required', 'after_or_equal:start_date_inscricao'],
             'end_time_inscricao' => 'required',
+            'start_date_depuracao' => 'required',
+            'start_time_depuracao' => 'required',
+            'end_date_depuracao' => 'required',
+            'end_time_depuracao' => 'required',
             'start_date_eleicao' => ['required', 'after_or_equal:start_date_inscricao'],
             'start_time_eleicao' => 'required',
             'end_date_eleicao' => ['required', 'after_or_equal:start_date_eleicao'],

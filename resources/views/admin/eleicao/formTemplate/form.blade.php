@@ -87,6 +87,75 @@
 
         {{-- END INSCRICAO --}}
 
+        {{-- DEPURACAO --}}
+
+            {{-- TITULO --}}
+            <div class="col-lg-12">
+                <h3 class="bg-info text-white text-center rounded p-1">DEPURAÇÃO</h3>
+            </div>
+
+            {{-- DATA INICIAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="start_date_depuracao">Data de início</label>
+                    <input
+                        type="date"
+                        class="form-control {{ $errors->has('start_date_depuracao') ? 'is-invalid' : '' }}"
+                        id="start_date_depuracao"
+                        name="start_date_depuracao"
+                        value="{{ old('start_date_depuracao', isset($eleicoes) ? $start_date_depuracao : '') }}"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('start_date_depuracao') }}</div>
+                </div>
+            </div>
+
+            {{-- HORA INICIAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="start_time_depuracao">Hora de início</label>
+                    <input
+                        type="time"
+                        class="form-control {{ $errors->has('start_time_depuracao') ? 'is-invalid' : '' }}"
+                        id="start_time_depuracao"
+                        name="start_time_depuracao"
+                        value="{{ old('start_time_depuracao', isset($eleicoes) ? $start_time_depuracao : '') }}"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('start_time_depuracao') }}</div>
+                </div>
+            </div>
+
+            {{-- DATA FINAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="end_date_depuracao">Data do fim</label>
+                    <input
+                        type="date"
+                        class="form-control {{ $errors->has('end_date_depuracao') ? 'is-invalid' : '' }}"
+                        id="end_date_depuracao"
+                        name="end_date_depuracao"
+                        value="{{ old('end_date_depuracao', isset($eleicoes) ? $end_date_depuracao : '') }}"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('end_date_depuracao') }}</div>
+                </div>
+            </div>
+
+            {{-- HORA FINAL --}}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="end_time_depuracao">Hora do fim</label>
+                    <input
+                        type="time"
+                        class="form-control {{ $errors->has('end_time_depuracao') ? 'is-invalid' : '' }}"
+                        id="end_time_depuracao"
+                        name="end_time_depuracao"
+                        value="{{ old('end_time_depuracao', isset($eleicoes) ? $end_time_depuracao : '') }}"
+                    >
+                    <div class="invalid-feedback">{{ $errors->first('end_time_depuracao') }}</div>
+                </div>
+            </div>
+
+        {{-- END DEPURACAO --}}
+
         {{-- ELEICAO --}}
 
             {{-- TITULO --}}

@@ -43,10 +43,12 @@ class eleicaoController extends Controller
         $data = $request->validated();
 
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
-        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
-        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
         $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
         $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
+        $data['start_date_depuracao'] .= ' '.$data['start_time_depuracao'];
+        $data['end_date_depuracao'] .= ' '.$data['end_time_depuracao'];
+        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
+        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
         // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
         $validator = Validator::make(request()->all(), []);
@@ -65,10 +67,12 @@ class eleicaoController extends Controller
 
 
         // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
-        unset($data['start_time_eleicao']);
-        unset($data['end_time_eleicao']);
         unset($data['start_time_inscricao']);
         unset($data['end_time_inscricao']);
+        unset($data['start_time_depuracao']);
+        unset($data['end_time_depuracao']);
+        unset($data['start_time_eleicao']);
+        unset($data['end_time_eleicao']);
 
         // return response()->json($data);
         Eleicao::create($data);
@@ -112,6 +116,11 @@ class eleicaoController extends Controller
         $start_time_inscricao = Carbon::parse($eleicao->start_date_inscricao)->format('H:i');
         $end_time_inscricao = Carbon::parse($eleicao->end_date_inscricao)->format('H:i');
 
+        $start_date_depuracao = Carbon::parse($eleicao->start_date_depuracao)->format('Y-m-d');
+        $end_date_depuracao = Carbon::parse($eleicao->end_date_depuracao)->format('Y-m-d');
+        $start_time_depuracao = Carbon::parse($eleicao->start_date_depuracao)->format('H:i');
+        $end_time_depuracao = Carbon::parse($eleicao->end_date_depuracao)->format('H:i');
+
         $start_date_eleicao = Carbon::parse($eleicao->start_date_eleicao)->format('Y-m-d');
         $end_date_eleicao = Carbon::parse($eleicao->end_date_eleicao)->format('Y-m-d');
         $start_time_eleicao = Carbon::parse($eleicao->start_date_eleicao)->format('H:i');
@@ -123,6 +132,10 @@ class eleicaoController extends Controller
             'start_time_inscricao' => $start_time_inscricao,
             'end_date_inscricao' => $end_date_inscricao,
             'end_time_inscricao' => $end_time_inscricao,
+            'start_date_depuracao' => $start_date_depuracao,
+            'start_time_depuracao' => $start_time_depuracao,
+            'end_date_depuracao' => $end_date_depuracao,
+            'end_time_depuracao' => $end_time_depuracao,
             'start_date_eleicao' => $start_date_eleicao,
             'start_time_eleicao' => $start_time_eleicao,
             'end_date_eleicao' => $end_date_eleicao,
@@ -135,10 +148,12 @@ class eleicaoController extends Controller
         $data = $request->validated();
 
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
-        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
-        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
         $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
         $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
+        $data['start_date_depuracao'] .= ' '.$data['start_time_depuracao'];
+        $data['end_date_depuracao'] .= ' '.$data['end_time_depuracao'];
+        $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
+        $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
         // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
         $validator = Validator::make(request()->all(), []);
@@ -156,10 +171,12 @@ class eleicaoController extends Controller
         }
 
         // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
-        unset($data['start_time_eleicao']);
-        unset($data['end_time_eleicao']);
         unset($data['start_time_inscricao']);
         unset($data['end_time_inscricao']);
+        unset($data['start_time_depuracao']);
+        unset($data['end_time_depuracao']);
+        unset($data['start_time_eleicao']);
+        unset($data['end_time_eleicao']);
 
         $eleicao->update($data);
 
