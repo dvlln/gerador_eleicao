@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card ">
-                <div class="card-header bg-primary text-white">Informações gerais</div>
+                <div class="card-header bg-primary text-white text-center"><h4 class="m-0">Informações gerais</h4></div>
                 <div class="card-body text-center">
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -27,7 +27,7 @@
                             {{ $eleicoes->end_date_eleicao_formatted }}
                         </li>
                         <li class="list-group-item bg-primary">
-                            <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>
+                            <span class="font-weight-bold text-white text-align-center"><h6 class="m-0">Candidatos</h6></span>
                         </li>
                     </ul>
                     <div class="row justify-content-center">
@@ -72,7 +72,7 @@
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">Inscrição</div>
+                    <div class="card-header bg-primary text-white text-center"><h4 class="m-0">Inscrição</h4></div>
                     <div class="card-body text-center mt-0">
                         <table class="table">
                             <thead>
@@ -83,48 +83,50 @@
                             @if ( !$userSubscribedOnEleicao )
                                 <form enctype="multipart/form-data" method="POST" action="{{ route('user.eleicao.store', $eleicoes->id) }}">
                                     @csrf
-                                    <tr>
-                                        <td>
-                                            <select class="form-control" name="categoria" id="categoria">
-                                                <option value="">Selecionar Categoria</option>
-                                                <option value="candidato">Candidato</option>
-                                                <option value="eleitor">Eleitor</option>
-                                            </select>
+                                    <tr class="row justify-content-around">
+                                        <td class="col-12 col-md-2">
+                                                <select class="form-control" name="categoria" id="categoria">
+                                                    <option value="">Selecionar Categoria</option>
+                                                    <option value="candidato">Candidato</option>
+                                                    <option value="eleitor">Eleitor</option>
+                                                </select>
                                         </td>
-                                        <td>
-                                            <select class="form-control" name="ocupacao" id="ocupacao">
-                                                <option value="">Selecionar Ocupação</option>
-                                                <option value="docente">Docente</option>
-                                                <option value="discente">Discente</option>
-                                                <option value="pai/mãe">Pai/mãe</option>
-                                            </select>
+                                        <td class="col-12 col-md-2">
+                                                <select class="form-control" name="ocupacao" id="ocupacao">
+                                                    <option value="">Selecionar Ocupação</option>
+                                                    <option value="docente">Docente</option>
+                                                    <option value="discente">Discente</option>
+                                                    <option value="pai/mãe">Pai/mãe</option>
+                                                </select>
                                         </td>
-                                        <td>
-                                            <div>
-                                                <input type="hidden" id="user_id" name="user_id">
-                                            </div>
-                                            <div class="col col-lg-2">
-                                                <input class="btn btn-sm" type="file" id='doc_user' name='doc_user'/>
-                                            </div>
+                                        <td class="col-12 col-md-2">
+                                        <input type="hidden" id="user_id" name="user_id">
+                                            <label>Documentos</label>
+                                            <input class="btn btn-sm" type="file" id='doc_user' name='doc_user'/>
                                         </td>
-                                        <td>
-                                            <div class="col col-lg-2">
-                                                <button type="submit" class="btn btn-success">Inscrever</button>
-                                            </div>
+                                        <td class="col-12 col-md-2">
+                                           <button type="submit" class="btn btn-success">Inscrever</button>
                                         </td>
                                     </tr>
                                 </form>
                             @endif
 
-                            {{-- DESINSCREVER-SE --}}
+                            {{-- REMOVER INSCRIÇÃO --}}
                             @if( $userSubscribedOnEleicao)
-                                <form method="POST" action='{{ route("user.eleicoes.destroy", $eleicoes->id) }}'>
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="col col-lg-2">
-                                    <button onclick="return confirm('Remover inscrição?')" class="btn btn-danger">Remover inscrição</button>
-                                    </div>
-                                </form>
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-md-2">
+                                    <form method="POST" action='{{ route("user.eleicoes.destroy", $eleicoes->id) }}'>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-md btn-block btn-danger" onclick="return confirm('Remover inscrição?')">Remover inscrição</button>
+                                    </form>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <a class="btn btn-md btn-block btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$user->pivot->doc_user}") }}' target="_blank">
+                                        Visualizar documentos
+                                    </a>
+                                </div>
+                            </div>
                             @endif
                             </tbody>
                         </table>
