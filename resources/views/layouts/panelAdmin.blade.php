@@ -112,13 +112,7 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <div class="col-12">
-                                                            <img src="{{ url('storage/perfil/'.Auth::id().'.jpeg') }}" alt="perfilFoto" style="width: 100%; height: auto;">
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <label for="perfilFoto" class="btn btn-warning btn-block mt-2">Alterar foto de perfil</label>
-                                                            <input type="file" class="d-none"  id="perfilFoto"/>
-                                                        </div>
+                                                        <img src="{{ url('storage/perfil/'.Auth::id().'.jpeg') }}" alt="perfilFoto" style="width: 100%; height: auto;">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -130,15 +124,21 @@
                                                         <label for="email">E-mail</label>
                                                         <input type="text" class="form-control" id="email" />
                                                     </div>
-                                                    <div class="form-group">
-                                                        <button class="btn btn-warning btn-block" type="button" id="email">Redefinir Senha </button>
-                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label for="perfilFoto" class="btn btn-info btn-block">Alterar foto de perfil</label>
+                                                    <input type="file" class="d-none"  id="perfilFoto"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-info btn-block" type="button" id="email">Redefinir Senha </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Salvar</button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
                                     </form>
                                 </div>
