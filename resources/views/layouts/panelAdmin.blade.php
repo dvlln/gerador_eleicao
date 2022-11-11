@@ -78,6 +78,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                {{-- Sair --}}
                                 <form method="POST" action="{{route('auth.login.destroy')}}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
@@ -85,8 +86,64 @@
                                         Sair
                                     </button>
                                 </form>
+                                {{-- Editar perfil --}}
+                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editPerfil_{{ Auth::id() }}">
+                                        <i class="fas fa-regular fa-user-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Editar perfil
+                                </button>
+                                {{-- Editar empresa --}}
+                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editEmpresa">
+                                    <i class="fas fa-solid fa-building fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Editar empresa
+                                </button>
                             </div>
                         </li>
+
+                        {{-- MODAL Edital perfil --}}
+                        <div class="modal fade" id="editPerfil_{{ Auth::id() }}" tabindex="-1" role="dialog" aria-labelledby="#editPerfilTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal_title">Editar perfil</h5>
+                                    </div>
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <div class="col-12">
+                                                            <img src="{{ url('storage/perfil/'.Auth::id().'.jpeg') }}" alt="perfilFoto" style="width: 100%; height: auto;">
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label for="perfilFoto" class="btn btn-warning btn-block mt-2">Alterar foto de perfil</label>
+                                                            <input type="file" class="d-none"  id="perfilFoto"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="name">Nome</label>
+                                                        <input type="text" class="form-control" id="name" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">E-mail</label>
+                                                        <input type="text" class="form-control" id="email" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-warning btn-block" type="button" id="email">Redefinir Senha </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                         </ul>
                     </nav>
