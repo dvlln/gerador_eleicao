@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{loginController, registerController};
-use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController};
+use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController, perfilController};
 use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserController};
 use Illuminate\Http\Request;
 
@@ -52,3 +52,7 @@ Route::redirect('/', '/login');
     // VOTAR
     Route::PUT('user/eleicao/{eleicao}/votar', [userEleicaoController::class, 'vote'])->name('user.eleicao.vote')->middleware('role:user', 'auth');
 // END
+
+//EDIÇÃO
+    //USER
+    Route::post('user/editPerfil/{users}', [perfilController::class, 'store'])->name('user.store')->middleware('auth');

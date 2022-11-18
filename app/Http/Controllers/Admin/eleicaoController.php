@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\{eleicaoRequest, importRequest};
 use Illuminate\Support\Facades\DB;
 use App\Services\EleicaoService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,8 @@ class eleicaoController extends Controller
     public function index(Request $request)
     {
         $eleicoes = Eleicao::query();
+        $users = User::find(Auth::id());
+
 
         if (isset($request->search) && $request->search !== ''){
             $eleicoes->where('name', 'like', '%'.$request->search.'%');
@@ -29,13 +32,17 @@ class eleicaoController extends Controller
 
         return view('admin.eleicao.index', [
             'eleicoes' => $eleicoes->paginate(5),
-            'search' => isset($request->search) ? $request->search : ''
+            'search' => isset($request->search) ? $request->search : '',
+            'users' => $users
         ]);
     }
 
     public function create()
     {
-        return view('admin.eleicao.create');
+        $users = User::find(Auth::id());
+        return view('admin.eleicao.create', [
+            'users' => $users
+        ]);
     }
 
     public function store(eleicaoRequest $request)
@@ -82,6 +89,7 @@ class eleicaoController extends Controller
 
     public function show(Eleicao $eleicao)
     {
+        $users = User::find(Auth::id());
 
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
@@ -96,6 +104,7 @@ class eleicaoController extends Controller
 
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
+            'users' => $users,
 
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
@@ -111,6 +120,8 @@ class eleicaoController extends Controller
 
     public function edit(Eleicao $eleicao)
     {
+        $users = User::find(Auth::id());
+
         $start_date_inscricao = Carbon::parse($eleicao->start_date_inscricao)->format('Y-m-d');
         $end_date_inscricao = Carbon::parse($eleicao->end_date_inscricao)->format('Y-m-d');
         $start_time_inscricao = Carbon::parse($eleicao->start_date_inscricao)->format('H:i');
@@ -128,6 +139,8 @@ class eleicaoController extends Controller
 
         return view('admin.eleicao.edit', [
             'eleicoes' => $eleicao,
+            'users' => $users,
+
             'start_date_inscricao' => $start_date_inscricao,
             'start_time_inscricao' => $start_time_inscricao,
             'end_date_inscricao' => $end_date_inscricao,
