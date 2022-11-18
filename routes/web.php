@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{loginController, registerController};
-use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController, perfilController};
+use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoController};
 use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserController};
+use App\Http\Controllers\Perfil\perfilController;
 use Illuminate\Http\Request;
 
 // DEFAULT ROUTE
@@ -55,4 +56,4 @@ Route::redirect('/', '/login');
 
 //EDIÇÃO
     //USER
-    Route::post('user/editPerfil/{users}', [perfilController::class, 'store'])->name('user.store')->middleware('auth');
+    Route::put('user/editPerfil/{users}', [perfilController::class, 'update'])->name('user.update')->middleware('auth');

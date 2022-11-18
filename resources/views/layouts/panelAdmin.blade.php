@@ -106,13 +106,14 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="modal_title">Editar perfil</h5>
                                     </div>
-                                    <form action="{{ route('user.store', $users->id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('user.update', $users->id) }}" method="POST" enctype="multipart/form-data">
+                                        @method('PUT')
                                         @csrf
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-lg-6">
                                                     <div class="form-group">
-                                                        <img src="{{ url('storage/perfil/'.Auth::id().'.jpg') }}" alt="perfilFoto" style="width: 100%; height: auto;">
+                                                        <img src="{{ url('storage/perfil/'.$users->foto) }}" alt="perfilFoto" style="width: 100%; height: auto;">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-lg-6">
@@ -122,6 +123,7 @@
                                                             type="text"
                                                             class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
                                                             id="name"
+                                                            name="name"
                                                             value="{{ isset($users) ? $users->name : '' }}"
                                                         />
                                                         <div class="invalid-feedback">{{ $errors->first('name') }}</div>
@@ -133,6 +135,7 @@
                                                             type="text"
                                                             class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                                             id="email"
+                                                            name="email"
                                                             value="{{ isset($users) ? $users->email : '' }}"
                                                         />
                                                         <div class="invalid-feedback">{{ $errors->first('email') }}</div>
@@ -140,7 +143,7 @@
 
                                                     <div class="form-group">
                                                         <label for="perfilFoto">Alterar foto de perfil</label>
-                                                        <input type="file" id="perfilFoto" name="perfilFoto"/>
+                                                        <input type="file" id="perfilFoto" name="foto"/>
                                                     </div>
 
                                                     <div class="form-group">
@@ -149,10 +152,10 @@
                                                         <div class="invalid-feedback">{{ $errors->first('password') }}</div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    {{-- <div class="form-group">
                                                         <label for="password-confirmed">Confirmar senha</label>
                                                         <input type="password" class="form-control" id="password-confirmed" name="password_confirmation" />
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>
