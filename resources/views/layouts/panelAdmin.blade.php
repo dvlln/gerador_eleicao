@@ -87,7 +87,7 @@
                                     </button>
                                 </form>
                                 {{-- Editar perfil --}}
-                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editPerfil_{{ Auth::id() }}">
+                                <button class="dropdown-item" type="button" id="buttonEditPerfil">
                                         <i class="fas fa-regular fa-user-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Editar perfil
                                 </button>
@@ -100,7 +100,7 @@
                         </li>
 
                         {{-- MODAL Edital perfil --}}
-                        <div class="modal fade" id="editPerfil_{{ Auth::id() }}" tabindex="-1" role="dialog" aria-labelledby="#editPerfilTitle" aria-hidden="true">
+                        <div class="modal fade" id="modalEditPerfil" role="dialog">
                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -143,19 +143,36 @@
 
                                                     <div class="form-group">
                                                         <label for="perfilFoto">Alterar foto de perfil</label>
-                                                        <input type="file" id="perfilFoto" name="foto"/>
+                                                        <input
+                                                            type="file"
+                                                            class="form-control {{ $errors->has('foto') ? 'is-invalid' : '' }}"
+                                                            id="perfilFoto"
+                                                            name="foto"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="password">Nova senha</label>
-                                                        <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="password" name="password" />
+                                                        <input
+                                                            type="password"
+                                                            class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                                            id="password"
+                                                            name="password"
+                                                        />
                                                         <div class="invalid-feedback">{{ $errors->first('password') }}</div>
                                                     </div>
 
-                                                    {{-- <div class="form-group">
-                                                        <label for="password-confirmed">Confirmar senha</label>
-                                                        <input type="password" class="form-control" id="password-confirmed" name="password_confirmation" />
-                                                    </div> --}}
+                                                    <div class="form-group">
+                                                        <label for="password_confirmation">Confirmar senha</label>
+                                                        <input
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="password_confirmation"
+                                                            name="password_confirmation"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('password_confirmation') }}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,6 +257,29 @@
     <!-- Custom scripts for all pages -->
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
         <script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
+
+        {{-- Abre e fecha modal --}}
+        @if ($flag === 0)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                    });
+                });
+            </script>
+        @else
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                    });
+                    $("#buttonEditPerfil").toggleClass([function(){
+                        $("#modalEditPerfil").modal();
+                    }]);
+                });
+            </script>
+        @endif
+
     <!-- End of Custom scripts for all pages -->
 
     @yield('js')

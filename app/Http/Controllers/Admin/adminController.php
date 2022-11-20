@@ -13,7 +13,8 @@ class adminController extends Controller
         $users = User::find(Auth::id());
 
         return view('admin.dashboard.index', [
-            'users' => $users
+            'users' => $users,
+            'flag' => 0
         ]);
     }
 }

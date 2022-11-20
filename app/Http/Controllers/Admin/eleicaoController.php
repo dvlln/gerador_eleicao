@@ -33,7 +33,8 @@ class eleicaoController extends Controller
         return view('admin.eleicao.index', [
             'eleicoes' => $eleicoes->paginate(5),
             'search' => isset($request->search) ? $request->search : '',
-            'users' => $users
+            'users' => $users,
+            'flag' => 0
         ]);
     }
 
@@ -41,7 +42,8 @@ class eleicaoController extends Controller
     {
         $users = User::find(Auth::id());
         return view('admin.eleicao.create', [
-            'users' => $users
+            'users' => $users,
+            'flag' => 0
         ]);
     }
 
@@ -105,6 +107,7 @@ class eleicaoController extends Controller
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
             'users' => $users,
+            'flag' => 0,
 
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
@@ -140,6 +143,7 @@ class eleicaoController extends Controller
         return view('admin.eleicao.edit', [
             'eleicoes' => $eleicao,
             'users' => $users,
+            'flag' => 0,
 
             'start_date_inscricao' => $start_date_inscricao,
             'start_time_inscricao' => $start_time_inscricao,
