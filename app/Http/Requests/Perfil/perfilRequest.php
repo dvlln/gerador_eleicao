@@ -18,7 +18,6 @@ class perfilRequest extends FormRequest
             'email' => '',
             'foto' => '',
             'password' => '',
-            'password_confirmation' => ''
         ];
     }
 
@@ -34,7 +33,8 @@ class perfilRequest extends FormRequest
     public function messages(){
         return [
             'required' => ':attribute deve ser preenchido',
-            'min' => ':attribute deve ser maior'
+            'min' => ':attribute deve ser maior',
+            'confirmed' => 'A senha de confirmação deve ser igual a senha'
         ];
     }
 }

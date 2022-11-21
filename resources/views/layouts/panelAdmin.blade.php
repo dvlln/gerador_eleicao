@@ -113,7 +113,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-lg-6">
                                                     <div class="form-group">
-                                                        <img src="{{ url('storage/perfil/'.$users->foto) }}" alt="perfilFoto" style="width: 100%; height: auto;">
+                                                        <img src="{{ url('storage/perfil/'.$users->foto) }}" alt="perfilFoto" style="width: 100%">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-lg-6">
@@ -164,7 +164,7 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="password_confirmation">Confirmar senha</label>
+                                                        <label for="password_confirmation">Senha de confirmação</label>
                                                         <input
                                                             type="password"
                                                             class="form-control"
@@ -259,15 +259,7 @@
         <script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
 
         {{-- Abre e fecha modal --}}
-        @if ($flag === 0)
-            <script>
-                $(document).ready(function(){
-                    $("#buttonEditPerfil").click(function(){
-                    $("#modalEditPerfil").modal();
-                    });
-                });
-            </script>
-        @else
+        @if (session()->has('modalOpen'))
             <script>
                 $(document).ready(function(){
                     $("#buttonEditPerfil").click(function(){
@@ -276,6 +268,14 @@
                     $("#buttonEditPerfil").toggleClass([function(){
                         $("#modalEditPerfil").modal();
                     }]);
+                });
+            </script>
+        @else
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                    });
                 });
             </script>
         @endif

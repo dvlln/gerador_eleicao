@@ -16,51 +16,31 @@ class perfilController extends Controller
     public function update(User $users, perfilRequest $request){
         $data = $request->validated();
 
-        if($data['foto'] != null){
-            $validator = Validator::make(request()->all(), ['foto' => 'mimes:jpg,jpeg,png']);
-        }else{
-            $validator = Validator::make(request()->all(), []);
-        }
+        // Criando a validação na mão
+        $validator = Validator::make(request()->all(), [
+            'foto' => 'mimes:jpg,jpeg,png',
+            'password' => 'confirmed'
+        ]);
 
         // Validação de senha
-        if($data['password'] != $data['password_confirmation']){
-            $validator->errors()->add('password', 'As senhas não conferem');
-            return view('admin.dashboard.index', [
-                'flag' => 1,
-                'users' => $users
-            ])->withErrors($validator);
+        if($validator->fails()){
+            return back()->with('modalOpen', '1')->withErrors($validator);
         }
 
-        // Validação de foto
-        if($data['foto'] != null){
-            if($validator->fails()){
-                return view('admin.dashboard.index', [
-                    'flag' => 1,
-                    'users' => $users
-                ])->withErrors($validator);
-            }
+        // Salvando foto caso exista
+        if(array_key_exists('foto', $data)){
+            $file = Str::of($users->cpf).'.'. $data['foto']->getClientOriginalExtension();
+            $imagem = $data['foto']->storeAs('perfil', $file, 'public');
+            $data['foto'] = $file;
         }
 
-        // Retirando atributos nulos do array
-        if($data['foto'] === null){
-            unset($data['foto']);
-        }
-        else if($data['password'] === null){
+        // Removendo senha do array caso esteja vazia
+        if($data['password'] === null){
             unset($data['password']);
             unset($data['password_confirmation']);
         }
 
-        // try{
-            if($data['foto'] != null){
-                $file = Str::of($users->cpf).'.'. $data['foto']->getClientOriginalExtension();
-                $imagem = $data['foto']->storeAs('perfil', $file, 'public');
-                $data['foto'] = $file;
-            }
-            // return response()->json($data);
-            $users->find($users->id)->update($data);
-            return back()->with('success', 'Perfil do usuário editado!!!');
-        // } catch (\Throwable $th) {
-        //     return back()->with('warning', 'Erro na edição do perfil!!!');
-        // }
+        $users->find($users->id)->update($data);
+        return back()->with('success', 'Perfil do usuário editado!!!');
     }
 }
