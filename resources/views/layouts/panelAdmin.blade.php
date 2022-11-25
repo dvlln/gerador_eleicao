@@ -25,9 +25,11 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-                <div class="sidebar-brand d-flex align-items-center justify-content-center">
-
-                    <div class="sidebar-brand-text mx-3">LinkeTinder</div>
+                <div class="sidebar-brand d-flex align-items-center justify-content-center flex-column" style="height: auto;">
+                    <div class="sidebar-brand-text" >
+                        <img src="{{ url('storage/logo/'.$secretarias->logo) }}" alt="logo" style="width: 100%; height: 100%;">
+                    </div>
+                    <div class="sidebar-brand-text mt-4">{{ $secretarias->name }}</div>
                 </div>
 
                 <!-- Divider -->
@@ -92,7 +94,7 @@
                                         Editar perfil
                                 </button>
                                 {{-- Editar empresa --}}
-                                <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editEmpresa">
+                                <button class="dropdown-item" type="button" id="buttonEditSecretaria">
                                     <i class="fas fa-solid fa-building fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Editar empresa
                                 </button>
@@ -106,7 +108,7 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="modal_title">Editar perfil</h5>
                                     </div>
-                                    <form action="{{ route('user.update', $users->id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('user.updateUser', $users->id) }}" method="POST" enctype="multipart/form-data">
                                         @method('PUT')
                                         @csrf
                                         <div class="modal-body">
@@ -172,6 +174,52 @@
                                                             name="password_confirmation"
                                                         />
                                                         <div class="invalid-feedback">{{ $errors->first('password_confirmation') }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL Edital perfil --}}
+                        <div class="modal fade" id="modalEditSecretaria" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal_title">Editar perfil</h5>
+                                    </div>
+                                    <form action="{{ route('user.updateSecretaria') }}" method="POST" enctype="multipart/form-data">
+                                        @method('PUT')
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="name">Nome da Secretaria</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="name"
+                                                            name="name"
+                                                            value="{{ isset($secretarias) ? $secretarias->name : '' }}"
+                                                        />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="logo">Alterar logo da Secretaria</label>
+                                                        <input
+                                                            type="file"
+                                                            class="form-control {{ $errors->has('logo') ? 'is-invalid' : '' }}"
+                                                            id="logo"
+                                                            name="logo"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('logo') }}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,27 +306,53 @@
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
         <script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
 
-        {{-- Abre e fecha modal --}}
-        @if (session()->has('modalOpen'))
-            <script>
-                $(document).ready(function(){
-                    $("#buttonEditPerfil").click(function(){
-                    $("#modalEditPerfil").modal();
+        {{-- Open and close modal --}}
+            @if (session()->has('modalOpen'))
+                @if (session('modalOpen') == 1)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                            $("#buttonEditPerfil").toggleClass([function(){
+                                $("#modalEditPerfil").modal();
+                            }]);
+
+                            $("#buttonEditSecretaria").click(function(){
+                                $("#modalEditSecretaria").modal();
+                            });
+                        });
+                    </script>
+                @elseif (session('modalOpen') == 2)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonEditSecretaria").click(function(){
+                                $("#modalEditSecretaria").modal();
+                            });
+                            $("#buttonEditSecretaria").toggleClass([function(){
+                                $("#modalEditSecretaria").modal();
+                            }]);
+
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                        });
+                    </script>
+                @endif
+            @else
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonEditSecretaria").click(function(){
+                            $("#modalEditSecretaria").modal();
+                        });
+                        $("#buttonEditPerfil").click(function(){
+                            $("#modalEditPerfil").modal();
+                        });
+
                     });
-                    $("#buttonEditPerfil").toggleClass([function(){
-                        $("#modalEditPerfil").modal();
-                    }]);
-                });
-            </script>
-        @else
-            <script>
-                $(document).ready(function(){
-                    $("#buttonEditPerfil").click(function(){
-                    $("#modalEditPerfil").modal();
-                    });
-                });
-            </script>
-        @endif
+                </script>
+            @endif
+        {{-- End open and clone modal --}}
 
     <!-- End of Custom scripts for all pages -->
 

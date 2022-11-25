@@ -56,4 +56,5 @@ Route::redirect('/', '/login');
 
 //EDIÇÃO
     //USER
-    Route::put('user/editPerfil/{users}', [perfilController::class, 'update'])->name('user.update')->middleware('auth');
+    Route::put('user/editPerfil/{users}', [perfilController::class, 'updateUser'])->name('user.updateUser')->middleware('auth');
+    Route::put('user/editSecretaria', [perfilController::class, 'updateSecretaria'])->name('user.updateSecretaria')->middleware('auth');

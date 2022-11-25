@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Eleicao, User};
+use App\Models\{Eleicao, Secretaria, User};
 use App\Http\Requests\Admin\{eleicaoRequest, importRequest};
 use Illuminate\Support\Facades\DB;
 use App\Services\EleicaoService;
@@ -34,6 +34,7 @@ class eleicaoController extends Controller
             'eleicoes' => $eleicoes->paginate(5),
             'search' => isset($request->search) ? $request->search : '',
             'users' => $users,
+            'secretarias' => Secretaria::find(1)
         ]);
     }
 
@@ -42,6 +43,7 @@ class eleicaoController extends Controller
         $users = User::find(Auth::id());
         return view('admin.eleicao.create', [
             'users' => $users,
+            'secretarias' => Secretaria::find(1)
         ]);
     }
 
@@ -105,6 +107,7 @@ class eleicaoController extends Controller
         return view('admin.eleicao.show', [
             'eleicoes' => $eleicao,
             'users' => $users,
+            'secretarias' => Secretaria::find(1),
 
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
@@ -140,6 +143,7 @@ class eleicaoController extends Controller
         return view('admin.eleicao.edit', [
             'eleicoes' => $eleicao,
             'users' => $users,
+            'secretarias' => Secretaria::find(1),
 
             'start_date_inscricao' => $start_date_inscricao,
             'start_time_inscricao' => $start_time_inscricao,

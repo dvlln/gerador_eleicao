@@ -4,7 +4,7 @@ namespace App\Http\Requests\Perfil;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class perfilRequest extends FormRequest
+class perfilUserRequest extends FormRequest
 {
     public function authorize()
     {
@@ -27,14 +27,6 @@ class perfilRequest extends FormRequest
             'email' => 'e-mail',
             'foto' => 'foto',
             'password' => 'senha'
-        ];
-    }
-
-    public function messages(){
-        return [
-            'required' => ':attribute deve ser preenchido',
-            'min' => ':attribute deve ser maior',
-            'confirmed' => 'A senha de confirmação deve ser igual a senha'
         ];
     }
 }
