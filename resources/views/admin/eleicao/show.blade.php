@@ -3,9 +3,9 @@
 @section('import')
     @if ($duringInscricao)
         {{-- IMPORTAR USUARIOS POR CSV --}}
-        <button class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#import">Importar usuário</button>
+        <button class="btn btn-primary mb-2" type="button" id="buttonImport">Importar usuário</button>
 
-        <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="import" aria-hidden="true">
+        <div class="modal fade" id="modalImport" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -17,7 +17,13 @@
                     <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
-                            <input class="form-control" type="file" id="import" name='import'/>
+                            <input
+                                class="form-control {{ $errors->has('import') ? 'is-invalid' : '' }}"
+                                type="file"
+                                id="import"
+                                name='import'
+                            />
+                            <div class="invalid-feedback">{{ $errors->first('import') }}</div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Salvar</button>

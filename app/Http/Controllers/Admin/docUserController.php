@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
+use App\Http\Requests\acaoRequest;
 
 class docUserController extends Controller
 {
@@ -21,7 +22,18 @@ class docUserController extends Controller
         }
     }
 
-    public function deny(Eleicao $eleicao, User $user, Request $request){
+    public function deny(Eleicao $eleicao, User $user, acaoRequest $request){
+        $data = $request->validated();
+
+        // Validando dados
+        $validator = Validator::make(request()->all(), [
+            'logo' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return back()->with('modalOpen', '4')->withErrors($validator);
+        }
+
         try {
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'reprovado';

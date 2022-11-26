@@ -211,89 +211,86 @@ class eleicaoController extends Controller
         return redirect()->route('admin.eleicao.index')->with('success', 'Eleição removida com sucesso');
     }
 
-    public function import(Eleicao $eleicao, Request $request)
+    public function import(Eleicao $eleicao, importRequest $request)
     {
-        $file = $request->all();
+        $file = $request->validated();
 
-        // VALIDA ENTRADA
-        if(!array_key_exists('import', $file)){
-            return back()->with('warning', 'Nenhum arquivo inserido');
+        // Validando foto
+        $validator = Validator::make(request()->all(), [
+            'import' => 'mimes:csv,txt|required'
+        ]);
+
+        if($validator->fails()){
+            return back()->with('modalOpen', '3')->withErrors($validator);
         }
 
-        // VALIDA EXTENSÃO
-        if (strtolower($file['import']->getClientOriginalExtension()) != 'csv') {
-            return back()->with('warning', 'Extensão invalida');
-        }
 
-        if ($file) {
-            $filename = $file['import']->getClientOriginalName();
+        $filename = $file['import']->getClientOriginalName();
 
-            // ARMAZENA O DOCUMENTO LOCALMENTE
-            $location = 'storage/imports';
-            $file['import']->move($location, $filename);
-            $filepath = public_path($location . "/" . $filename);
+        // ARMAZENA O DOCUMENTO LOCALMENTE
+        $location = 'storage/imports';
+        $file['import']->move($location, $filename);
+        $filepath = public_path($location . "/" . $filename);
 
-            // ABRE O ARQUIVO E SALVA O CONTEUDO DO ARQUIVO EM UM ARRAY
-            $file['import'] = fopen($filepath, "r");
-            $importData_arr = array();
+        // ABRE O ARQUIVO E SALVA O CONTEUDO DO ARQUIVO EM UM ARRAY
+        $file['import'] = fopen($filepath, "r");
+        $importData_arr = array();
 
-            // VERIFICA E ARMAZENA O DELIMITADOR DO CSV
-            $delimiter = $this->getCSVDelimiter($filepath);
+        // VERIFICA E ARMAZENA O DELIMITADOR DO CSV
+        $delimiter = $this->getCSVDelimiter($filepath);
 
-            // LÊ O CONTEUDO DO ARQUIVO E REORGANIZA O ARRAY
-            $i=0;
-            while (($filedata = (fgetcsv($file['import'], 1000, $delimiter))) !== FALSE) {
-                $num = count($filedata);
-                if ($i == 0) {
-                    $i++;
-                    continue;
-                }
-                for ($c = 0; $c < $num; $c++) {
-                    $importData_arr[$i][] = $filedata[$c];
-                }
+        // LÊ O CONTEUDO DO ARQUIVO E REORGANIZA O ARRAY
+        $i=0;
+        while (($filedata = (fgetcsv($file['import'], 1000, $delimiter))) !== FALSE) {
+            $num = count($filedata);
+            if ($i == 0) {
                 $i++;
+                continue;
             }
-
-            // FECHA O ARQUIVO
-            fclose($file['import']);
-
-            // CRIAÇÃO dOS USUÁRIOS
-            DB::beginTransaction();
-            try {
-                foreach ($importData_arr as $importData) {
-                    User::create([
-                        'name' => $importData[0],
-                        'email' => $importData[1],
-                        'cpf' => $importData[2],
-                        'password' => $importData[3],
-                        'role' => $importData[4],
-                        'foto' => $importData[5]
-                    ]);
-                }
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollback();
+            for ($c = 0; $c < $num; $c++) {
+                $importData_arr[$i][] = $filedata[$c];
             }
-
-            //INCLUSÃO DOS USUÁRIOS NA ELEIÇÃO
-            try{
-                foreach ($importData_arr as $importData) {
-                    $user_id = User::where('name', $importData[0])->value('id');
-                    $eleicao->users()->attach([
-                        $user_id => [
-                            'categoria' => $importData[6],
-                            'doc_user_status' => 'aprovado',
-                        ]
-                    ]);
-                }
-            } catch(\Exception $e){
-                return back()->with('warning', 'Erro na importação do usuário');
-            }
-
-            return back()->with('success', 'Importação concluida');
-        } else {
-            return back()->with('warning', 'Nenhum arquivo foi inserido');
+            $i++;
         }
+
+        // FECHA O ARQUIVO
+        fclose($file['import']);
+
+        // CRIAÇÃO dOS USUÁRIOS
+        DB::beginTransaction();
+        try {
+            foreach ($importData_arr as $importData) {
+                User::create([
+                    'name' => $importData[0],
+                    'email' => $importData[1],
+                    'cpf' => $importData[2],
+                    'password' => $importData[3],
+                    'role' => $importData[4],
+                    'foto' => $importData[5]
+                ]);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+        //INCLUSÃO DOS USUÁRIOS NA ELEIÇÃO
+        try{
+            foreach ($importData_arr as $importData) {
+                $user_id = User::where('name', $importData[0])->value('id');
+                $eleicao->users()->attach([
+                    $user_id => [
+                        'categoria' => $importData[6],
+                        'ocupacao' => $importData[7],
+                        'doc_user_status' => 'aprovado',
+                    ]
+                ]);
+            }
+        } catch(\Exception $e){
+            return back()->with('warning', 'Erro na importação do usuário');
+        }
+
+        return back()->with('success', 'Importação concluida');
     }
 
     public function getCSVDelimiter($csvfile){

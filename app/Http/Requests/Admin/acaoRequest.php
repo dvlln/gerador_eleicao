@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class importRequest extends FormRequest
+class acaoRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class importRequest extends FormRequest
     public function rules()
     {
         return [
-            'import' => '',
+            'doc_user_message' => ''
         ];
     }
 }

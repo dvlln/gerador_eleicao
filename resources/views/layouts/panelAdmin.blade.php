@@ -338,6 +338,27 @@
                             });
                         });
                     </script>
+
+                @elseif (session('modalOpen') == 3)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonImport").click(function(){
+                                $("#modalImport").modal();
+                            });
+
+                            $("#buttonImport").toggleClass([function(){
+                                $("#modalImport").modal();
+                            }]);
+
+                            $("#buttonEditSecretaria").click(function(){
+                                $("#modalEditSecretaria").modal();
+                            });
+
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                        });
+                    </script>
                 @endif
             @else
                 <script>
@@ -345,8 +366,13 @@
                         $("#buttonEditSecretaria").click(function(){
                             $("#modalEditSecretaria").modal();
                         });
+
                         $("#buttonEditPerfil").click(function(){
                             $("#modalEditPerfil").modal();
+                        });
+
+                        $("#buttonImport").click(function(){
+                            $("#modalImport").modal();
                         });
 
                     });
