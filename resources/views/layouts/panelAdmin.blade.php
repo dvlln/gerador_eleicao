@@ -90,8 +90,8 @@
                                 </form>
                                 {{-- Editar perfil --}}
                                 <button class="dropdown-item" type="button" id="buttonEditPerfil">
-                                        <i class="fas fa-regular fa-user-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Editar perfil
+                                    <i class="fas fa-regular fa-user-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Editar perfil
                                 </button>
                                 {{-- Editar empresa --}}
                                 <button class="dropdown-item" type="button" id="buttonEditSecretaria">

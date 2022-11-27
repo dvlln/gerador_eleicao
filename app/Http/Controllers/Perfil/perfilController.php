@@ -41,7 +41,6 @@ class perfilController extends Controller
         }
 
         $users->find($users->id)->update($data);
-        // $request->session()->forget('modalOpen');
         return back()->with('success', 'Perfil do usuário editado!!!');
     }
 

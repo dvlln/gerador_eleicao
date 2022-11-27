@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Eleicao, User};
+use App\Models\{Eleicao, Secretaria, User};
 use App\Services\EleicaoService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class eleicaoController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $eleicoes = Eleicao::query();
+        $users = User::find(Auth::id());
 
         if (isset($request->search) && $request->search !== ''){
             $eleicoes->where('name', 'like', '%'.$request->search.'%');
@@ -22,12 +24,16 @@ class eleicaoController extends Controller
 
         return view('user.eleicao.index', [
             'eleicoes' => $eleicoes->paginate(5),
-            'search' => isset($request->search) ? $request->search : ''
+            'search' => isset($request->search) ? $request->search : '',
+            'users' => $users,
+            'secretarias' => Secretaria::find(1)
         ]);
     }
 
     public function show(Eleicao $eleicao)
     {
+        $users = User::find(Auth::id());
+
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
                       ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
@@ -35,6 +41,9 @@ class eleicaoController extends Controller
 
         return view('user.eleicao.show', [
             'eleicoes' => $eleicao,
+            'users' => $users,
+            'secretarias' => Secretaria::find(1),
+            
             'vencedor' => $vencedor,
             'userSubscribedOnEleicao' => EleicaoService::userSubscribedOnEleicao(Auth::id(), $eleicao),
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
@@ -52,7 +61,8 @@ class eleicaoController extends Controller
         ]);
     }
 
-    public function store(Eleicao $eleicao, Request $request){
+    public function store(Eleicao $eleicao, Request $request)
+    {
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
@@ -71,7 +81,8 @@ class eleicaoController extends Controller
         return back()->with('success', 'Você se inscreveu na eleição');
     }
 
-    public function destroy(Eleicao $eleicao){
+    public function destroy(Eleicao $eleicao)
+    {
 
         if(EleicaoService::duringEleicao($eleicao)){
             return back()->with('warning', 'Erro: A eleição já ocorreu');
@@ -82,7 +93,8 @@ class eleicaoController extends Controller
         return back()->with('success', 'Você saiu da eleição');
     }
 
-    public function vote(Eleicao $eleicao, Request $request){
+    public function vote(Eleicao $eleicao, Request $request)
+    {
         $data = $request->all();
 
         if($data['candidatoId'] === $data['eleitorId']){

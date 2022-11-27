@@ -25,9 +25,11 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-                <div class="sidebar-brand d-flex align-items-center justify-content-center">
-
-                    <div class="sidebar-brand-text mx-3">LinkeTinder</div>
+            <div class="sidebar-brand d-flex align-items-center justify-content-center flex-column" style="height: auto;">
+                    <div class="sidebar-brand-text" >
+                        <img src="{{ url('storage/logo/'.$secretarias->logo) }}" alt="logo" style="width: 100%; height: 100%;">
+                    </div>
+                    <div class="sidebar-brand-text mt-4">{{ $secretarias->name }}</div>
                 </div>
 
                 <!-- Divider -->
@@ -78,6 +80,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                {{-- Sair --}}
                                 <form method="POST" action="{{route('auth.login.destroy')}}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
@@ -85,8 +88,99 @@
                                         Sair
                                     </button>
                                 </form>
+                                {{-- Editar perfil --}}
+                                <button class="dropdown-item" type="button" id="buttonEditPerfil">
+                                    <i class="fas fa-regular fa-user-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Editar perfil
+                                </button>
                             </div>
                         </li>
+
+                        {{-- MODAL Edital perfil --}}
+                        <div class="modal fade" id="modalEditPerfil" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal_title">Editar perfil</h5>
+                                    </div>
+                                    <form action="{{ route('user.updateUser', $users->id) }}" method="POST" enctype="multipart/form-data">
+                                        @method('PUT')
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <img src="{{ url('storage/perfil/'.$users->foto) }}" alt="perfilFoto" style="width: 100%">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="name">Nome</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                                                            id="name"
+                                                            name="name"
+                                                            value="{{ isset($users) ? $users->name : '' }}"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('name') }}</div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="email">E-mail</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                            id="email"
+                                                            name="email"
+                                                            value="{{ isset($users) ? $users->email : '' }}"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('email') }}</div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="perfilFoto">Alterar foto de perfil</label>
+                                                        <input
+                                                            type="file"
+                                                            class="form-control {{ $errors->has('foto') ? 'is-invalid' : '' }}"
+                                                            id="perfilFoto"
+                                                            name="foto"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('foto') }}</div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="password">Nova senha</label>
+                                                        <input
+                                                            type="password"
+                                                            class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                                            id="password"
+                                                            name="password"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('password') }}</div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="password_confirmation">Senha de confirmação</label>
+                                                        <input
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="password_confirmation"
+                                                            name="password_confirmation"
+                                                        />
+                                                        <div class="invalid-feedback">{{ $errors->first('password_confirmation') }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                         </ul>
                     </nav>
@@ -157,6 +251,31 @@
     <!-- Custom scripts for all pages -->
         <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
         <script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
+
+        {{-- Open and close modal --}}
+            @if (session()->has('modalOpen'))
+                @if (session('modalOpen') == 1)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                            $("#buttonEditPerfil").toggleClass([function(){
+                                $("#modalEditPerfil").modal();
+                            }]);
+                        });
+                    </script>
+                @endif
+            @else
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonEditPerfil").click(function(){
+                            $("#modalEditPerfil").modal();
+                        });
+                    });
+                </script>
+            @endif
+        {{-- End open and close modal --}}
     <!-- End of Custom scripts for all pages -->
 
     @yield('js')

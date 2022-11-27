@@ -1,7 +1,7 @@
 @extends('layouts.panelAdmin')
 @section('title', $eleicoes->name)
 @section('import')
-    @if ($duringDepuracao)
+    @if ($duringInscricao)
         {{-- IMPORTAR USUARIOS POR CSV --}}
         <button class="btn btn-primary mb-2" type="button" id="buttonImport">Importar usuário</button>
 
