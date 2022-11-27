@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
-use App\Http\Requests\acaoRequest;
+use App\Http\Requests\Admin\acaoRequest;
+use Illuminate\Support\Facades\Validator;
 
 class docUserController extends Controller
 {
@@ -27,11 +28,11 @@ class docUserController extends Controller
 
         // Validando dados
         $validator = Validator::make(request()->all(), [
-            'logo' => 'required'
+            'doc_user_message' => 'required'
         ]);
 
         if($validator->fails()){
-            return back()->with('modalOpen', '4')->withErrors($validator);
+            return back()->with('modalOpen', '4')->with('userId', $user->id)->withErrors($validator);
         }
 
         try {

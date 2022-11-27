@@ -359,8 +359,33 @@
                             });
                         });
                     </script>
+                @elseif (session('modalOpen') == 4 && isset($eleicoes))
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonReprovar_"+{{ session('userId') }}).toggleClass([function(){
+                                $("#modalReprovar_"+{{ session('userId') }}).modal();
+                            }]);
+
+                            $("#buttonEditSecretaria").click(function(){
+                                $("#modalEditSecretaria").modal();
+                            });
+
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                        });
+                    </script>
+                    @foreach ($eleicoes->users as $user)
+                        <script>
+                            $(document).ready(function(){
+                                $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                                    $("#modalReprovar_"+{{ $user->id }}).modal();
+                                });
+                            });
+                        </script>
+                    @endforeach
                 @endif
-            @else
+            @elseif(!is_null($eleicoes->users))
                 <script>
                     $(document).ready(function(){
                         $("#buttonEditSecretaria").click(function(){
@@ -374,7 +399,27 @@
                         $("#buttonImport").click(function(){
                             $("#modalImport").modal();
                         });
+                    });
+                </script>
+                @foreach ($eleicoes->users as $user)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                                $("#modalReprovar_"+{{ $user->id }}).modal();
+                            });
+                        });
+                    </script>
+                @endforeach
+            @else
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonEditSecretaria").click(function(){
+                            $("#modalEditSecretaria").modal();
+                        });
 
+                        $("#buttonEditPerfil").click(function(){
+                            $("#modalEditPerfil").modal();
+                        });
                     });
                 </script>
             @endif

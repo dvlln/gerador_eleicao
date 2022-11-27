@@ -1,7 +1,7 @@
 @extends('layouts.panelAdmin')
 @section('title', $eleicoes->name)
 @section('import')
-    @if ($duringInscricao)
+    @if ($duringDepuracao)
         {{-- IMPORTAR USUARIOS POR CSV --}}
         <button class="btn btn-primary mb-2" type="button" id="buttonImport">Importar usuário</button>
 
@@ -138,8 +138,9 @@
                                     <th>Status Votação</th>
                                 @endif
 
-                                @if ( $duringInscricao )
+                                @if ( $duringInscricao || $duringDepuracao)
                                     <th>Ações</th>
+                                    <th>Status</th>
                                 @endif
                             </thead>
                             <tbody>
@@ -157,7 +158,7 @@
                                             @endif
                                         @endif
 
-                                        @if ( $duringInscricao )
+                                        @if ( $duringInscricao || $duringDepuracao )
                                             <td>
                                                 <div class="d-flex justify-content-center">
 
@@ -176,12 +177,12 @@
                                                     </form>
 
                                                     {{-- REPROVAR O USUARIO --}}
-                                                    <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" data-target="#reprovar_modal_{{ $user->id }}">
+                                                    <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" id="buttonReprovar_{{ $user->id }}">
                                                         <i class="fa-solid fa-xmark fa-l"></i>
                                                     </button>
 
 
-                                                    <div class="modal fade" id="reprovar_modal_{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="reprovar_modal_title" aria-hidden="true">
+                                                    <div class="modal fade" id="modalReprovar_{{ $user->id }}" role="dialog">
                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -194,7 +195,11 @@
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <div class="modal-body">
-                                                                        <textarea class="form-control" rows="10" name="doc_user_message"></textarea>
+                                                                        <textarea
+                                                                            class="form-control {{ $errors->has('doc_user_message') ? 'is-invalid' : '' }}"
+                                                                            rows="10"
+                                                                            name="doc_user_message"></textarea>
+                                                                            <div class="invalid-feedback">{{ $errors->first('doc_user_message') }}</div>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -206,6 +211,8 @@
                                                     </div>
                                                 </div>
                                             </td>
+
+                                            <td>{{ $user->pivot->doc_user_status }}</td>
                                         @endif
                                     </tr>
                                 @endforeach
