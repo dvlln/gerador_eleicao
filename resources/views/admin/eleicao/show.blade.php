@@ -1,7 +1,9 @@
 @extends('layouts.panelAdmin')
+
 @section('title', $eleicoes->name)
+
 @section('import')
-    @if ($duringInscricao)
+    @if ($duringDepuracao)
         {{-- IMPORTAR USUARIOS POR CSV --}}
         <button class="btn btn-primary mb-2" type="button" id="buttonImport">Importar usuário</button>
 
@@ -26,8 +28,8 @@
                             <div class="invalid-feedback">{{ $errors->first('import') }}</div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                         </div>
                     </form>
                 </div>
@@ -35,6 +37,7 @@
         </div>
     @endif
 @endsection
+
 @section('content')
 
     {{-- INFORMAÇÕES GERAIS --}}
@@ -202,8 +205,8 @@
                                                                             <div class="invalid-feedback">{{ $errors->first('doc_user_message') }}</div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                        <button type="submit" class="btn btn-success">Salvar</button>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -223,4 +226,141 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    {{-- Open and close modal --}}
+    @if (session()->has('modalOpen'))
+        @if (session('modalOpen') == 1)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                    $("#buttonEditPerfil").toggleClass([function(){
+                        $("#modalEditPerfil").modal();
+                    }]);
+                    $("#buttonEditSecretaria").click(function(){
+                        $("#modalEditSecretaria").modal();
+                    });
+                    $("#buttonImport").click(function(){
+                        $("#modalImport").modal();
+                    });
+                });
+            </script>
+            @foreach ($eleicoes->users as $user)
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                            $("#modalReprovar_"+{{ $user->id }}).modal();
+                        });
+                    });
+                </script>
+            @endforeach
+        @elseif (session('modalOpen') == 2)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditSecretaria").click(function(){
+                        $("#modalEditSecretaria").modal();
+                    });
+                    $("#buttonEditSecretaria").toggleClass([function(){
+                        $("#modalEditSecretaria").modal();
+                    }]);
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                    $("#buttonImport").click(function(){
+                        $("#modalImport").modal();
+                    });
+                });
+            </script>
+            @foreach ($eleicoes->users as $user)
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                            $("#modalReprovar_"+{{ $user->id }}).modal();
+                        });
+                    });
+                </script>
+            @endforeach
+        @elseif (session('modalOpen') == 3)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonImport").click(function(){
+                        $("#modalImport").modal();
+                    });
+                    $("#buttonImport").toggleClass([function(){
+                        $("#modalImport").modal();
+                    }]);
+                    $("#buttonEditSecretaria").click(function(){
+                        $("#modalEditSecretaria").modal();
+                    });
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                });
+            </script>
+            @foreach ($eleicoes->users as $user)
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                            $("#modalReprovar_"+{{ $user->id }}).modal();
+                        });
+                    });
+                </script>
+            @endforeach
+        @elseif (session('modalOpen') == 4)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonReprovar_"+{{ session('userId') }}).toggleClass([function(){
+                        $("#modalReprovar_"+{{ session('userId') }}).modal();
+                    }]);
+                    $("#buttonEditSecretaria").click(function(){
+                        $("#modalEditSecretaria").modal();
+                    });
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                    $("#buttonImport").click(function(){
+                        $("#modalImport").modal();
+                    });
+                });
+            </script>
+            @foreach ($eleicoes->users as $user)
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                            $("#modalReprovar_"+{{ $user->id }}).modal();
+                        });
+                    });
+                </script>
+            @endforeach
+    @endif
+    @else
+        <script>
+            $(document).ready(function(){
+                $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                });
+
+                $("#buttonEditSecretaria").click(function(){
+                    $("#modalEditSecretaria").modal();
+                });
+
+                $("#buttonImport").click(function(){
+                    $("#modalImport").modal();
+                });
+            });
+        </script>
+        @foreach ($eleicoes->users as $user)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonReprovar_"+{{ $user->id }}).click(function(){
+                        $("#modalReprovar_"+{{ $user->id }}).modal();
+                    });
+                });
+            </script>
+        @endforeach
+    @endif
+    {{-- End open and close modal --}}
 @endsection

@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    @if( $duringInscricao )
+    @if( $duringInscricao || ($duringDepuracao && !$eleicoes->users->pivot->doc_user_status === 'aprovado') )
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">

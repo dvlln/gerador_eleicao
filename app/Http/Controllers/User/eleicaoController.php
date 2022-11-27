@@ -33,6 +33,7 @@ class eleicaoController extends Controller
     public function show(Eleicao $eleicao)
     {
         $users = User::find(Auth::id());
+        
 
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
@@ -43,12 +44,15 @@ class eleicaoController extends Controller
             'eleicoes' => $eleicao,
             'users' => $users,
             'secretarias' => Secretaria::find(1),
-            
+
             'vencedor' => $vencedor,
             'userSubscribedOnEleicao' => EleicaoService::userSubscribedOnEleicao(Auth::id(), $eleicao),
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
             'afterInscricao' => EleicaoService::afterInscricao($eleicao),
+            'beforeDepuracao' => EleicaoService::beforeDepuracao($eleicao),
+            'duringDepuracao' => EleicaoService::duringDepuracao($eleicao),
+            'afterDepuracao' => EleicaoService::afterDepuracao($eleicao),
             'beforeEleicao' => EleicaoService::beforeEleicao($eleicao),
             'duringEleicao' => EleicaoService::duringEleicao($eleicao),
             'afterEleicao' => EleicaoService::afterEleicao($eleicao),

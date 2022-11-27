@@ -1,7 +1,7 @@
 @extends('layouts.panelAdmin')
 @section('title', 'Eleições')
 @section('content')
-<form>
+    <form>
         <div class="d-flex justify-content-between">
             <div class="d-flex flex-fill">
                 <input type="text" name="search" class="form-control w-50 mr-2" value="" placeholder="Pesquisar...">
@@ -49,5 +49,53 @@
             @endforeach
         </tbody>
     </table>
+
     {{ $eleicoes->links() }}
+@endsection
+@section('js')
+    {{-- Open and close modal --}}
+        @if (session()->has('modalOpen'))
+            @if (session('modalOpen') == 1)
+                <script>
+                    $(document).ready(function(){
+                        $("#buttonEditPerfil").toggleClass([function(){
+                            $("#modalEditPerfil").modal();
+                        }]);
+
+                        $("#buttonEditPerfil").click(function(){
+                            $("#modalEditPerfil").modal();
+                        });
+
+                        $("#buttonEditSecretaria").click(function(){
+                            $("#modalEditSecretaria").modal();
+                        });
+                    });
+                </script>
+                @elseif (session('modalOpen') == 2)
+                    <script>
+                        $(document).ready(function(){
+                            $("#buttonEditSecretaria").click(function(){
+                                $("#modalEditSecretaria").modal();
+                            });
+                            $("#buttonEditSecretaria").toggleClass([function(){
+                                $("#modalEditSecretaria").modal();
+                            }]);
+                            $("#buttonEditPerfil").click(function(){
+                                $("#modalEditPerfil").modal();
+                            });
+                        });
+                    </script>
+        @endif
+        @else
+            <script>
+                $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                });
+
+                $("#buttonEditSecretaria").click(function(){
+                    $("#modalEditSecretaria").modal();
+                });
+            </script>
+        @endif
+    {{-- End open and close modal --}}
 @endsection

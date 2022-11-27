@@ -34,7 +34,7 @@ class eleicaoController extends Controller
             'eleicoes' => $eleicoes->paginate(5),
             'search' => isset($request->search) ? $request->search : '',
             'users' => $users,
-            'secretarias' => Secretaria::find(1)
+            'secretarias' => Secretaria::find(1),
         ]);
     }
 
@@ -93,6 +93,8 @@ class eleicaoController extends Controller
     {
         $users = User::find(Auth::id());
 
+        $empty = DB::table('eleicao_user')->count();
+
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
                       ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
@@ -108,6 +110,7 @@ class eleicaoController extends Controller
             'eleicoes' => $eleicao,
             'users' => $users,
             'secretarias' => Secretaria::find(1),
+            'vazio', $empty,
 
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
