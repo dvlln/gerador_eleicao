@@ -23,6 +23,15 @@ return new class extends Migration
             $table->string('foto', 256)->nullable();
             $table->timestamps();
         });
+
+        DB::table('users')->insert([
+            'name' => 'Administrador',
+            'email' => 'admin@gmail.com',
+            'cpf' => '48764510875',
+            'password' => bcrypt(123),
+            'role' => 'admin',
+            'foto' => null
+        ]);
     }
 
     /**
