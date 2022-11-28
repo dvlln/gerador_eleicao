@@ -1,15 +1,30 @@
 @extends('layouts.panelUser')
 @section('title', 'Dashboard')
-@section('sidebar')
-    <a class="nav-link" href="{{ route('user.dashboard.index') }}">
-       <i class="fa fa-solid fa-house-user"></i>
-        <span>Dashboard</span>
-    </a>
-    <a class="nav-link" href="{{ route('user.eleicao.index') }}">
-       <i class="fas fa-person-booth"></i>
-        <span>Eleições</span>
-    </a>
-@endsection
 @section('content')
     Dashboard do usuario
+@endsection
+@section('js')
+    {{-- Open and close modal --}}
+        @if (session()->has('modalOpen'))
+        @if (session('modalOpen') == 1)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").toggleClass([function(){
+                        $("#modalEditPerfil").modal();
+                    }]);
+
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                });
+            </script>
+        @endif
+        @else
+            <script>
+                $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                });
+            </script>
+        @endif
+    {{-- End open and close modal --}}
 @endsection

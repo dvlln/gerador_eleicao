@@ -1,16 +1,18 @@
 @extends('layouts.panelUser')
+
 @section('title', 'Eleições')
+
 @section('content')
-<form>
+    <form>
             <div class="d-flex flex-fill">
                 <input type="text" name="search" class="form-control w-50 mr-2" value="" placeholder="Pesquisar...">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             </div>
     </form>
+
     <table class="table mt-4">
         <thead class="thead bg-white">
             <tr>
-                <!-- COLUNAS MERAMENTE ILUSTRATIVAS -->
                 <th>Nome</th>
                 <th>Início</th>
                 <th>Fim</th>
@@ -20,7 +22,7 @@
         <tbody>
             @foreach($eleicoes as $eleicao)
                 <tr>
-                <td class="align-middle">{{ $eleicao->name }}</td>
+                    <td class="align-middle">{{ $eleicao->name }}</td>
                     <td class="align-middle">{{ $eleicao->start_date_eleicao_formatted }}</td>
                     <td class="align-middle">{{ $eleicao->end_date_eleicao_formatted }}</td>
                     <td class="align-middle">
@@ -34,5 +36,33 @@
            @endforeach
         </tbody>
     </table>
+
     {{ $eleicoes->links() }}
+@endsection
+
+
+@section('js')
+    {{-- Open and close modal --}}
+        @if (session()->has('modalOpen'))
+        @if (session('modalOpen') == 1)
+            <script>
+                $(document).ready(function(){
+                    $("#buttonEditPerfil").toggleClass([function(){
+                        $("#modalEditPerfil").modal();
+                    }]);
+
+                    $("#buttonEditPerfil").click(function(){
+                        $("#modalEditPerfil").modal();
+                    });
+                });
+            </script>
+        @endif
+        @else
+            <script>
+                $("#buttonEditPerfil").click(function(){
+                    $("#modalEditPerfil").modal();
+                });
+            </script>
+        @endif
+    {{-- End open and close modal --}}
 @endsection

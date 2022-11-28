@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Eleicao, Secretaria, User};
 use App\Services\EleicaoService;
+use App\Http\Requests\User\subscribeRequest;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -33,19 +35,29 @@ class eleicaoController extends Controller
     public function show(Eleicao $eleicao)
     {
         $users = User::find(Auth::id());
-        
 
         $vencedor = DB::table('eleicao_user')
                       ->where('eleicao_id', '=', $eleicao->id)
                       ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
                       ->value('user_id');
 
+        if(is_null($eleicao->users->find(Auth::id()))){
+            $doc_user_status = null;
+            $votacao_status = null;
+        }else{
+            $doc_user_status = $eleicao->users->find(Auth::id())->pivot->doc_user_status;
+            $votacao_status = $eleicao->users->find(Auth::id())->pivot->votacao_status;
+        }
+
         return view('user.eleicao.show', [
             'eleicoes' => $eleicao,
             'users' => $users,
             'secretarias' => Secretaria::find(1),
 
+            'doc_user_status' => $doc_user_status,
+            'votacao_status' => $votacao_status,
             'vencedor' => $vencedor,
+
             'userSubscribedOnEleicao' => EleicaoService::userSubscribedOnEleicao(Auth::id(), $eleicao),
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
@@ -56,23 +68,17 @@ class eleicaoController extends Controller
             'beforeEleicao' => EleicaoService::beforeEleicao($eleicao),
             'duringEleicao' => EleicaoService::duringEleicao($eleicao),
             'afterEleicao' => EleicaoService::afterEleicao($eleicao),
-            'allParticipantUsers' => User::query()
-                ->where('role', 'user')
-                ->whereDoesntHave('eleicoes', function($query) use($eleicao){
-                    $query->where('id', $eleicao->id);
-                })
-                ->get()
         ]);
     }
 
-    public function store(Eleicao $eleicao, Request $request)
+    public function store(Eleicao $eleicao, subscribeRequest $request)
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
         $nameFile = Str::of(User::find($data['user_id'])->cpf). '.'. $request->doc_user->getClientOriginalExtension();
         $documento = $request->doc_user->storeAs('doc/eleicao_user/'.$eleicao->id, $nameFile, 'public');
-        $data['doc_user'] = $documento;
+        $data['doc_user'] = $nameFile;
 
         $eleicao->users()->attach([
             $data['user_id'] => [

@@ -41,6 +41,7 @@ class eleicaoController extends Controller
     public function create()
     {
         $users = User::find(Auth::id());
+
         return view('admin.eleicao.create', [
             'users' => $users,
             'secretarias' => Secretaria::find(1)
