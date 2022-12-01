@@ -27,7 +27,7 @@ return new class extends Migration
         DB::table('users')->insert([
             'name' => 'Administrador',
             'email' => 'admin@gmail.com',
-            'cpf' => '48764510875',
+            'cpf' => '0',
             'password' => bcrypt(123),
             'role' => 'admin',
             'foto' => null

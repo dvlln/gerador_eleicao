@@ -9,25 +9,25 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/sb-admin-2.min.css') }}">
 </head>
 <body>
-    <h1 class="text-center my-4">Login</h1>
+    <h1 class="text-center my-4">Redefinir senha</h1>
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
 
                 @if(session()->has('success'))
-                <div class="alert alert-success"> {{ session('success')}}</div>
+                <div class="alert alert-success"> {{ session('status')}}</div>
                 @endif
 
                 @if(session()->has('warning'))
-                <div class="alert alert-warning"> {{ session('warning')}}</div>
+                <div class="alert alert-warning"> {{ session('status')}}</div>
                 @endif
 
                 <div class="card shadow my-4 mx-auto">
                     <div class="card-body">
-                        <form action="{{ route('auth.login.in') }}" method="POST" autocomplete="off">
+                        <form action="{{ route('password.email') }}" method="POST" autocomplete="off">
                             @csrf
-                            <div class="row">
+                            <div class="row justify-content-between">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <input
@@ -39,28 +39,19 @@
                                         <div class="invalid-feedback">{{ $errors->first('email') }}</div>
                                     </div>
                                 </div>
-
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                                            placeholder="Senha"
-                                        >
-                                        <div class="invalid-feedback">{{ $errors->first('password') }}</div>
-                                    </div>
+                                <div class="col-12 col-md-5">
+                                    <a class="btn btn-danger btn-block my-1" href="{{ route('auth.login.home') }}">
+                                        Voltar
+                                    </a>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <button type="submit" class="btn btn-success btn-block my-1">
+                                        Enviar
+                                    </button>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-success btn-block mt-3">
-                                Login
-                            </button>
                         </form>
                         <hr>
-                        <div class="d-flex justify-content-between">
-                            <a class="small" href="{{ route('password.request') }}">Esqueci minha senha</a>
-                            <a class="small" href="{{ route('auth.register.create') }}">Não tenho uma conta</a>
-                        </div>
                     </div>
                 </div>
             </div>

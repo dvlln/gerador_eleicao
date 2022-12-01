@@ -7,6 +7,11 @@ use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserContr
 use App\Http\Controllers\Perfil\perfilController;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+
 // DEFAULT ROUTE
 Route::redirect('/', '/login');
 
@@ -38,6 +43,7 @@ Route::redirect('/', '/login');
     Route::get('user/eleicoes/{eleicao}', [userEleicaoController::class, 'show'])->name('user.eleicao.show')->middleware('role:user', 'auth');
 
 // END
+
 // DESENVOLVER DA ELEIÇÃO
     // PROCESSO DE INSCRIÇÃO
     Route::post('user/eleicoes/{eleicao}/inscrever', [userEleicaoController::class, 'store'])->name('user.eleicao.store')->middleware('role:user', 'auth');
@@ -54,7 +60,62 @@ Route::redirect('/', '/login');
     Route::PUT('user/eleicao/{eleicao}/votar', [userEleicaoController::class, 'vote'])->name('user.eleicao.vote')->middleware('role:user', 'auth');
 // END
 
-//EDIÇÃO
-    //USER
+// EDIÇÃO
+    // USER
     Route::put('user/editPerfil/{users}', [perfilController::class, 'updateUser'])->name('user.updateUser')->middleware('auth');
     Route::put('user/editSecretaria', [perfilController::class, 'updateSecretaria'])->name('user.updateSecretaria')->middleware('auth');
+// END
+
+// RESET PASSWORD
+    // ACCESS VIEW TO SEND EMAIL TO RESET PASSWORD
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot-password');
+    })->middleware('guest')->name('password.request');
+
+    // SAVING DATA IN DATABASE
+    Route::post('/forgot-password', function (Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['email' => __($status)]);
+    })->middleware('guest')->name('password.email');
+
+    // ACCESS VIEW TO RESET PASSWORD
+    Route::get('/reset-password/{token}', function ($token) {
+        return view('auth.reset-password', ['token' => $token]);
+    })->middleware('guest')->name('password.reset');
+
+    // UPDATE PASSWORD
+    Route::post('/reset-password', function (Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        // $status = Password::reset(
+        //     $request->only('email', 'password', 'password_confirmation', 'token'),
+        //     function ($user, $password) {
+        //         $user->forceFill([
+        //             'password' => Hash::make($password)
+        //         ])->setRememberToken(Str::random(60));
+
+        //         $user->save();
+
+        //         event(new PasswordReset($user));
+        //     }
+        // );
+
+        $request->user()->fill([
+            'password' => bcrypt($request->password)
+        ])->save();
+
+        return $status === Password::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withErrors(['email' => [__($status)]]);
+    })->middleware('guest')->name('password.update');
