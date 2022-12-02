@@ -99,6 +99,7 @@
                                     @csrf
                                     <tr class="row justify-content-around">
                                         <td class="col-12 border-0">
+                                            <label for="doc_user">Categoria</label>
                                                 <select
                                                     class="form-control {{ $errors->has('categoria') ? 'is-invalid' : '' }}"
                                                     id="categoria"
@@ -112,6 +113,7 @@
                                         </td>
 
                                         <td class="col-12 border-0">
+                                            <label for="doc_user">Ocupação</label>
                                                 <select
                                                     class="form-control {{ $errors->has('ocupacao') ? 'is-invalid' : '' }}"
                                                     id="ocupacao"
@@ -126,7 +128,7 @@
                                         </td>
 
                                         <td class="col-12 border-0">
-                                            <label for="doc_user">Documentos</label>
+                                            <label for="doc_user">Documentos </label> <a class="fa-solid fa-circle-info tip"><span>Obrigatório envio de:<br><br> 01 documento pessoal com foto (ex: RG, Carteira de Trabalho)<br><br>01 documento comprobatório da categoria selecionada (ex: comprovante de matrícula discentes, CTPS docentes)</span></a>
                                             <input
                                                 class="form-control {{ $errors->has('doc_user') ? 'is-invalid' : '' }}"
                                                 type="file"
@@ -135,7 +137,7 @@
                                             >
                                             <div class="invalid-feedback text-left">{{ $errors->first('doc_user') }}</div>
                                         </td>
-
+                                        
                                         <td class="col-12 border-0">
                                             <input type="hidden" id="user_id" name="user_id" />
 
@@ -169,6 +171,36 @@
             </div>
         </div>
     @endif
+
+    <style>
+        a.tip {
+            border-bottom: 1px;
+            text-decoration: none
+        }
+        a.tip:hover {
+            cursor: help;
+            position: relative
+        }
+        a.tip span {
+            display: none
+        }
+        a.tip:hover span {
+            border: #c0c0c0 1px solid;
+            padding: 5px 20px 5px 5px;
+            display: block;
+            z-index: 100;
+            background: whitesmoke no-repeat 100% 5%;
+            left: 0px;
+            margin: 10px;
+            width: 250px;
+            position: absolute;
+            top: 10px;
+            color: grey;
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+        </style>
 
 @endsection
 
