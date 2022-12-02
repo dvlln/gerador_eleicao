@@ -6,6 +6,7 @@ use App\Http\Controllers\User\{userController, eleicaoController as userEleicaoC
 use App\Http\Controllers\Admin\{adminController, eleicaoController, docUserController};
 use App\Http\Controllers\Perfil\perfilController;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
@@ -67,12 +68,10 @@ Route::redirect('/', '/login');
 // END
 
 // RESET PASSWORD
-    // ACCESS VIEW TO SEND EMAIL TO RESET PASSWORD
     Route::get('/forgot-password', function () {
         return view('auth.forgot-password');
     })->middleware('guest')->name('password.request');
 
-    // SAVING DATA IN DATABASE
     Route::post('/forgot-password', function (Request $request) {
         $request->validate(['email' => 'required|email']);
 
@@ -85,37 +84,33 @@ Route::redirect('/', '/login');
                     : back()->withErrors(['email' => __($status)]);
     })->middleware('guest')->name('password.email');
 
-    // ACCESS VIEW TO RESET PASSWORD
-    Route::get('/reset-password/{token}', function ($token) {
-        return view('auth.reset-password', ['token' => $token]);
+    Route::get('/reset-password/{token}', function ($token, Request $request) {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email
+        ]);
     })->middleware('guest')->name('password.reset');
 
-    // UPDATE PASSWORD
     Route::post('/reset-password', function (Request $request) {
         $request->validate([
-            'token' => 'required',
+            'token' => '',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|confirmed',
         ]);
 
-        // $status = Password::reset(
-        //     $request->only('email', 'password', 'password_confirmation', 'token'),
-        //     function ($user, $password) {
-        //         $user->forceFill([
-        //             'password' => Hash::make($password)
-        //         ])->setRememberToken(Str::random(60));
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => $password
+                ])->setRememberToken(Str::random(60));
 
-        //         $user->save();
+                $user->save();
 
-        //         event(new PasswordReset($user));
-        //     }
-        // );
-
-        $request->user()->fill([
-            'password' => bcrypt($request->password)
-        ])->save();
-
+                event(new PasswordReset($user));
+            }
+            );
         return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
+            ? redirect()->route('auth.login.home')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');

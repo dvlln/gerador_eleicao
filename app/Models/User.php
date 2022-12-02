@@ -20,9 +20,9 @@ class User extends Authenticatable implements CanResetPassword
     protected $hidden = ['password'];
 
     //mutators
-    public function setPasswordAttribute($value){
-        $this->attributes['password'] = bcrypt($value); //CRIPTOGRAFA A SENHA
-    }
+    // public function setPasswordAttribute($value){
+    //     $this->attributes['password'] = bcrypt($value); //CRIPTOGRAFA A SENHA
+    // }
 
     //relationships
     public function eleicoes(){

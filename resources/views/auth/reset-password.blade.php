@@ -49,7 +49,8 @@
                                         >
                                     </div>
                                 </div>
-                                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                                <input type="hidden" name="token" value="{{ $token }}">
+                                <input type="hidden" name="email" value="{{ $email }}">
                                 <button type="submit" class="btn btn-success btn-block my-1">
                                     Enviar
                                 </button>
