@@ -8,6 +8,9 @@ use App\Models\{Eleicao, User};
 use App\Http\Requests\Admin\acaoRequest;
 use Illuminate\Support\Facades\Validator;
 
+use App\Mail\docMail;
+use Illuminate\Support\Facades\Mail;
+
 class docUserController extends Controller
 {
     public function approve(Eleicao $eleicao, User $user){
@@ -16,6 +19,8 @@ class docUserController extends Controller
             $data['doc_user_status'] = 'aprovado';
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
+
+            Mail::to($user->email)->send(new docUser());
 
             return back()->with('success', 'Aprovado com sucesso');
         } catch (\Throwable $th) {
@@ -41,6 +46,8 @@ class docUserController extends Controller
             $data['doc_user_message'] = $request->doc_user_message;
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
+
+            Mail::to($to)->send(new docUser());
 
             return back()->with('success', 'Reprovado com sucesso');
         } catch (\Throwable $th) {
