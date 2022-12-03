@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\{Eleicao, User};
 use App\Http\Requests\Admin\acaoRequest;
 use Illuminate\Support\Facades\Validator;
@@ -14,18 +13,19 @@ use Illuminate\Support\Facades\Mail;
 class docUserController extends Controller
 {
     public function approve(Eleicao $eleicao, User $user){
-        try {
+        // try {
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'aprovado';
 
+            $url = 'admin.eleicao.approve';
+            Mail::to($user->email)->send(new docMail($url));
+
             $eleicao->users()->updateExistingPivot($user->id, $data);
 
-            Mail::to($user->email)->send(new docUser());
-
             return back()->with('success', 'Aprovado com sucesso');
-        } catch (\Throwable $th) {
-            return back()->with('warning', 'Aprovação falhou');
-        }
+        // } catch (\Throwable $th) {
+        //     return back()->with('warning', 'Aprovação falhou');
+        // }
     }
 
     public function deny(Eleicao $eleicao, User $user, acaoRequest $request){
@@ -46,8 +46,9 @@ class docUserController extends Controller
             $data['doc_user_message'] = $request->doc_user_message;
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
+            $url = route('admin.eleicao.deny');
 
-            Mail::to($to)->send(new docUser());
+            Mail::to($user->email)->send(new docMail($url));
 
             return back()->with('success', 'Reprovado com sucesso');
         } catch (\Throwable $th) {

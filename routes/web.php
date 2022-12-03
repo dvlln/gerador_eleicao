@@ -52,6 +52,9 @@ Route::redirect('/', '/login');
 
     // VOTAR
     Route::PUT('user/eleicao/{eleicao}/votar', [userEleicaoController::class, 'vote'])->name('user.eleicao.vote')->middleware('role:user', 'auth');
+
+    // ENVIAR EMAIL
+    Route::get('/', 'NameController@method')->name('home');
 // END
 
 // EDIÇÃO

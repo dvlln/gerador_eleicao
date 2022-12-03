@@ -18,9 +18,9 @@ class docMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($url)
     {
-        return $this->from('allanfranco2010@gmail.com')->markdown('emails.eleicao.docMail');
+        $this->url = $url;
     }
 
     /**
@@ -31,7 +31,7 @@ class docMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Status de aprovação do documento de inscrição na eleição',
+            subject: 'Aprovação do documento de inscrição',
         );
     }
 
@@ -44,6 +44,9 @@ class docMail extends Mailable
     {
         return new Content(
             markdown: 'emails.eleicao.docMail',
+            with: [
+                'url' => $this->url,
+            ]
         );
     }
 
