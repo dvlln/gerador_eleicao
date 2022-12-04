@@ -81,6 +81,10 @@
                 <button class="btn btn-block btn-primary mt-3" type="submit">Enviar</button>
             </div>
         </form>
+        <hr>
+        <div class="d-flex flex-row-reverse">
+            <a class="small" href="{{ route('auth.login.home') }}">Já tem uma conta? Faça login</a>
+        </div>
     </div>
 </div>
 
