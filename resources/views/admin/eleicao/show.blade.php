@@ -179,6 +179,18 @@
                                                         </button>
                                                     </form>
 
+                                                    {{-- <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input
+                                                            type="hidden"
+                                                            value="TESTE 123"
+                                                            name="doc_user_message">
+                                                        <button class="btn btn-sm btn-danger mr-2">
+                                                            <i class="fa-solid fa-check fa-l"></i>
+                                                        </button>
+                                                    </form> --}}
+
                                                     {{-- REPROVAR O USUARIO --}}
                                                     <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" id="buttonReprovar_{{ $user->id }}">
                                                         <i class="fa-solid fa-xmark fa-l"></i>

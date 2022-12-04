@@ -41,4 +41,6 @@ class Eleicao extends Model
         return Carbon::parse($this->end_date_eleicao)->format('d/m/Y H:i');
     }
 
+    // mutators
+
 }

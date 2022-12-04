@@ -26,7 +26,7 @@ class passwordController extends Controller
         );
 
         return $status === Password::RESET_LINK_SENT
-                    ? redirect()->route('auth.login.home')->with('success', $status)
+                    ? redirect()->route('auth.login.home')->with('success', 'Email enviado')
                     : back()->withErrors(['email' => __($status)]);
     }
 
@@ -50,7 +50,7 @@ class passwordController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => bcrypt($password)
+                    'password' => $password
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
@@ -60,7 +60,7 @@ class passwordController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-        ? redirect()->route('auth.login.home')->with('success', $status)
+        ? redirect()->route('auth.login.home')->with('success', 'Senha redefinida')
         : back()->withErrors(['email' => [__($status)]]);
     }
 }

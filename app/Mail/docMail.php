@@ -18,9 +18,14 @@ class docMail extends Mailable
      *
      * @return void
      */
-    public function __construct($url)
+    public function __construct($url, $nome, $resposta, $motivo, $inicioData, $fimData)
     {
         $this->url = $url;
+        $this->nome = $nome;
+        $this->resposta = $resposta;
+        $this->motivo = $motivo;
+        $this->inicioData = $inicioData;
+        $this->fimData = $fimData;
     }
 
     /**
@@ -46,6 +51,11 @@ class docMail extends Mailable
             markdown: 'emails.eleicao.docMail',
             with: [
                 'url' => $this->url,
+                'nome' => $this->nome,
+                'resposta' => $this->resposta,
+                'motivo' => $this->motivo,
+                'inicioData' => $this->inicioData,
+                'fimData' => $this->fimData,
             ]
         );
     }
