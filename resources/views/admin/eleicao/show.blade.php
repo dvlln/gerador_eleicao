@@ -3,7 +3,7 @@
 @section('title', $eleicoes->name)
 
 @section('import')
-    @if ($duringDepuracao)
+    @if ($duringInscricao)
         {{-- IMPORTAR USUARIOS POR CSV --}}
         <button class="btn btn-primary mb-2" type="button" id="buttonImport">Importar usuário</button>
 
@@ -19,6 +19,14 @@
                     <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">nome</li>
+                                <li class="list-group-item">email</li>
+                                <li class="list-group-item">cpf</li>
+                                <li class="list-group-item">senha</li>
+                                <li class="list-group-item">categoria (candidato, eleitor)</li>
+                                <li class="list-group-item">ocupação (discente, doscente, pai...)</li>
+                            </ul>
                             <input
                                 class="form-control {{ $errors->has('import') ? 'is-invalid' : '' }}"
                                 type="file"
@@ -52,7 +60,7 @@
                             {{ $eleicoes->start_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Fim inscrição: </span>
+                        <span class="font-weight-bold mb-1">Fim inscrição: </span>
                             {{ $eleicoes->end_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
@@ -71,54 +79,48 @@
                             <span class="font-weight-bold mb-1">Fim eleição: </span>
                             {{ $eleicoes->end_date_eleicao_formatted }}
                         </li>
+                        @if ( $afterEleicao )
+                            <li class="list-group-item">
+                                <span class="font-weight-bold mb-1">Total de votos: </span>
+                                {{ $total }}
+                            </li>
+                        @endif
                         <li class="list-group-item bg-primary">
                             <span class="font-weight-bold text-white mb-1 text-align-center">Candidatos</span>
                         </li>
 
                         {{-- CANDIDATOS --}}
-                        <table class="table m-0">
-                            <thead>
-                                <th>Perfil</th>
-                                <th>Nome</th>
-
-                                {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $afterEleicao )
-                                    <th>Quantid. Votos</th>
-                                @endif
-                            </thead>
-                            <tbody>
-                                @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
-                                    @if ($user->pivot->categoria === 'candidato') {{--LISTAGEM DE APENAS CANDIDATOS --}}
-
-                                        {{-- MARCAÇÃO DO CANDIDATO VITORIOSO NO FIM DA ELEIÇÃO --}}
-                                        @if ($vencedor === $user->id and $afterEleicao)
-                                            <tr class="p-3 mb-2 bg-success text-white">
+                        <div class="row justify-content-center">
+                            @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
+                                @if ($user->pivot->categoria === 'candidato' && $user->pivot->doc_user_status === 'aprovado') {{--LISTAGEM DE APENAS CANDIDATOS APROVADOS --}}
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
+                                        {{-- MUDA O STYLE DO VENCEDOR --}}
+                                        @if ($user->id === $vencedor && $afterEleicao)
+                                        <div class="card mt-2 bg-success text-white" style="width: 15rem;">
                                         @else
-                                            <tr>
+                                        <div class="card mt-2 border-dark" style="width: 15rem;">
                                         @endif
-
-                                        <td><img src="{{ url("storage/user_foto/{$user->foto}") }}" alt="foto_perfil" ></td>
-                                        <td>{{ $user->name }}</td>
-
-                                        {{-- APARECERÁ A QUANTIDADE DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                        @if ( $afterEleicao )
-                                            <td>{{ $user->pivot->voto }}</td>
-                                        @endif
-                                    </tr>
-
-                                    @endif
-                                @endforeach
-
-                                {{-- APARECERÁ O TOTAL DE VOTOS NO FIM DA ELEIÇÃO --}}
-                                @if ( $afterEleicao )
-                                    <tr class="bg-warning text-dark">
-                                        <td class="font-weight-bold ">Total de votos</td>
-                                        <td></td>
-                                        <td>{{ $total }}</td>
-                                    </tr>
+                                            <div class="card-body row justify-content-center">
+                                                <div class="col-12">
+                                                    <img style="width: 12rem;" src="{{ url("storage/perfil/$user->foto") }}" alt="foto_perfil" >
+                                                </div>
+                                                <div class="col-12">
+                                                    <h5 class="card-title mt-2 mb-0">{{ $user->name }}</h5>
+                                                </div>
+                                                <div class="col-12">
+                                                    @if ($afterEleicao)
+                                                        <span>Qtd. votos: {{ $user->pivot->voto }}</span>
+                                                        @if($user->id === $vencedor)
+                                                            <p class="text-danger mt-1 mb-0"><b>VENCEDOR!!!</b></p>
+                                                        @endif
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
-                            </tbody>
-                        </table>
+                            @endforeach
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -171,59 +173,46 @@
                                                     </a>
 
                                                     {{-- APROVAR O USUARIO --}}
-                                                    <form action="{{ route('admin.eleicao.approve', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button class="btn btn-sm btn-success mr-2">
-                                                            <i class="fa-solid fa-check fa-l"></i>
-                                                        </button>
-                                                    </form>
-
-                                                    {{-- <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input
-                                                            type="hidden"
-                                                            value="TESTE 123"
-                                                            name="doc_user_message">
-                                                        <button class="btn btn-sm btn-danger mr-2">
-                                                            <i class="fa-solid fa-check fa-l"></i>
-                                                        </button>
-                                                    </form> --}}
+                                                        <form action="{{ route('admin.eleicao.approve', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button class="btn btn-sm btn-success mr-2" onclick="return confirm('Aprovar usuário?')">
+                                                                <i class="fa-solid fa-check fa-l"></i>
+                                                            </button>
+                                                        </form>
 
                                                     {{-- REPROVAR O USUARIO --}}
-                                                    <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" id="buttonReprovar_{{ $user->id }}">
-                                                        <i class="fa-solid fa-xmark fa-l"></i>
-                                                    </button>
+                                                        <button class="btn btn-sm btn-danger" type="button" data-toggle="modal" id="buttonReprovar_{{ $user->id }}">
+                                                            <i class="fa-solid fa-xmark fa-l"></i>
+                                                        </button>
 
-
-                                                    <div class="modal fade" id="modalReprovar_{{ $user->id }}" role="dialog">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="modal_title">Informe o motivo da reprovação</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
+                                                        <div class="modal fade" id="modalReprovar_{{ $user->id }}" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modal_title">Informe o motivo da reprovação</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="modal-body">
+                                                                            <textarea
+                                                                                class="form-control {{ $errors->has('doc_user_message') ? 'is-invalid' : '' }}"
+                                                                                rows="10"
+                                                                                name="doc_user_message"></textarea>
+                                                                                <div class="invalid-feedback">{{ $errors->first('doc_user_message') }}</div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
-                                                                <form action="{{ route('admin.eleicao.deny', ['eleicao' => $eleicoes->id, 'user' => $user->id]) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <div class="modal-body">
-                                                                        <textarea
-                                                                            class="form-control {{ $errors->has('doc_user_message') ? 'is-invalid' : '' }}"
-                                                                            rows="10"
-                                                                            name="doc_user_message"></textarea>
-                                                                            <div class="invalid-feedback">{{ $errors->first('doc_user_message') }}</div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="submit" class="btn btn-success">Salvar</button>
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-                                                                    </div>
-                                                                </form>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                 </div>
                                             </td>
 

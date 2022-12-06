@@ -329,8 +329,7 @@ class eleicaoController extends Controller
                     'email' => $importData[1],
                     'cpf' => $importData[2],
                     'password' => $importData[3],
-                    'role' => $importData[4],
-                    'foto' => $importData[5]
+                    'role' => 'user',
                 ]);
             }
             DB::commit();
@@ -344,8 +343,8 @@ class eleicaoController extends Controller
                 $user_id = User::where('name', $importData[0])->value('id');
                 $eleicao->users()->attach([
                     $user_id => [
-                        'categoria' => $importData[6],
-                        'ocupacao' => $importData[7],
+                        'categoria' => $importData[4],
+                        'ocupacao' => $importData[5],
                         'doc_user_status' => 'aprovado',
                     ]
                 ]);

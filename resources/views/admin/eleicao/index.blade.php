@@ -39,7 +39,7 @@
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="btn btn-sm btn-danger confirm-submit" type="submit">
+                                <button class="btn btn-sm btn-danger confirm-submit" type="submit" onclick="return confirm('Remover eleição?')">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </form>

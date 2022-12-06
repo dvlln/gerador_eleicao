@@ -3,7 +3,7 @@
 
 @if($resposta === 'aprovado')
     Parabéns!!! seus documentos foram aprovados.
-    Agora só resta esperar a eleição começar para darmos andamento na eleição.
+    Agora só resta esperar a eleição começar para darmos andamento.
 
     Data inicial da eleição: {{ $inicioData }}
     Data final da eleição: {{ $fimData }}
