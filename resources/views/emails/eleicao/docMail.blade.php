@@ -7,7 +7,6 @@
 
     Data inicial da eleição: {{ $inicioData }}
     Data final da eleição: {{ $fimData }}
-
 @else
     Infelizmente seus documentos foram recusados, segue abaixo o motivo e o periodo para reenvio
 
@@ -17,6 +16,6 @@
     Data final da depuracao: {{ $fimData }}
 @endif
 
-Atenciosamente,<br>
+Atenciosamente,
 Administrador 😎
 </x-mail::message>

@@ -80,13 +80,20 @@ class eleicaoController extends Controller
         $documento = $request->doc_user->storeAs('doc/eleicao_user/'.$eleicao->id, $nameFile, 'public');
         $data['doc_user'] = $nameFile;
 
-        $eleicao->users()->attach([
-            $data['user_id'] => [
-                'categoria' => $data['categoria'],
-                'ocupacao' => $data['ocupacao'],
-                'doc_user' => $data['doc_user']
-            ]
-        ]);
+        try{
+            $eleicao->users()->attach([
+                $data['user_id'] => [
+                    'categoria' => $data['categoria'],
+                    'ocupacao' => $data['ocupacao'],
+                    'doc_user' => $data['doc_user'],
+                    'doc_user_status' => 'pendente'
+                ]
+            ]);
+        }catch (\Throwable $th) {}
+
+        try{
+            $eleicao->users()->updateExistingPivot(Auth::id(), $data);
+        }catch(\Throwable $th) {}
 
         return back()->with('success', 'Você se inscreveu na eleição');
     }

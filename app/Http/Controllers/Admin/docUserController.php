@@ -13,19 +13,18 @@ use Illuminate\Support\Facades\Mail;
 class docUserController extends Controller
 {
     public function approve(Eleicao $eleicao, User $user){
-        // try {
+        try {
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'aprovado';
 
-            $url = 'admin.eleicao.approve';
-            Mail::to($user->email)->send(new docMail($url, $user['nome'], $data['doc_user_status'], null, $eleicao['start_date_eleicao_formatted'], $eleicao['end_date_eleicao_formatted']));
+            Mail::to($user->email)->send(new docMail('admin.eleicao.approve', $data['doc_user_status'], null, $eleicao['start_date_eleicao_formatted'], $eleicao['end_date_eleicao_formatted']));
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
 
             return back()->with('success', 'Aprovado com sucesso');
-        // } catch (\Throwable $th) {
-        //     return back()->with('warning', 'Aprovação falhou');
-        // }
+        } catch (\Throwable $th) {
+            return back()->with('warning', 'Aprovação falhou');
+        }
     }
 
     public function deny(Eleicao $eleicao, User $user, acaoRequest $request){
@@ -40,20 +39,18 @@ class docUserController extends Controller
             return back()->with('modalOpen', '4')->with('userId', $user->id)->withErrors($validator);
         }
 
-        // try {
+        try {
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'reprovado';
             $data['doc_user_message'] = $request->doc_user_message;
 
-            $url = route('admin.eleicao.deny');
-
             $eleicao->users()->updateExistingPivot($user->id, $data);
 
-            Mail::to($user->email)->send(new docMail($url, $user['nome'], $data['doc_user_status'], $data['doc_user_message'], $eleicao['start_date_depuracao_formatted'], $eleicao['end_date_depuracao_formatted']));
+            Mail::to($user->email)->send(new docMail('admin.eleicao.deny', $data['doc_user_status'], $data['doc_user_message'], $eleicao['start_date_depuracao_formatted'], $eleicao['end_date_depuracao_formatted']));
 
             return back()->with('success', 'Reprovado com sucesso');
-        // } catch (\Throwable $th) {
-        //     return back()->with('warning', 'Reprovação falhou');
-        // }
+        } catch (\Throwable $th) {
+            return back()->with('warning', 'Reprovação falhou');
+        }
     }
 }

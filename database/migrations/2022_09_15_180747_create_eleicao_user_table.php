@@ -21,7 +21,7 @@ class CreateEleicaoUserTable extends Migration
 
             // LIDANDO COM DOCUMENTO
             $table->string('doc_user')->nullable(); // DOCUMENTO DO USUARIO PARA ESPECIFICA ELEIÇÃO
-            $table->string('doc_user_status')->default('pendente'); // STATUS APROVAÇÃO DO DOCUMENTO ( PENDENTE, APROVADO, NEGADO)
+            $table->string('doc_user_status'); // STATUS APROVAÇÃO DO DOCUMENTO ( PENDENTE, APROVADO, NEGADO)
             $table->string('doc_user_message')->nullable();
 
 

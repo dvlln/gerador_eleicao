@@ -5,11 +5,35 @@
 @section('content')
 
     {{-- INFORMAÇÕES GERAIS --}}
-    @if($duringEleicao && $votacao_status === 1 && !session()->has('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Voto já efetuado
-        </div>
+    @if(!session()->has('success'))
+        @if($duringEleicao && $votacao_status === 1)
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Voto já efetuado
+            </div>
+
+        @elseif(($duringInscricao || $duringDepuracao) && $doc_user_status === 'pendente')
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Aprovação pendente, favor aguardar.
+            </div>
+        @elseif($duringInscricao && $doc_user_status === 'reprovado')
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Documento reprovado, favor aguardar inicio da depuração.
+            </div>
+        @elseif(($duringInscricao || $duringDepuracao) && $doc_user_status === 'aprovado')
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Documento aprovado, favor aguardar inicio da eleição.
+            </div>
+        @elseif($duringDepuracao && $doc_user_status === 'reprovado')
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Documento reprovado, favor alterar antes que o tempo de depuracao acabe.
+            </div>
+        @elseif($duringEleicao && $doc_user_status != 'aprovado')
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Documento reprovado, não poderá participar da eleição.
+            </div>
+        @endif
     @endif
+
     <div class="row">
         <div class="col-12">
             <div class="card ">
@@ -44,8 +68,8 @@
                             <span class="font-weight-bold text-white text-align-center"><h6 class="m-0">Candidatos</h6></span>
                         </li>
                     </ul>
+                    {{-- CANDIDATOS --}}
                     <div class="row justify-content-center">
-                        {{-- CANDIDATOS --}}
                         @foreach($eleicoes->users as $user) {{-- LISTAGEM DE USUARIOS NA ELEICAO --}}
                             @if ($user->pivot->categoria === 'candidato' && $user->pivot->doc_user_status === 'aprovado') {{--LISTAGEM DE APENAS CANDIDATOS APROVADOS --}}
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-1" align="center">
@@ -56,13 +80,13 @@
                                     <div class="card mt-2 border-dark" style="width: 15rem;">
                                     @endif
                                         <div class="card-body">
-                                            <img style="width: 12rem; margin-bottom: 4px;" src="{{ url("storage/perfil/{$user->foto}") }}" alt="foto_perfil" >
-                                            <h5 class="card-title">{{ $user->name }}</h5>
+                                            <img style="width: 12rem;" src="{{ url("storage/perfil/$user->foto") }}" alt="foto_perfil" >
+                                            <h5 class="card-title mt-2 mb-0">{{ $user->name }}</h5>
                                             @if ($user->id === $vencedor && $afterEleicao)
-                                                <p class="text-danger"><b>VENCEDOR!!!</b></p>
+                                                <p class="text-danger mt-1 mb-0"><b>VENCEDOR!!!</b></p>
                                             @endif
                                             @if ($duringEleicao && $user->pivot->doc_user_status === 'aprovado' && $user->pivot->votacao_status === 0)
-                                                <form method="POST" action="{{ route('user.eleicao.vote', $eleicoes->id) }}">
+                                                <form class="mt-2" method="POST" action="{{ route('user.eleicao.vote', $eleicoes->id) }}">
                                                     @csrf
                                                     @method('PUT')
                                                     <input type="hidden" name="candidatoId" value="{{ $user->id }}">
@@ -82,7 +106,7 @@
     </div>
 
     {{-- INSCRIÇÃO --}}
-    @if( $duringInscricao || ($duringDepuracao && $doc_user_status != 'aprovado') )
+    @if($duringInscricao || ($duringDepuracao && $doc_user_status != 'aprovado'))
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
@@ -137,7 +161,7 @@
                                             >
                                             <div class="invalid-feedback text-left">{{ $errors->first('doc_user') }}</div>
                                         </td>
-                                        
+
                                         <td class="col-12 border-0">
                                             <input type="hidden" id="user_id" name="user_id" />
 
@@ -145,26 +169,39 @@
                                         </td>
                                     </tr>
                                 </form>
+                            @else
+                                {{-- REMOVER INSCRIÇÃO --}}
+                                @if ($duringInscricao && $doc_user_status === 'pendente')
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-12 col-md-4 my-1">
+                                            <form method="POST" action='{{ route('user.eleicoes.destroy', $eleicoes->id) }}'>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-md btn-block btn-danger" onclick="return confirm('Remover inscrição?')">Remover inscrição</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-12 col-md-4 my-1">
+                                            <a class="btn btn-md btn-block btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$eleicoes->users->find(Auth::id())->pivot->doc_user}") }}' target="_blank">
+                                                Visualizar documentos
+                                            </a>
+                                        </div>
+                                    </div>
+                                @elseif($duringDepuracao && $doc_user_status === 'reprovado')
+                                    <div class="row justify-content-center">
+                                        <form method="POST" action='{{ route('user.eleicao.store', $eleicoes->id) }}' enctype="multipart/form-data">
+                                            <div class="col-12 col-md-6 my-1">
+                                                @csrf
+                                                <input type="hidden" name="categoria" value="{{ $eleicoes->users->find(Auth::id())->pivot->categoria }}">
+                                                <input type="hidden" name="ocupacao" value="{{ $eleicoes->users->find(Auth::id())->pivot->ocupacao }}">
+                                                <input type="file" class="form-control" name="doc_user">
+                                            </div>
+                                            <div class="col-12 col-md-4 my-1">
+                                                <button class="btn btn-md btn-block btn-danger">Enviar documento</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                @endif
                             @endif
-
-                            {{-- REMOVER INSCRIÇÃO --}}
-                            @if( $userSubscribedOnEleicao)
-                            <div class="row justify-content-center">
-                                <div class="col-12 col-md-2">
-                                    <form method="POST" action='{{ route('user.eleicoes.destroy', $eleicoes->id) }}'>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-md btn-block btn-danger" onclick="return confirm('Remover inscrição?')">Remover inscrição</button>
-                                    </form>
-                                </div>
-                                <div class="col-12 col-md-2">
-                                    <a class="btn btn-md btn-block btn-info mr-2" href='{{ url("storage/doc/eleicao_user/{$eleicoes->id}/{$eleicoes->users->find(Auth::id())->pivot->doc_user}") }}' target="_blank">
-                                        Visualizar documentos
-                                    </a>
-                                </div>
-                            </div>
-                            @endif
-                            </tbody>
                         </table>
                     </div>
                 </div>
