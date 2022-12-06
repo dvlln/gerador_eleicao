@@ -60,18 +60,46 @@ class eleicaoController extends Controller
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
-        // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
+        // VALIDANDO TEMPO DA INSCRICAO, DEPURACAO E ELEICAO
         $validator = Validator::make(request()->all(), []);
-        if($data['end_date_inscricao'] <= $data['start_date_inscricao']){
-            if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
-                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior que o inicial')->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
-                return back()->withErrors($validator)->withInput();
+
+        if($data['start_date_inscricao'] >= $data['end_date_inscricao']){
+            $validator->errors()
+                ->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
+        }
+
+        if($data['start_date_depuracao'] < $data['end_date_inscricao']){
+            if($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+                $validator->errors()
+                    ->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição')
+                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
             }else{
-                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
-                return back()->withErrors($validator)->withInput();
+                $validator->errors()->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição');
             }
-        } else if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
-            $validator->errors()->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+        }
+        elseif($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+            $validator->errors()
+                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+        }
+
+        if($data['start_date_eleicao'] < $data['end_date_depuracao']){
+            if($data['start_date_eleicao'] >= $data['end_date_eleicao']){
+                $validator->errors()
+                    ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração')
+                    ->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+            }else{
+                $validator->errors()
+                ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração');
+            }
+        }
+        elseif($data['start_date_eleicao'] >= $data['end_date_eleicao']){
+            $validator->errors()
+                ->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+        }
+
+        $errors = $validator->errors();
+
+        if(sizeof($errors->messages()) != 0){
             return back()->withErrors($validator)->withInput();
         }
 
@@ -180,17 +208,46 @@ class eleicaoController extends Controller
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
         // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
+        // VALIDANDO TEMPO DA INSCRICAO, DEPURACAO E ELEICAO
         $validator = Validator::make(request()->all(), []);
-        if($data['end_date_inscricao'] <= $data['start_date_inscricao']){
-            if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
-                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior que o inicial')->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
-                return back()->withErrors($validator)->withInput();
+
+        if($data['start_date_inscricao'] >= $data['end_date_inscricao']){
+            $validator->errors()
+                ->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
+        }
+
+        if($data['start_date_depuracao'] < $data['end_date_inscricao']){
+            if($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+                $validator->errors()
+                    ->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição')
+                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
             }else{
-                $validator->errors()->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
-                return back()->withErrors($validator)->withInput();
+                $validator->errors()->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição');
             }
-        } else if($data['end_date_eleicao'] <= $data['start_date_eleicao']){
-            $validator->errors()->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+        }
+        elseif($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+            $validator->errors()
+                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+        }
+
+        if($data['start_date_eleicao'] < $data['end_date_depuracao']){
+            if($data['start_date_eleicao'] >= $data['end_date_eleicao']){
+                $validator->errors()
+                    ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração')
+                    ->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+            }else{
+                $validator->errors()
+                ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração');
+            }
+        }
+        elseif($data['start_date_eleicao'] >= $data['end_date_eleicao']){
+            $validator->errors()
+                ->add('end_time_eleicao', 'Horario final deve ser maior que o inicial');
+        }
+
+        $errors = $validator->errors();
+
+        if(sizeof($errors->messages()) != 0){
             return back()->withErrors($validator)->withInput();
         }
 
