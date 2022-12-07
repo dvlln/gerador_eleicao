@@ -17,7 +17,7 @@ class docUserController extends Controller
             $data = $eleicao->users()->find($user->id)->pivot->toArray();
             $data['doc_user_status'] = 'aprovado';
 
-            // Mail::to($user->email)->send(new docMail('admin.eleicao.approve', $data['doc_user_status'], null, $eleicao['start_date_eleicao_formatted'], $eleicao['end_date_eleicao_formatted']));
+            Mail::to($user->email)->send(new docMail('admin.eleicao.approve', $data['doc_user_status'], null, $eleicao['start_date_eleicao_formatted'], $eleicao['end_date_eleicao_formatted']));
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
 
@@ -46,7 +46,7 @@ class docUserController extends Controller
 
             $eleicao->users()->updateExistingPivot($user->id, $data);
 
-            // Mail::to($user->email)->send(new docMail('admin.eleicao.deny', $data['doc_user_status'], $data['doc_user_message'], $eleicao['start_date_depuracao_formatted'], $eleicao['end_date_depuracao_formatted']));
+            Mail::to($user->email)->send(new docMail('admin.eleicao.deny', $data['doc_user_status'], $data['doc_user_message'], $eleicao['start_date_depuracao_formatted'], $eleicao['end_date_depuracao_formatted']));
 
             return back()->with('success', 'Reprovado com sucesso');
         } catch (\Throwable $th) {
