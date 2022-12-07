@@ -80,6 +80,9 @@ class eleicaoController extends Controller
         $documento = $request->doc_user->storeAs('doc/eleicao_user/'.$eleicao->id, $nameFile, 'public');
         $data['doc_user'] = $nameFile;
 
+        $data['doc_user_status'] = 'pendente';
+        unset($data['_token']);
+
         try{
             $eleicao->users()->attach([
                 $data['user_id'] => [
@@ -89,13 +92,15 @@ class eleicaoController extends Controller
                     'doc_user_status' => 'pendente'
                 ]
             ]);
+            return back()->with('success', 'Você se inscreveu na eleição');
         }catch (\Throwable $th) {}
 
         try{
             $eleicao->users()->updateExistingPivot(Auth::id(), $data);
+            return back()->with('success', 'Inscrição atualizada');
         }catch(\Throwable $th) {}
 
-        return back()->with('success', 'Você se inscreveu na eleição');
+        return back()->with('warning', 'Não foi possivel se inscrever/atualizar inscrição');
     }
 
     public function destroy(Eleicao $eleicao)
