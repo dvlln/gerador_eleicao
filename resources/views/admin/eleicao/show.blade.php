@@ -25,7 +25,7 @@
                                 <li class="list-group-item">cpf</li>
                                 <li class="list-group-item">senha</li>
                                 <li class="list-group-item">categoria (candidato, eleitor)</li>
-                                <li class="list-group-item">ocupação (discente, doscente, pai...)</li>
+                                <li class="list-group-item">ocupação (discente, docente, pai...)</li>
                             </ul>
                             <input
                                 class="form-control {{ $errors->has('import') ? 'is-invalid' : '' }}"
