@@ -146,13 +146,13 @@
                                                     <option value="">Selecionar Ocupação</option>
                                                     <option value="docente">Docente</option>
                                                     <option value="discente">Discente</option>
-                                                    <option value="pai/mãe">Pai/mãe</option>
+                                                    <option value="pai/mãe">Pai, mãe ou responsável</option>
                                                 </select>
                                                 <div class="invalid-feedback text-left">{{ $errors->first('ocupacao') }}</div>
                                         </td>
 
                                         <td class="col-12 border-0">
-                                            <label for="doc_user">Documentos </label> <a class="fa-solid fa-circle-info tip"><span>Obrigatório envio de:<br><br> 01 documento pessoal com foto (ex: RG, Carteira de Trabalho)<br><br>01 documento comprobatório da categoria selecionada (ex: comprovante de matrícula discentes, CTPS docentes)</span></a>
+                                            <label for="doc_user">Documentos </label> <a class="fa-solid fa-circle-info tip"><span>Obrigatório envio em PDF:<br><br> 01 documento pessoal com foto (ex: RG, Carteira de Trabalho)<br><br>01 documento comprobatório da categoria selecionada (ex: comprovante de matrícula para discentes)</span></a>
                                             <input
                                                 class="form-control {{ $errors->has('doc_user') ? 'is-invalid' : '' }}"
                                                 type="file"
