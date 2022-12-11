@@ -17,12 +17,13 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <i type="button" class="fa-solid fa-circle-info" data-toggle="tooltip" data-placement="top" title="
-nome
-email
-cpf
-categoria
-ocupacao"> Documentos</i>
+                        <i type="button" class="fa-solid fa-circle-question" data-toggle="tooltip" data-placement="top" title="
+    Obrigatório envio em CSV
+    - nome
+    - email
+    - cpf
+    - categoria
+    - ocupacao"> Documentos</i>
                         <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                             <input

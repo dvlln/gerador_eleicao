@@ -11,7 +11,14 @@ use App\Services\EleicaoService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+// Validação
 use Illuminate\Support\Facades\Validator;
+use App\Rules\Cpf;
+use Illuminate\Support\Str;
+
+// MAIL
+use App\Mail\importMail;
+use Illuminate\Support\Facades\Mail;
 
 
 // use Illuminate\Support\Facades\Mail;
@@ -280,14 +287,14 @@ class eleicaoController extends Controller
         $file = $request->validated();
 
         // Validando foto
+        $messages = ['required' => 'Campo obrigatorio'];
         $validator = Validator::make(request()->all(), [
             'import' => 'mimes:csv,txt|required'
-        ]);
+        ], $messages);
 
         if($validator->fails()){
             return back()->with('modalOpen', '3')->withErrors($validator);
         }
-
 
         $filename = $file['import']->getClientOriginalName();
 
@@ -324,13 +331,16 @@ class eleicaoController extends Controller
         DB::beginTransaction();
         try {
             foreach ($importData_arr as $importData) {
+                $password = Str::random(8);
                 User::create([
                     'name' => $importData[0],
                     'email' => $importData[1],
                     'cpf' => $importData[2],
-                    'password' => $importData[3],
+                    'password' => $password,
                     'role' => 'user',
                 ]);
+
+                Mail::to($importData[1])->send(new importMail('admin.eleicao.import', $importData[1], $password, $eleicao->name));
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -343,8 +353,8 @@ class eleicaoController extends Controller
                 $user_id = User::where('name', $importData[0])->value('id');
                 $eleicao->users()->attach([
                     $user_id => [
-                        'categoria' => $importData[4],
-                        'ocupacao' => $importData[5],
+                        'categoria' => $importData[3],
+                        'ocupacao' => $importData[4],
                         'doc_user_status' => 'aprovado',
                     ]
                 ]);

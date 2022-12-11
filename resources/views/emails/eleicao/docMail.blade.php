@@ -16,6 +16,6 @@
     Data final da depuracao: {{ $fimData }}
 @endif
 
-Atenciosamente,
+Atenciosamente,<br>
 Administrador 😎
 </x-mail::message>

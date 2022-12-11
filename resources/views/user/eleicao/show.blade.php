@@ -153,11 +153,10 @@
 
                                         <td class="col-12 border-0">
                                             <label for="doc_user">Documentos </label>
-                                            <i type="button" class="fa-solid fa-circle-info" data-toggle="tooltip" data-placement="top" title="
-Obrigatório envio em PDF:
-
-01 documento pessoal com foto (ex. RG, Carteira de Trabalho, Habilitação)
-01 documento comprobatório da categoria selecionada (ex.: RA para Discentes)"></i>
+                                            <i type="button" class="fa-solid fa-circle-question" data-toggle="tooltip" data-placement="top" title="
+- Obrigatório envio em PDF
+- 01 documento pessoal com foto (ex. RG, Carteira de Trabalho, Habilitação)
+- 01 documento comprobatório da categoria selecionada (ex.: RA para Discentes)"></i>
                                             <input
                                                 class="form-control {{ $errors->has('doc_user') ? 'is-invalid' : '' }}"
                                                 type="file"
