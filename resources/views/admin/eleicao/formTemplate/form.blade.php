@@ -226,7 +226,7 @@
         {{-- END ELEICAO --}}
 
         {{-- SUBMIT --}}
-            <div class="col-12">
+            <div class="col-12 mt-4">
                 <button type="submit" class="btn btn-success btn-block">Salvar</button>
             </div>
         {{-- END SUBMIT --}}

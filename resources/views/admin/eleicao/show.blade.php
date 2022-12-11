@@ -31,7 +31,7 @@
                                 type="file"
                                 id="import"
                                 name='import'
-                            />
+                            >
                             <div class="invalid-feedback">{{ $errors->first('import') }}</div>
                     </div>
                         <div class="modal-footer">

@@ -82,6 +82,9 @@
                                         <div class="card-body">
                                             <img style="width: 12rem;" src="{{ url("storage/perfil/$user->foto") }}" alt="foto_perfil" >
                                             <h5 class="card-title mt-2 mb-0">{{ $user->name }}</h5>
+                                            @if($afterEleicao)
+                                                <p>Porcent. de votos: {{ round(($user->pivot->voto/$total)*100) }}%</p>
+                                            @endif
                                             @if ($user->id === $vencedor && $afterEleicao)
                                                 <p class="text-danger mt-1 mb-0"><b>VENCEDOR!!!</b></p>
                                             @endif
@@ -154,9 +157,9 @@
                                         <td class="col-12 border-0">
                                             <label for="doc_user">Documentos </label>
                                             <i type="button" class="fa-solid fa-circle-question" data-toggle="tooltip" data-placement="top" title="
-- Obrigatório envio em PDF
-- 01 documento pessoal com foto (ex. RG, Carteira de Trabalho, Habilitação)
-- 01 documento comprobatório da categoria selecionada (ex.: RA para Discentes)"></i>
+    - Obrigatório envio em PDF
+    - 01 documento pessoal com foto (ex. RG, Carteira de Trabalho, Habilitação)
+    - 01 documento comprobatório da categoria selecionada (ex.: RA para Discentes)"></i>
                                             <input
                                                 class="form-control {{ $errors->has('doc_user') ? 'is-invalid' : '' }}"
                                                 type="file"
@@ -174,7 +177,7 @@
                                     </tr>
                                 </form>
                             @else
-                                {{-- REMOVER INSCRIÇÃO --}}
+                            {{-- REMOVER INSCRIÇÃO --}}
                                 @if ($duringInscricao && $doc_user_status === 'pendente')
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-12 col-md-4 my-1">

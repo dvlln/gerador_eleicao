@@ -41,6 +41,11 @@ class eleicaoController extends Controller
                       ->where('voto', '=', DB::table('eleicao_user')->where('eleicao_id', '=', $eleicao->id)->max('voto'))
                       ->value('user_id');
 
+        $total = DB::table('eleicao_user')
+                      ->where('eleicao_id', '=', $eleicao->id)
+                      ->where('categoria', '=', 'candidato')
+                      ->sum('voto');
+
         if(is_null($eleicao->users->find(Auth::id()))){
             $doc_user_status = null;
             $votacao_status = null;
@@ -57,6 +62,7 @@ class eleicaoController extends Controller
             'doc_user_status' => $doc_user_status,
             'votacao_status' => $votacao_status,
             'vencedor' => $vencedor,
+            'total' => $total,
 
             'userSubscribedOnEleicao' => EleicaoService::userSubscribedOnEleicao(Auth::id(), $eleicao),
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
