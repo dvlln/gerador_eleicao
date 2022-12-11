@@ -49,7 +49,7 @@
                             {{ $eleicoes->end_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Início homologação: </span>
+                            <span class="font-weight-bold mb-1"> <i type="button" class="fa-solid fa-circle-question fa-small" data-toggle="tooltip" data-placement="top" title="Tempo para ajustar os documentos de inscrição"></i> Início homologação: </span>
                             {{ $eleicoes->start_date_homologacao_formatted }}
                         </li>
                         <li class="list-group-item">

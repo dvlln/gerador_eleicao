@@ -22,7 +22,7 @@
 
             {{-- TITULO --}}
             <div class="col-lg-12">
-                <h3 class="bg-info text-white text-center rounded p-1">INSCRIÇÃO</h3>
+                <h3 class="bg-info text-white text-center rounded p-1">INSCRIÇÃO <i type="button" class="fa-solid fa-circle-question fa-small" data-toggle="tooltip" data-placement="top" title="Tempo para enviar os documentos de inscrição"></i></h3>
             </div>
 
             {{-- DATA INICIAL --}}
@@ -91,7 +91,7 @@
 
             {{-- TITULO --}}
             <div class="col-lg-12">
-                <h3 class="bg-info text-white text-center rounded p-1">HOMOLOGAÇÃO</h3>
+                <h3 class="bg-info text-white text-center rounded p-1">HOMOLOGAÇÃO <i type="button" class="fa-solid fa-circle-question fa-small" data-toggle="tooltip" data-placement="top" title="Tempo para ajustar os documentos de inscrição"></i></h3>
             </div>
 
             {{-- DATA INICIAL --}}
@@ -160,7 +160,7 @@
 
             {{-- TITULO --}}
             <div class="col-lg-12">
-                <h3 class="bg-info text-white text-center rounded p-1">ELEIÇÃO</h3>
+                <h3 class="bg-info text-white text-center rounded p-1">ELEIÇÃO <i type="button" class="fa-solid fa-circle-question fa-small" data-toggle="tooltip" data-placement="top" title="Tempo para votar"></i></h3>
             </div>
 
             {{-- DATA INICIAL --}}
