@@ -13,7 +13,7 @@ class RegisterRequest extends FormRequest
 
     public function rules(){
         return [
-            'name' => 'required',
+            'name' => ['required', 'alpha'],
             'email' => ['required', 'bail', 'email', 'unique:users,email'],
              'cpf' => ['required', new Cpf, 'unique:users,cpf'],
             'password' => ['required', 'min:8', 'confirmed'],
