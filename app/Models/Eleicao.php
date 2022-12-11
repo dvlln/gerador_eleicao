@@ -11,7 +11,7 @@ class Eleicao extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'start_date_inscricao', 'end_date_inscricao', 'start_date_depuracao', 'end_date_depuracao', 'start_date_eleicao', 'end_date_eleicao'];
+    protected $fillable = ['name', 'start_date_inscricao', 'end_date_inscricao', 'start_date_homologacao', 'end_date_homologacao', 'start_date_eleicao', 'end_date_eleicao'];
 
     //relationships
     public function users(){
@@ -26,12 +26,12 @@ class Eleicao extends Model
     public function getEndDateInscricaoFormattedAttribute() {
         return Carbon::parse($this->end_date_inscricao)->format('d/m/Y H:i');
     }
-    public function getStartDateDepuracaoFormattedAttribute() {
-        return Carbon::parse($this->start_date_depuracao)->format('d/m/Y H:i');
+    public function getStartDateHomologacaoFormattedAttribute() {
+        return Carbon::parse($this->start_date_homologacao)->format('d/m/Y H:i');
     }
 
-    public function getEndDateDepuracaoFormattedAttribute() {
-        return Carbon::parse($this->end_date_depuracao)->format('d/m/Y H:i');
+    public function getEndDateHomologacaoFormattedAttribute() {
+        return Carbon::parse($this->end_date_homologacao)->format('d/m/Y H:i');
     }
     public function getStartDateEleicaoFormattedAttribute() {
         return Carbon::parse($this->start_date_eleicao)->format('d/m/Y H:i');

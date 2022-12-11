@@ -55,12 +55,12 @@ class eleicaoController extends Controller
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
         $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
         $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
-        $data['start_date_depuracao'] .= ' '.$data['start_time_depuracao'];
-        $data['end_date_depuracao'] .= ' '.$data['end_time_depuracao'];
+        $data['start_date_homologacao'] .= ' '.$data['start_time_homologacao'];
+        $data['end_date_homologacao'] .= ' '.$data['end_time_homologacao'];
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
-        // VALIDANDO TEMPO DA INSCRICAO, DEPURACAO E ELEICAO
+        // VALIDANDO TEMPO DA INSCRICAO, homologacao E ELEICAO
         $validator = Validator::make(request()->all(), []);
 
         if($data['start_date_inscricao'] >= $data['end_date_inscricao']){
@@ -68,21 +68,21 @@ class eleicaoController extends Controller
                 ->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
         }
 
-        if($data['start_date_depuracao'] < $data['end_date_inscricao']){
-            if($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+        if($data['start_date_homologacao'] < $data['end_date_inscricao']){
+            if($data['start_date_homologacao'] >= $data['end_date_homologacao']){
                 $validator->errors()
-                    ->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição')
-                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+                    ->add('start_time_homologacao', 'Horario inicial depuração deve ser maior que o final da inscrição')
+                    ->add('end_time_homologacao', 'Horario final deve ser maior que o inicial');
             }else{
-                $validator->errors()->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição');
+                $validator->errors()->add('start_time_homologacao', 'Horario inicial depuração deve ser maior que o final da inscrição');
             }
         }
-        elseif($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+        elseif($data['start_date_homologacao'] >= $data['end_date_homologacao']){
             $validator->errors()
-                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+                    ->add('end_time_homologacao', 'Horario final deve ser maior que o inicial');
         }
 
-        if($data['start_date_eleicao'] < $data['end_date_depuracao']){
+        if($data['start_date_eleicao'] < $data['end_date_homologacao']){
             if($data['start_date_eleicao'] >= $data['end_date_eleicao']){
                 $validator->errors()
                     ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração')
@@ -107,8 +107,8 @@ class eleicaoController extends Controller
         // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
         unset($data['start_time_inscricao']);
         unset($data['end_time_inscricao']);
-        unset($data['start_time_depuracao']);
-        unset($data['end_time_depuracao']);
+        unset($data['start_time_homologacao']);
+        unset($data['end_time_homologacao']);
         unset($data['start_time_eleicao']);
         unset($data['end_time_eleicao']);
 
@@ -144,9 +144,9 @@ class eleicaoController extends Controller
             'beforeInscricao' => EleicaoService::beforeInscricao($eleicao),
             'duringInscricao' => EleicaoService::duringInscricao($eleicao),
             'afterInscricao' => EleicaoService::afterInscricao($eleicao),
-            'beforeDepuracao' => EleicaoService::beforeDepuracao($eleicao),
-            'duringDepuracao' => EleicaoService::duringDepuracao($eleicao),
-            'afterDepuracao' => EleicaoService::afterDepuracao($eleicao),
+            'beforeHomologacao' => EleicaoService::beforeHomologacao($eleicao),
+            'duringHomologacao' => EleicaoService::duringHomologacao($eleicao),
+            'afterHomologacao' => EleicaoService::afterHomologacao($eleicao),
             'beforeEleicao' => EleicaoService::beforeEleicao($eleicao),
             'duringEleicao' => EleicaoService::duringEleicao($eleicao),
             'afterEleicao' => EleicaoService::afterEleicao($eleicao),
@@ -165,10 +165,10 @@ class eleicaoController extends Controller
         $start_time_inscricao = Carbon::parse($eleicao->start_date_inscricao)->format('H:i');
         $end_time_inscricao = Carbon::parse($eleicao->end_date_inscricao)->format('H:i');
 
-        $start_date_depuracao = Carbon::parse($eleicao->start_date_depuracao)->format('Y-m-d');
-        $end_date_depuracao = Carbon::parse($eleicao->end_date_depuracao)->format('Y-m-d');
-        $start_time_depuracao = Carbon::parse($eleicao->start_date_depuracao)->format('H:i');
-        $end_time_depuracao = Carbon::parse($eleicao->end_date_depuracao)->format('H:i');
+        $start_date_homologacao = Carbon::parse($eleicao->start_date_homologacao)->format('Y-m-d');
+        $end_date_homologacao = Carbon::parse($eleicao->end_date_homologacao)->format('Y-m-d');
+        $start_time_homologacao = Carbon::parse($eleicao->start_date_homologacao)->format('H:i');
+        $end_time_homologacao = Carbon::parse($eleicao->end_date_homologacao)->format('H:i');
 
         $start_date_eleicao = Carbon::parse($eleicao->start_date_eleicao)->format('Y-m-d');
         $end_date_eleicao = Carbon::parse($eleicao->end_date_eleicao)->format('Y-m-d');
@@ -184,10 +184,10 @@ class eleicaoController extends Controller
             'start_time_inscricao' => $start_time_inscricao,
             'end_date_inscricao' => $end_date_inscricao,
             'end_time_inscricao' => $end_time_inscricao,
-            'start_date_depuracao' => $start_date_depuracao,
-            'start_time_depuracao' => $start_time_depuracao,
-            'end_date_depuracao' => $end_date_depuracao,
-            'end_time_depuracao' => $end_time_depuracao,
+            'start_date_homologacao' => $start_date_homologacao,
+            'start_time_homologacao' => $start_time_homologacao,
+            'end_date_homologacao' => $end_date_homologacao,
+            'end_time_homologacao' => $end_time_homologacao,
             'start_date_eleicao' => $start_date_eleicao,
             'start_time_eleicao' => $start_time_eleicao,
             'end_date_eleicao' => $end_date_eleicao,
@@ -202,13 +202,13 @@ class eleicaoController extends Controller
         // JUNTANDO DATA E HORA DA ELEIÇÃO E INSCRIÇÃO
         $data['start_date_inscricao'] .= ' '.$data['start_time_inscricao'];
         $data['end_date_inscricao'] .= ' '.$data['end_time_inscricao'];
-        $data['start_date_depuracao'] .= ' '.$data['start_time_depuracao'];
-        $data['end_date_depuracao'] .= ' '.$data['end_time_depuracao'];
+        $data['start_date_homologacao'] .= ' '.$data['start_time_homologacao'];
+        $data['end_date_homologacao'] .= ' '.$data['end_time_homologacao'];
         $data['start_date_eleicao'] .= ' '.$data['start_time_eleicao'];
         $data['end_date_eleicao'] .= ' '.$data['end_time_eleicao'];
 
         // VALIDANDO TEMPO DA INSCRICAO E ELEICAO
-        // VALIDANDO TEMPO DA INSCRICAO, DEPURACAO E ELEICAO
+        // VALIDANDO TEMPO DA INSCRICAO, homologacao E ELEICAO
         $validator = Validator::make(request()->all(), []);
 
         if($data['start_date_inscricao'] >= $data['end_date_inscricao']){
@@ -216,21 +216,21 @@ class eleicaoController extends Controller
                 ->add('end_time_inscricao', 'Horario final deve ser maior que o inicial');
         }
 
-        if($data['start_date_depuracao'] < $data['end_date_inscricao']){
-            if($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+        if($data['start_date_homologacao'] < $data['end_date_inscricao']){
+            if($data['start_date_homologacao'] >= $data['end_date_homologacao']){
                 $validator->errors()
-                    ->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição')
-                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+                    ->add('start_time_homologacao', 'Horario inicial depuração deve ser maior que o final da inscrição')
+                    ->add('end_time_homologacao', 'Horario final deve ser maior que o inicial');
             }else{
-                $validator->errors()->add('start_time_depuracao', 'Horario inicial depuração deve ser maior que o final da inscrição');
+                $validator->errors()->add('start_time_homologacao', 'Horario inicial depuração deve ser maior que o final da inscrição');
             }
         }
-        elseif($data['start_date_depuracao'] >= $data['end_date_depuracao']){
+        elseif($data['start_date_homologacao'] >= $data['end_date_homologacao']){
             $validator->errors()
-                    ->add('end_time_depuracao', 'Horario final deve ser maior que o inicial');
+                    ->add('end_time_homologacao', 'Horario final deve ser maior que o inicial');
         }
 
-        if($data['start_date_eleicao'] < $data['end_date_depuracao']){
+        if($data['start_date_eleicao'] < $data['end_date_homologacao']){
             if($data['start_date_eleicao'] >= $data['end_date_eleicao']){
                 $validator->errors()
                     ->add('start_time_eleicao', 'Horario inicial eleição deve ser maior que o final da depuração')
@@ -254,8 +254,8 @@ class eleicaoController extends Controller
         // REMOVENDO HORA ELEIÇÃO E INSCRIÇÃO DA VARIAVEL
         unset($data['start_time_inscricao']);
         unset($data['end_time_inscricao']);
-        unset($data['start_time_depuracao']);
-        unset($data['end_time_depuracao']);
+        unset($data['start_time_homologacao']);
+        unset($data['end_time_homologacao']);
         unset($data['start_time_eleicao']);
         unset($data['end_time_eleicao']);
 

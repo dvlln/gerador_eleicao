@@ -11,21 +11,21 @@
                 Voto já efetuado
             </div>
 
-        @elseif(($duringInscricao || $duringDepuracao) && $doc_user_status === 'pendente')
+        @elseif(($duringInscricao || $duringHomologacao) && $doc_user_status === 'pendente')
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 Aprovação pendente, favor aguardar.
             </div>
         @elseif($duringInscricao && $doc_user_status === 'reprovado')
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Documento reprovado, favor aguardar inicio da depuração.
+                Documento reprovado, favor aguardar inicio da homologação.
             </div>
-        @elseif(($duringInscricao || $duringDepuracao) && $doc_user_status === 'aprovado')
+        @elseif(($duringInscricao || $duringHomologacao) && $doc_user_status === 'aprovado')
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Documento aprovado, favor aguardar inicio da eleição.
             </div>
-        @elseif($duringDepuracao && $doc_user_status === 'reprovado')
+        @elseif($duringHomologacao && $doc_user_status === 'reprovado')
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Documento reprovado, favor alterar antes que o tempo de depuracao acabe.
+                Documento reprovado, favor alterar antes que o tempo de homologação acabe.
             </div>
         @elseif($duringEleicao && $doc_user_status != 'aprovado')
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -49,12 +49,12 @@
                             {{ $eleicoes->end_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Início depuração: </span>
-                            {{ $eleicoes->start_date_depuracao_formatted }}
+                            <span class="font-weight-bold mb-1">Início homologação: </span>
+                            {{ $eleicoes->start_date_homologacao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Fim depuração: </span>
-                            {{ $eleicoes->end_date_depuracao_formatted }}
+                            <span class="font-weight-bold mb-1">Fim homologação: </span>
+                            {{ $eleicoes->end_date_homologacao_formatted }}
                         </li>
                         <li class="list-group-item">
                             <span class="font-weight-bold mb-1">Início eleição: </span>
@@ -85,7 +85,7 @@
                                             @if ($user->id === $vencedor && $afterEleicao)
                                                 <p class="text-danger mt-1 mb-0"><b>VENCEDOR!!!</b></p>
                                             @endif
-                                            @if ($duringEleicao && $user->pivot->doc_user_status === 'aprovado' && $user->pivot->votacao_status === 0)
+                                            @if ($duringEleicao && $doc_user_status === 'aprovado' && $votacao_status === 0)
                                                 <form class="mt-2" method="POST" action="{{ route('user.eleicao.vote', $eleicoes->id) }}">
                                                     @csrf
                                                     @method('PUT')
@@ -106,7 +106,7 @@
     </div>
 
     {{-- INSCRIÇÃO --}}
-    @if($duringInscricao || ($duringDepuracao && $doc_user_status != 'aprovado'))
+    @if($duringInscricao || ($duringHomologacao && $doc_user_status != 'aprovado'))
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
@@ -152,7 +152,12 @@
                                         </td>
 
                                         <td class="col-12 border-0">
-                                            <label for="doc_user">Documentos </label> <a class="fa-solid fa-circle-info tip"><span>Obrigatório envio em PDF:<br><br> 01 documento pessoal com foto (ex: RG, Carteira de Trabalho)<br><br>01 documento comprobatório da categoria selecionada (ex: comprovante de matrícula para discentes)</span></a>
+                                            <label for="doc_user">Documentos </label>
+                                            <i type="button" class="fa-solid fa-circle-info" data-toggle="tooltip" data-placement="top" title="
+Obrigatório envio em PDF:
+
+01 documento pessoal com foto (ex. RG, Carteira de Trabalho, Habilitação)
+01 documento comprobatório da categoria selecionada (ex.: RA para Discentes)"></i>
                                             <input
                                                 class="form-control {{ $errors->has('doc_user') ? 'is-invalid' : '' }}"
                                                 type="file"
@@ -186,7 +191,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                @elseif($duringDepuracao && $doc_user_status === 'reprovado')
+                                @elseif($duringHomologacao && $doc_user_status === 'reprovado')
                                     <div class="row justify-content-center">
                                         <form method="POST" action='{{ route('user.eleicao.store', $eleicoes->id) }}' enctype="multipart/form-data">
                                             <div class="col-12 col-md-6 my-1">
@@ -208,36 +213,6 @@
             </div>
         </div>
     @endif
-
-    <style>
-        a.tip {
-            border-bottom: 1px;
-            text-decoration: none
-        }
-        a.tip:hover {
-            cursor: help;
-            position: relative
-        }
-        a.tip span {
-            display: none
-        }
-        a.tip:hover span {
-            border: #c0c0c0 1px solid;
-            padding: 5px 20px 5px 5px;
-            display: block;
-            z-index: 100;
-            background: whitesmoke no-repeat 100% 5%;
-            left: 0px;
-            margin: 10px;
-            width: 250px;
-            position: absolute;
-            top: 10px;
-            color: grey;
-            text-decoration: none;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-        }
-        </style>
 
 @endsection
 

@@ -23,16 +23,16 @@ class EleicaoService{
         return $eleicao->end_date_inscricao < now();
     }
 
-    public static function beforeDepuracao(Eleicao $eleicao){
-        return $eleicao->start_date_depuracao > now();
+    public static function beforeHomologacao(Eleicao $eleicao){
+        return $eleicao->start_date_homologacao > now();
     }
 
-    public static function duringDepuracao(Eleicao $eleicao){
-        return ($eleicao->start_date_depuracao < now()) && ($eleicao->end_date_depuracao > now());
+    public static function duringHomologacao(Eleicao $eleicao){
+        return ($eleicao->start_date_homologacao < now()) && ($eleicao->end_date_homologacao > now());
     }
 
-    public static function afterDepuracao(Eleicao $eleicao){
-        return $eleicao->end_date_depuracao < now();
+    public static function afterHomologacao(Eleicao $eleicao){
+        return $eleicao->end_date_homologacao < now();
     }
 
     public static function beforeEleicao(Eleicao $eleicao){

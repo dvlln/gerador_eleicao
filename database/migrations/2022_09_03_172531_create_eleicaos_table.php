@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->dateTime('start_date_inscricao');
             $table->dateTime('end_date_inscricao');
-            $table->dateTime('start_date_depuracao');
-            $table->dateTime('end_date_depuracao');
+            $table->dateTime('start_date_homologacao');
+            $table->dateTime('end_date_homologacao');
             $table->dateTime('start_date_eleicao');
             $table->dateTime('end_date_eleicao');
             $table->timestamps();

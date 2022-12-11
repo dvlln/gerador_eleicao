@@ -16,17 +16,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <i type="button" class="fa-solid fa-circle-info" data-toggle="tooltip" data-placement="top" title="
+nome
+email
+cpf
+categoria
+ocupacao"> Documentos</i>
+                        <form action="{{ route('admin.eleicao.import', $eleicoes->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="modal-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">nome</li>
-                                <li class="list-group-item">email</li>
-                                <li class="list-group-item">cpf</li>
-                                <li class="list-group-item">senha</li>
-                                <li class="list-group-item">categoria (candidato, eleitor)</li>
-                                <li class="list-group-item">ocupação (discente, docente, pai...)</li>
-                            </ul>
                             <input
                                 class="form-control {{ $errors->has('import') ? 'is-invalid' : '' }}"
                                 type="file"
@@ -34,7 +32,7 @@
                                 name='import'
                             />
                             <div class="invalid-feedback">{{ $errors->first('import') }}</div>
-                        </div>
+                    </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Salvar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
@@ -64,12 +62,12 @@
                             {{ $eleicoes->end_date_inscricao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Início depuração: </span>
-                            {{ $eleicoes->start_date_depuracao_formatted }}
+                            <span class="font-weight-bold mb-1">Início homologação: </span>
+                            {{ $eleicoes->start_date_homologacao_formatted }}
                         </li>
                         <li class="list-group-item">
-                            <span class="font-weight-bold mb-1">Fim depuração: </span>
-                            {{ $eleicoes->end_date_depuracao_formatted }}
+                            <span class="font-weight-bold mb-1">Fim homologação: </span>
+                            {{ $eleicoes->end_date_homologacao_formatted }}
                         </li>
                         <li class="list-group-item">
                             <span class="font-weight-bold mb-1">Início eleição: </span>
@@ -143,7 +141,7 @@
                                     <th>Status Votação</th>
                                 @endif
 
-                                @if ( $duringInscricao || $duringDepuracao)
+                                @if ( $duringInscricao || $duringHomologacao)
                                     <th>Ações</th>
                                     <th>Status</th>
                                 @endif
@@ -163,7 +161,7 @@
                                             @endif
                                         @endif
 
-                                        @if ( $duringInscricao || $duringDepuracao )
+                                        @if ( $duringInscricao || $duringHomologacao )
                                             <td>
                                                 <div class="d-flex justify-content-center">
 
